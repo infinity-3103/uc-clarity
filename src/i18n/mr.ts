@@ -881,4 +881,9 @@ export const mr: Record<TranslationKey, string> = {
   opt_yes: 'होय',
   opt_no: 'नाही',
   opt_not_sure: 'नक्की माहिती नाही',
+  error_boundary_title: 'काहीतरी चूक झाली',
+  error_boundary_message: 'एक अनपेक्षित त्रुटी आली. पूर्ववत करण्यासाठी आपण डेमो रीसेट करू शकता.',
+  error_boundary_reset: 'डेमो रीसेट करा',
+  error_boundary_retry: 'पुन्हा प्रयत्न करा',
+  error_boundary_details: 'तांत्रिक तपशील',
 };

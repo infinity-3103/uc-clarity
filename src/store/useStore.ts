@@ -1,5 +1,37 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
+
+// Safe localStorage adapter handling private browsing, quota exceptions, and restricted environments
+const safeStorage: StateStorage = {
+  getItem: (name: string): string | null => {
+    try {
+      if (typeof window === 'undefined' || !window.localStorage) return null;
+      return window.localStorage.getItem(name);
+    } catch {
+      return null;
+    }
+  },
+  setItem: (name: string, value: string): void => {
+    try {
+      if (typeof window === 'undefined' || !window.localStorage) return;
+      window.localStorage.setItem(name, value);
+    } catch {
+      try {
+        window.localStorage.removeItem(name);
+      } catch {
+        // Fail silently
+      }
+    }
+  },
+  removeItem: (name: string): void => {
+    try {
+      if (typeof window === 'undefined' || !window.localStorage) return;
+      window.localStorage.removeItem(name);
+    } catch {
+      // Fail silently
+    }
+  },
+};
 import {
   ApplianceType,
   City,
@@ -1039,12 +1071,16 @@ export const useStore = create<AppStoreState>()(
       name: 'uc-clarity-store-v4',
       version: 4,
       migrate: (persistedState: any, version: number) => {
-        if (version < 4) {
+        try {
+          if (version < 4) {
+            return undefined;
+          }
+          return persistedState;
+        } catch {
           return undefined;
         }
-        return persistedState;
       },
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => safeStorage),
     }
   )
 );

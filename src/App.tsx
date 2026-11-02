@@ -14,7 +14,7 @@ export const App: React.FC = () => {
   const currentRole = useStore((state) => state.currentRole);
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col antialiased">
+    <div className="min-h-screen min-h-[100dvh] bg-slate-100 flex flex-col antialiased">
       {/* Universal Top Bar */}
       <TopBar />
 

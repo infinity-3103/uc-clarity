@@ -831,3 +831,8 @@ Total verified keys: **825**
 | `zone_thane` | Shared | Thane | ठाणे | ठाणे | ಠಾಣೆ |
 | `zone_wakad` | Shared | Wakad | वाकड | वाकड | ವಾಕಡ್ |
 | `zone_whitefield` | Shared | Whitefield | व्हाइटफील्ड | व्हाइटफील्ड | ವೈಟ್‌ಫೀಲ್ಡ್ |
+| `error_boundary_title` | Shared | Something went wrong | कुछ गलत हो गया | काहीतरी चूक झाली | ಏನೋ ತಪ್ಪಾಗಿದೆ |
+| `error_boundary_message` | Shared | An unexpected application error occurred. You can reset the demo state to recover. | एक अप्रत्याशित त्रुटि हुई। स्थिति को पुनर्प्राप्त करने के लिए आप डेमो रीसेट कर सकते हैं। | एक अनपेक्षित त्रुटी आली. पूर्ववत करण्यासाठी आपण डेमो रीसेट करू शकता. | ಅನಿರೀಕ್ಷಿತ ದೋಷ ಸಂಭವಿಸಿದೆ. ಚೇತರಿಸಿಕೊಳ್ಳಲು ನೀವು ಡೆಮೊವನ್ನು ಮರುಹೊಂದಿಸಬಹುದು. |
+| `error_boundary_reset` | Shared | Reset Demo | डेमो रीसेट करें | डेमो रीसेट करा | ಡೆಮೊ ಮರುಹೊಂದಿಸಿ |
+| `error_boundary_retry` | Shared | Try Again | पुनः प्रयास करें | पुन्हा प्रयत्न करा | ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ |
+| `error_boundary_details` | Shared | Technical details | तकनीकी विवरण | तांत्रिक तपशील | ತಾಂತ್ರಿಕ ವಿವರಗಳು |

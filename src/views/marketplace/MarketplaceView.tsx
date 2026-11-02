@@ -110,7 +110,7 @@ export const MarketplaceView: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col text-slate-800">
+    <div className="min-h-screen min-h-[100dvh] bg-slate-100 flex flex-col text-slate-800">
       {/* Amazon-style Marketplace Top Banner */}
       <header className="bg-slate-900 text-white sticky top-16 z-40 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-3">

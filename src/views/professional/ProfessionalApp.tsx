@@ -8,6 +8,7 @@ import { computeCityDemand } from '../../domain/demand';
 import { planSalesDeployment } from '../../domain/allocation';
 import { PartnerDemoSelector } from '../../components/PartnerDemoSelector';
 import { Toast } from '../../components/Toast';
+import { speakText as playSpeech, isSpeechSupported } from '../../utils/speech';
 import {
   cityLabel,
   zoneLabel,
@@ -142,22 +143,10 @@ export const ProfessionalApp: React.FC = () => {
     { id: 'p2', name: 'Internal Motor / Coil State', grade: 2 },
   ]);
 
-  // Speech read-aloud support
-  const hasSpeech = typeof window !== 'undefined' && 'speechSynthesis' in window;
-
+  // Speech read-aloud support with cross-browser voice caching
+  const hasSpeech = isSpeechSupported();
   const speakText = (text: string) => {
-    if (!hasSpeech) return;
-    try {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      if (currentLanguage === 'hi') utterance.lang = 'hi-IN';
-      else if (currentLanguage === 'mr') utterance.lang = 'mr-IN';
-      else if (currentLanguage === 'kn') utterance.lang = 'kn-IN';
-      else utterance.lang = 'en-IN';
-      window.speechSynthesis.speak(utterance);
-    } catch (err) {
-      console.error('Speech error', err);
-    }
+    playSpeech(text, currentLanguage);
   };
 
   const handleAddSamplePhotos = () => {

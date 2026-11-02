@@ -59,6 +59,58 @@ export function getFallbackEvents(): FallbackEvent[] {
   return [...fallbackEvents];
 }
 
+export function translate(
+  key: string,
+  lang: Language = 'en',
+  params?: Record<string, string | number>,
+  fallback?: string
+): string {
+  if (!key) return '';
+
+  const dict = dictionaries[lang] || (en as Record<string, string>);
+  let text = dict[key];
+
+  if (text === undefined || text === null || text === '') {
+    if (lang !== 'en') {
+      console.error(`[i18n fallback] Key "${key}" missing in language "${lang}"`);
+      fallbackEvents.push({ key, lang, language: lang });
+      fallbackLog.push({ key, language: lang });
+    }
+    const enVal = (en as Record<string, string>)[key];
+    if (enVal !== undefined && enVal !== null && enVal !== '') {
+      text = enVal;
+    } else if (fallback !== undefined && fallback !== null && fallback !== '') {
+      text = fallback;
+    } else {
+      const isDev = Boolean((import.meta as any).env?.DEV);
+      if (isDev) {
+        console.error(`[i18n missing] Key "${key}" missing in English dictionary. Falling back to humanized string.`);
+      }
+      text = humanizeKey(key);
+    }
+  }
+
+  if (params && typeof text === 'string') {
+    Object.entries(params).forEach(([pKey, pVal]) => {
+      text = text.replace(new RegExp(`\\{${pKey}\\}`, 'g'), String(pVal));
+    });
+  }
+
+  return text;
+}
+
+/**
+ * Standalone translation function callable outside React component lifecycle.
+ */
+export function t(
+  key: string,
+  params?: Record<string, string | number>,
+  fallback?: string
+): string {
+  const currentLanguage = (useStore.getState ? useStore.getState().currentLanguage : 'en') || 'en';
+  return translate(key, currentLanguage, params, fallback);
+}
+
 /**
  * Lightweight translation hook with parameter interpolation and fallback monitoring.
  */
@@ -66,47 +118,14 @@ export function useT() {
   const currentLanguage = useStore((state) => state.currentLanguage) || 'en';
   const setLanguage = useStore((state) => state.setLanguage);
 
-  const t = (
+  const tHook = (
     key: string,
     params?: Record<string, string | number>,
     fallback?: string
-  ): string => {
-    if (!key) return '';
-
-    const dict = dictionaries[currentLanguage] || (en as Record<string, string>);
-    let text = dict[key];
-
-    if (text === undefined || text === null || text === '') {
-      if (currentLanguage !== 'en') {
-        console.error(`[i18n fallback] Key "${key}" missing in language "${currentLanguage}"`);
-        fallbackEvents.push({ key, lang: currentLanguage, language: currentLanguage });
-        fallbackLog.push({ key, language: currentLanguage });
-      }
-      const enVal = (en as Record<string, string>)[key];
-      if (enVal !== undefined && enVal !== null && enVal !== '') {
-        text = enVal;
-      } else if (fallback !== undefined && fallback !== null && fallback !== '') {
-        text = fallback;
-      } else {
-        const isDev = Boolean((import.meta as any).env?.DEV);
-        if (isDev) {
-          console.error(`[i18n missing] Key "${key}" missing in English dictionary. Falling back to humanized string.`);
-        }
-        text = humanizeKey(key);
-      }
-    }
-
-    if (params && typeof text === 'string') {
-      Object.entries(params).forEach(([pKey, pVal]) => {
-        text = text.replace(new RegExp(`\\{${pKey}\\}`, 'g'), String(pVal));
-      });
-    }
-
-    return text;
-  };
+  ): string => translate(key, currentLanguage, params, fallback);
 
   return {
-    t,
+    t: tHook,
     currentLanguage,
     setLanguage,
     fontClass: getLanguageFontClass(currentLanguage),

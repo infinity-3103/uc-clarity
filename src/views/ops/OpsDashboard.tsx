@@ -250,7 +250,7 @@ export const OpsDashboard: React.FC = () => {
   const cityZones = zones.filter((z) => z.city === selectedCityForMap);
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col text-slate-800">
+    <div className="min-h-screen min-h-[100dvh] bg-slate-100 flex flex-col text-slate-800">
       {/* Top Header */}
       <div className="bg-slate-900 text-white px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800">
         <div>

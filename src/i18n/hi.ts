@@ -881,4 +881,9 @@ export const hi: Record<TranslationKey, string> = {
   opt_yes: 'हाँ',
   opt_no: 'नहीं',
   opt_not_sure: 'पता नहीं',
+  error_boundary_title: 'कुछ गलत हो गया',
+  error_boundary_message: 'एक अप्रत्याशित त्रुटि हुई। स्थिति को पुनर्प्राप्त करने के लिए आप डेमो रीसेट कर सकते हैं।',
+  error_boundary_reset: 'डेमो रीसेट करें',
+  error_boundary_retry: 'पुनः प्रयास करें',
+  error_boundary_details: 'तकनीकी विवरण',
 };

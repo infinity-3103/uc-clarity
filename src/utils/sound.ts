@@ -1,13 +1,33 @@
 // Web Audio API notification sound generator
 // Synthesizes a mobile push notification chime without requiring external audio assets.
-export function playNotificationSound() {
-  try {
-    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    if (!AudioContextClass) return;
+let sharedAudioContext: AudioContext | null = null;
 
-    const ctx = new AudioContextClass();
+function getAudioContext(): AudioContext | null {
+  try {
+    if (typeof window === 'undefined') return null;
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AudioContextClass) return null;
+    if (!sharedAudioContext || sharedAudioContext.state === 'closed') {
+      sharedAudioContext = new AudioContextClass();
+    }
+    return sharedAudioContext;
+  } catch {
+    return null;
+  }
+}
+
+export function playNotificationSound(): void {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    // In Chrome, AudioContext is suspended until a user gesture. Attempt resume cleanly.
     if (ctx.state === 'suspended') {
-      ctx.resume();
+      ctx.resume().catch(() => {
+        // Fail silently without console error if browser policy blocks autoplay
+      });
     }
 
     const now = ctx.currentTime;
@@ -43,7 +63,7 @@ export function playNotificationSound() {
 
     osc2.start(now + 0.07);
     osc2.stop(now + 0.55);
-  } catch (error) {
-    console.warn('Audio chime playback was prevented or unsupported:', error);
+  } catch {
+    // Fail silently without console error per cross-browser requirements
   }
 }

@@ -879,6 +879,11 @@ export const en = {
   opt_yes: 'Yes',
   opt_no: 'No',
   opt_not_sure: 'Not sure',
+  error_boundary_title: 'Something went wrong',
+  error_boundary_message: 'An unexpected application error occurred. You can reset the demo state to recover.',
+  error_boundary_reset: 'Reset Demo',
+  error_boundary_retry: 'Try Again',
+  error_boundary_details: 'Technical details',
 };
 
 export type TranslationKey = keyof typeof en;

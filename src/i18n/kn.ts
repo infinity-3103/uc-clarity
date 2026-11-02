@@ -881,4 +881,9 @@ export const kn: Record<TranslationKey, string> = {
   opt_yes: 'ಹೌದು',
   opt_no: 'ಇಲ್ಲ',
   opt_not_sure: 'ಖಚಿತವಿಲ್ಲ',
+  error_boundary_title: 'ಏನೋ ತಪ್ಪಾಗಿದೆ',
+  error_boundary_message: 'ಅನಿರೀಕ್ಷಿತ ದೋಷ ಸಂಭವಿಸಿದೆ. ಚೇತರಿಸಿಕೊಳ್ಳಲು ನೀವು ಡೆಮೊವನ್ನು ಮರುಹೊಂದಿಸಬಹುದು.',
+  error_boundary_reset: 'ಡೆಮೊ ಮರುಹೊಂದಿಸಿ',
+  error_boundary_retry: 'ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ',
+  error_boundary_details: 'ತಾಂತ್ರಿಕ ವಿವರಗಳು',
 };

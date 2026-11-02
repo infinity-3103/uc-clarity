@@ -35,9 +35,20 @@ export function evaluateNudgeRules(
     return null;
   }
 
-  const dateObj = new Date(context.simulatedDate);
-  const month = dateObj.getMonth(); // 0-indexed: 1 = Feb, 2 = Mar, 3 = Apr
-  const day = dateObj.getDate();
+  // Safe cross-browser date parsing without timezone offset shifts
+  let month = 0;
+  let day = 1;
+  if (context.simulatedDate.includes('-')) {
+    const parts = context.simulatedDate.split('-');
+    if (parts.length >= 3) {
+      month = parseInt(parts[1], 10) - 1;
+      day = parseInt(parts[2], 10);
+    }
+  } else {
+    const dateObj = new Date(context.simulatedDate);
+    month = dateObj.getUTCMonth();
+    day = dateObj.getUTCDate();
+  }
   const cityTemp = context.temperatureByCity[customer.city] ?? 32;
 
   const acAppliance = customer.appliances.find((a) => a.type === 'AC');

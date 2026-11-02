@@ -329,6 +329,9 @@ export const CONVERSION_PCT = 0.05; // assumed, range 3% to 8%
 // Discount percentage off service fee for completing the exit survey
 export const SURVEY_DISCOUNT_PCT = 0.10; // assumed, 10% of service fee just paid
 
+// Cooldown period in months between survey discounts per customer
+export const SURVEY_COOLDOWN_MONTHS = 6;
+
 // Target consent rate for post-visit appliance exit survey
 export const EXIT_SURVEY_TARGET_CONSENT = 0.40; // assumed
 
@@ -356,8 +359,6 @@ export const SIMULATED_TODAY = '2026-03-15';
 // Shared demand and sales leads boost
 export const LEAD_DEMAND_BOOST = 2; // +2 per open sales lead in zone & category
 
-// Checkout discount for survey completion
-export const CHECKOUT_SURVEY_DISCOUNT_PCT = SURVEY_DISCOUNT_PCT; // 10% discount on direct checkout
 
 // Survey Lead Scoring weights
 export const LEAD_AGE_POINTS: Record<string, number> = {

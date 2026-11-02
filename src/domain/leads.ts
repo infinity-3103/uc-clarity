@@ -1,9 +1,10 @@
-import { City, SalesLead, SurveyAnswerItem } from './types';
+import { City, Customer, SalesLead, SurveyAnswerItem } from './types';
 import {
   LEAD_AGE_POINTS,
   LEAD_ISSUE_POINTS,
   LEAD_INTEREST_POINTS,
   LEAD_PRIORITY_THRESHOLDS,
+  SURVEY_COOLDOWN_MONTHS,
 } from '../config/assumptions';
 
 /**
@@ -55,3 +56,30 @@ export function evaluateSurveyAnswerForLead(
     replacementInterest: item.replaceInterest.toLowerCase(),
   };
 }
+
+export function getSurveyDiscountAvailableDate(customer: Customer): Date | null {
+  if (!customer.lastSurveyDiscountAt) return null;
+  const d = new Date(customer.lastSurveyDiscountAt);
+  d.setMonth(d.getMonth() + SURVEY_COOLDOWN_MONTHS);
+  return d;
+}
+
+export function isSurveyDiscountEligible(
+  customer: Customer | null | undefined,
+  now?: string | Date
+): boolean {
+  if (!customer) return false;
+  if (!customer.lastSurveyDiscountAt) return true;
+  const nowDate = now ? new Date(now) : new Date();
+  const availableDate = getSurveyDiscountAvailableDate(customer);
+  if (!availableDate) return true;
+  return nowDate.getTime() >= availableDate.getTime();
+}
+
+export function formatSurveyDiscountDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+

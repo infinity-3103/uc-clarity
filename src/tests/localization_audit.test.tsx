@@ -197,7 +197,7 @@ describe('Localization & Multilingual Audit Suite', () => {
           customerId="cust-riya"
           city="Mumbai"
           zoneId="zone-mumbai-andheri"
-          source="checkout"
+          source="exit"
           onComplete={() => {}}
         />
       );

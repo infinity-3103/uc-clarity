@@ -3,8 +3,6 @@ import { useStore } from '../../store/useStore';
 import { MARKETPLACE_PRODUCTS } from '../../config/assumptions';
 import { MarketplaceProduct, ApplianceType } from '../../domain/types';
 import { ApplianceArt } from '../../components/ApplianceArt';
-import { SurveyForm } from '../../components/SurveyForm';
-import { CHECKOUT_SURVEY_DISCOUNT_PCT } from '../../config/assumptions';
 import { useT, cityLabel } from '../../i18n';
 import {
   Search,
@@ -59,11 +57,6 @@ export const MarketplaceView: React.FC = () => {
   const [applyTradeIn, setApplyTradeIn] = useState<boolean>(true);
   const [completedOrder, setCompletedOrder] = useState<any | null>(null);
 
-  // Survey discount state
-  const [showSurveyOptIn, setShowSurveyOptIn] = useState<boolean>(false);
-  const [isSurveyModalOpen, setIsSurveyModalOpen] = useState<boolean>(false);
-  const [surveyDiscountApplied, setSurveyDiscountApplied] = useState<boolean>(false);
-
   // Filtered & Sorted Products
   const filteredProducts = useMemo(() => {
     return MARKETPLACE_PRODUCTS.filter((prod) => {
@@ -88,24 +81,14 @@ export const MarketplaceView: React.FC = () => {
     setCheckoutProduct(product);
     setCheckoutType(type);
     setCompletedOrder(null);
-    setShowSurveyOptIn(false);
-    setIsSurveyModalOpen(false);
-    setSurveyDiscountApplied(false);
   };
 
   // Execute purchase
   const handleExecuteOrder = () => {
     if (!checkoutProduct) return;
 
-    if (showSurveyOptIn && !surveyDiscountApplied) {
-      setIsSurveyModalOpen(true);
-      return;
-    }
-
     const tradeInDiscount = applyTradeIn ? 3000 : 0;
-    const basePrice = Math.max(0, checkoutProduct.price - tradeInDiscount);
-    const surveyDiscount = surveyDiscountApplied ? Math.round(basePrice * CHECKOUT_SURVEY_DISCOUNT_PCT) : 0;
-    const finalPrice = Math.max(0, basePrice - surveyDiscount);
+    const finalPrice = Math.max(0, checkoutProduct.price - tradeInDiscount);
     const monthlyEMI = Math.round(finalPrice / selectedTenor);
 
     const order = placeDirectOrder({
@@ -115,7 +98,7 @@ export const MarketplaceView: React.FC = () => {
       brand: checkoutProduct.brand,
       category: checkoutProduct.category,
       price: checkoutProduct.price,
-      tradeInCredit: tradeInDiscount + surveyDiscount,
+      tradeInCredit: tradeInDiscount,
       paymentMethod: checkoutType === 'FULL' ? fullPaymentMethod : 'NO_COST_EMI',
       tenorMonths: checkoutType === 'EMI' ? selectedTenor : undefined,
       monthlyEMI: checkoutType === 'EMI' ? monthlyEMI : undefined,
@@ -622,39 +605,6 @@ export const MarketplaceView: React.FC = () => {
                   </div>
                 )}
 
-                {/* Short Survey Discount Opt-In */}
-                <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 space-y-2">
-                  <label className="flex items-start gap-2.5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={showSurveyOptIn}
-                      onChange={(e) => {
-                        const checked = e.target.checked;
-                        setShowSurveyOptIn(checked);
-                        if (checked && !surveyDiscountApplied) {
-                          setIsSurveyModalOpen(true);
-                        }
-                      }}
-                      className="mt-0.5 rounded text-purple-600 focus:ring-purple-500 cursor-pointer"
-                    />
-                    <div>
-                      <span className="font-bold text-purple-950 block">
-                        {t('survey_discount_opt_title')}
-                      </span>
-                      <span className="text-[11px] text-purple-800 leading-tight block">
-                        {t('survey_discount_opt_desc')}
-                      </span>
-                    </div>
-                  </label>
-
-                  {surveyDiscountApplied && (
-                    <div className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold bg-white px-2.5 py-1 rounded-lg border border-emerald-200">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>{t('survey_discount_applied_badge')}</span>
-                    </div>
-                  )}
-                </div>
-
                 {/* Price Breakdown */}
                 <div className="border-t border-slate-100 pt-3 space-y-1.5">
                   <div className="flex justify-between text-slate-600">
@@ -667,17 +617,6 @@ export const MarketplaceView: React.FC = () => {
                       <span>-Rs 3,000</span>
                     </div>
                   )}
-                  {surveyDiscountApplied && (
-                    <div className="flex justify-between text-emerald-700 font-bold">
-                      <span>{t('survey_discount_label')}</span>
-                      <span>
-                        -Rs {Math.round(
-                          (applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price) *
-                            CHECKOUT_SURVEY_DISCOUNT_PCT
-                        ).toLocaleString('en-IN')}
-                      </span>
-                    </div>
-                  )}
                   <div className="flex justify-between text-slate-600">
                     <span>{t('delivery_installation_label')}</span>
                     <span className="font-semibold text-emerald-600">{t('free_badge')}</span>
@@ -687,13 +626,7 @@ export const MarketplaceView: React.FC = () => {
                     <span>
                       Rs {Math.max(
                         0,
-                        (applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price) -
-                          (surveyDiscountApplied
-                            ? Math.round(
-                                (applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price) *
-                                  CHECKOUT_SURVEY_DISCOUNT_PCT
-                              )
-                            : 0)
+                        applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price
                       ).toLocaleString('en-IN')}
                     </span>
                   </div>
@@ -709,13 +642,7 @@ export const MarketplaceView: React.FC = () => {
                     {t('confirm_place_order_param', {
                       amount: Math.max(
                         0,
-                        (applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price) -
-                          (surveyDiscountApplied
-                            ? Math.round(
-                                (applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price) *
-                                  CHECKOUT_SURVEY_DISCOUNT_PCT
-                              )
-                            : 0)
+                        applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price
                       ).toLocaleString('en-IN'),
                     })}
                   </span>
@@ -723,28 +650,6 @@ export const MarketplaceView: React.FC = () => {
                 </button>
               </div>
             )}
-          </div>
-        </div>
-      )}
-
-      {/* Checkout Survey Modal */}
-      {isSurveyModalOpen && (
-        <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-sm">
-            <SurveyForm
-              customerId={customer.id}
-              city={customer.city}
-              zoneId={customer.zoneId}
-              source="checkout"
-              onComplete={() => {
-                setSurveyDiscountApplied(true);
-                setIsSurveyModalOpen(false);
-              }}
-              onCancel={() => {
-                setShowSurveyOptIn(false);
-                setIsSurveyModalOpen(false);
-              }}
-            />
           </div>
         </div>
       )}

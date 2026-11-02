@@ -135,6 +135,7 @@ export function createSeedData() {
     hasCreditHistory: false,
     monthlyIncomeHint: 30000,
     consents: arjunConsents,
+    lastSurveyDiscountAt: '2026-01-15T10:00:00Z', // 2 months ago: not eligible
     appliances: [
       {
         id: 'app-arjun-fridge',
@@ -195,6 +196,7 @@ export function createSeedData() {
         { id: `c-${custId}-bank`, customerId: custId, purpose: 'BANK_SHARING', granted: false, noticeVersion: 'v1', at: '2026-02-15T09:00:00Z' },
       ],
       appliances: ownedApps,
+      lastSurveyDiscountAt: i === 3 ? '2025-08-15T10:00:00Z' : undefined, // 7 months ago: eligible
     });
   }
 
@@ -878,7 +880,7 @@ export function createSeedData() {
         },
       ],
       timestamp: '2026-03-10T14:30:00Z',
-      source: 'checkout',
+      source: 'exit',
     },
     {
       id: 'srvy-seed-2',
@@ -894,7 +896,7 @@ export function createSeedData() {
         },
       ],
       timestamp: '2026-03-11T16:00:00Z',
-      source: 'checkout',
+      source: 'exit',
     },
     {
       id: 'srvy-seed-3',
@@ -926,7 +928,7 @@ export function createSeedData() {
         },
       ],
       timestamp: '2026-03-12T11:45:00Z',
-      source: 'checkout',
+      source: 'exit',
     },
     {
       id: 'srvy-seed-5',
@@ -942,7 +944,7 @@ export function createSeedData() {
         },
       ],
       timestamp: '2026-03-13T09:20:00Z',
-      source: 'checkout',
+      source: 'exit',
     },
   ];
 

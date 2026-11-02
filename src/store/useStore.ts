@@ -31,7 +31,7 @@ import { evaluateNudgeRules } from '../domain/nudges';
 import { INCENTIVE_PCT, SURVEY_DISCOUNT_PCT, SIMULATED_TODAY, SERVICE_FEE } from '../config/assumptions';
 import { playNotificationSound } from '../utils/sound';
 import { assertAllAssignmentsOpenable } from '../domain/validation';
-import { evaluateSurveyAnswerForLead } from '../domain/leads';
+import { evaluateSurveyAnswerForLead, isSurveyDiscountEligible } from '../domain/leads';
 
 export interface PushNotificationPayload {
   id: string;
@@ -122,13 +122,14 @@ export interface AppStoreState {
   ) => void;
   selectCustomerChoice: (requestId: string, choice: 'REPAIR' | 'REPLACE' | 'DEFER') => void;
   completeServiceJob: (requestId: string) => void;
-  submitExitSurvey: (requestId: string, items: { type: ApplianceType; ageBand: string; issue: string }[]) => void;
+  submitExitSurvey: (requestId: string, items: any[]) => void;
+  declineExitSurvey: (requestId: string) => void;
   submitSurveyResponse: (data: {
     customerId: string;
     city: City;
     zoneId: string;
     answers: SurveyAnswerItem[];
-    source: 'checkout' | 'exit';
+    source: 'exit';
   }) => void;
 
   // Consent & privacy
@@ -547,15 +548,23 @@ export const useStore = create<AppStoreState>()(
         const req = get().serviceRequests.find((r) => r.id === requestId);
         if (!req) return;
 
-        const discountAmount = Math.round(req.serviceFee * SURVEY_DISCOUNT_PCT);
+        const customer = get().customers.find((c) => c.id === req.customerId);
+        const isEligible = isSurveyDiscountEligible(customer, get().simulatedDate);
+        const alreadyDiscounted = Boolean(req.discountApplied && req.discountApplied > 0);
+        const discountAmount = (!alreadyDiscounted && isEligible) ? Math.round(req.serviceFee * SURVEY_DISCOUNT_PCT) : 0;
         const newFee = Math.max(0, req.serviceFee - discountAmount);
 
         set((state) => ({
+          customers: state.customers.map((c) =>
+            c.id === req.customerId && isEligible && discountAmount > 0
+              ? { ...c, lastSurveyDiscountAt: get().simulatedDate }
+              : c
+          ),
           serviceRequests: state.serviceRequests.map((r) =>
             r.id === requestId
               ? {
                   ...r,
-                  discountApplied: discountAmount,
+                  discountApplied: alreadyDiscounted ? r.discountApplied : discountAmount,
                   serviceFee: newFee,
                   exitSurvey: {
                     id: `survey-${Date.now()}`,
@@ -573,6 +582,14 @@ export const useStore = create<AppStoreState>()(
           discountAmount,
           itemCount: items.length,
         });
+      },
+
+      declineExitSurvey: (requestId) => {
+        set((state) => ({
+          serviceRequests: state.serviceRequests.map((r) =>
+            r.id === requestId ? { ...r, surveyDeclined: true } : r
+          ),
+        }));
       },
 
       submitSurveyResponse: (data) => {

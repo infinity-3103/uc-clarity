@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { useT, applianceLabel } from '../i18n';
 import { ApplianceType, City, SurveyAgeBand, SurveyAnswerItem, SurveyIssue, SurveyReplaceInterest } from '../domain/types';
-import { CHECKOUT_SURVEY_DISCOUNT_PCT } from '../config/assumptions';
+import { SURVEY_DISCOUNT_PCT } from '../config/assumptions';
 import { Wind, Snowflake, WashingMachine, Flame, Droplets, CheckCircle2, ChevronRight, Tag } from 'lucide-react';
 
 interface SurveyFormProps {
   customerId: string;
   city: City;
   zoneId: string;
-  source: 'checkout' | 'exit';
-  onComplete: (discountPct: number) => void;
+  source?: 'exit';
+  onComplete: (answers: SurveyAnswerItem[], discountPct: number) => void;
   onCancel?: () => void;
   title?: string;
   description?: string;
@@ -149,10 +149,10 @@ export const SurveyForm: React.FC<SurveyFormProps> = ({
       city,
       zoneId,
       answers: formattedAnswers,
-      source,
+      source: 'exit',
     });
 
-    onComplete(CHECKOUT_SURVEY_DISCOUNT_PCT);
+    onComplete(formattedAnswers, SURVEY_DISCOUNT_PCT);
   };
 
   const currentConfig = answersByAppliance[activeAppliance];

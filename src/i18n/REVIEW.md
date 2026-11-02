@@ -2,7 +2,7 @@
 
 This document provides the complete dictionary across all 4 supported languages: English (`en`), Hindi (`hi`), Marathi (`mr`), and Kannada (`kn`).
 
-Total verified keys: **737**
+Total verified keys: **736**
 
 | Key | Context | en | hi | mr | kn |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -276,15 +276,15 @@ Total verified keys: **737**
 | `instant_full_checkout` | Shared | Instant Full Payment Checkout | त्वरित पूर्ण भुगतान चेकआउट | त्वरित पूर्ण पेमेंट चेकआउट | ತಕ್ಷಣದ ಪೂರ್ಣ ಪಾವತಿ ಚೆಕ್‌ಔಟ್ |
 | `interest_charged_note` | Survey | Interest charged to you: Rs 0. Total you pay: Rs {total} | आपसे ब्याज: Rs 0. कुल भुगतान: Rs {total} | तुमच्याकडून व्याज: Rs 0. एकूण देय: Rs {total} | ನಿಮಗೆ ಬಡ್ಡಿ: Rs 0. ಒಟ್ಟು ಪಾವತಿ: Rs {total} |
 | `interest_covered_note` | Survey | The interest cost is covered by Urban Company and the brand. | ब्याज की लागत अर्बन कंपनी और ब्रांड द्वारा वहन की जाती है। | व्याजाचा खर्च अर्बन कंपनी आणि ब्रँड उचलतात. | ಬಡ್ಡಿಯ ವೆಚ್ಚವನ್ನು ಅರ್ಬನ್ ಕಂಪನಿ ಮತ್ತು ಬ್ರ್ಯಾಂಡ್ ಭರಿಸುತ್ತದೆ. |
-| `interest_maybe` | Survey | Maybe later | शायद बाद में | कदाचित नंतर | ಬಹುಶಃ ನಂತರ |
-| `interest_no` | Survey | No, not now | नहीं, अभी नहीं | नाही, आता नको | ಇಲ್ಲ, ಈಗ ಬೇಡ |
+| `interest_maybe` | Survey | Maybe | शायद | कदाचित | ಬಹುಶಃ |
+| `interest_no` | Survey | No | नहीं | नाही | ಇಲ್ಲ |
 | `interest_on_emi` | Survey | Interest on EMI | ईएमआई पर ब्याज | ईएमआयवर व्याज | ಇಎಂಐ ಮೇಲಿನ ಬಡ್ಡಿ |
-| `interest_yes` | Survey | Yes, looking to upgrade | हाँ, अपग्रेड करना चाहते हैं | होय, अपग्रेड करायचे आहे | ಹೌದು, ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಲು ಬಯಸುತ್ತೇವೆ |
+| `interest_yes` | Survey | Yes | हाँ | होय | ಹೌದು |
 | `issue_frequent_repair` | Survey | Needs frequent repair | बार-बार मरम्मत की जरूरत | वारंवार दुरुस्ती लागते | ಪದೇ ಪದೇ ದುರಸ್ತಿ ಅಗತ್ಯವಿದೆ |
 | `issue_high_bill` | Survey | High power bill | अधिक बिजली बिल | जास्त वीज बिल | ಹೆಚ್ಚಿನ ವಿದ್ಯುತ್ ಬಿಲ್ |
-| `issue_noisy` | Survey | Unusual noise / vibration | असामान्य आवाज / कंपन | विचित्र आवाज किंवा कंपन | ಅಸಾಮಾನ್ಯ ಶಬ್ದ ಅಥವಾ ಕಂಪನ |
-| `issue_none` | Survey | No issues | कोई समस्या नहीं | काहीही अडचण नाही | ಯಾವುದೇ ಸಮಸ್ಯೆಗಳಿಲ್ಲ |
-| `issue_not_working` | Survey | Not working properly | ठीक से काम नहीं कर रहा | व्यवस्थित चालत नाही | ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿಲ್ಲ |
+| `issue_noisy` | Survey | Noisy | शोर करता है | आवाज करतो | ಶಬ್ದ ಮಾಡುತ್ತದೆ |
+| `issue_none` | Survey | Working fine | ठीक काम कर रहा है | व्यवस्थित काम करत आहे | ಉತ್ತಮವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿದೆ |
+| `issue_not_working` | Survey | Not working properly | ठीक से काम नहीं कर रहा | व्यवस्थित काम करत नाही | ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿಲ್ಲ |
 | `job_assigned_badge` | Partner | Job Assigned | कार्य सौंपा गया | काम सोपवले | ಕೆಲಸ ನಿಯೋಜಿಸಲಾಗಿದೆ |
 | `job_progress_label` | Partner | Job Progress: | कार्य प्रगति: | कामाची प्रगती: | ಕೆಲಸದ ಪ್ರಗತಿ: |
 | `job_status_title` | Partner | Job Status | कार्य स्थिति | कामाची स्थिती | ಕಾರ್ಯದ ಸ್ಥಿತಿ |
@@ -551,9 +551,9 @@ Total verified keys: **737**
 | `prototype_watermark` | Shared | Prototype: simulated data | प्रोटोटाइप: सिम्युलेटेड डेटा | प्रोटोटाइप: सिम्युलेटेड डेटा | ಮಾದರಿ: ಸಿಮ್ಯುಲೇಟೆಡ್ ಡೇಟಾ |
 | `pts_param` | Shared | {pts} pts | {pts} अंक | {pts} गुण | {pts} ಅಂಕಗಳು |
 | `q_appliance_age` | Shared | Appliance Age | उपकरण की आयु | उपकरणाचे वय | ಉಪಕರಣದ ವಯಸ್ಸು |
-| `q_appliance_issues` | Shared | Any performance issues or defects? | क्या कोई खराबी या समस्या है? | काही समस्या किंवा बिघाड आहे का? | ಏನಾದರೂ ದೋಷಗಳು ಅಥವಾ ಸಮಸ್ಯೆಗಳಿವೆಯೇ? |
-| `q_appliances_owned` | Shared | Which appliances do you have at home? | आपके घर में कौन से उपकरण हैं? | तुमच्या घरी कोणती उपकरणे आहेत? | ನಿಮ್ಮ ಮನೆಯಲ್ಲಿ ಯಾವ ಉಪಕರಣಗಳಿವೆ? |
-| `q_replace_interest` | Shared | Interested in replacing or upgrading within 6 months? | क्या आप अगले 6 महीनों में अपग्रेड या बदलने में रुचि रखते हैं? | पुढील 6 महिन्यांत बदलण्यात किंवा अपग्रेड करण्यात रस आहे का? | ಮುಂದಿನ 6 ತಿಂಗಳಲ್ಲಿ ಬದಲಾಯಿಸಲು ಅಥವಾ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಲು ಆಸಕ್ತಿ ಇದೆಯೇ? |
+| `q_appliance_issues` | Shared | Current condition | वर्तमान स्थिति | सध्याची स्थिती | ಪ್ರಸ್ತುತ ಸ್ಥಿತಿ |
+| `q_appliances_owned` | Shared | Which other appliances do you have at home? | आपके घर में अन्य कौन से उपकरण हैं? | तुमच्या घरी इतर कोणती उपकरणे आहेत? | ನಿಮ್ಮ ಮನೆಯಲ್ಲಿ ಇತರ ಯಾವ ಉಪಕರಣಗಳಿವೆ? |
+| `q_replace_interest` | Shared | Interested in replacing or upgrading within 6 months? | क्या आप 6 महीने के भीतर बदलने या अपग्रेड करने में रुचि रखते हैं? | तुम्ही 6 महिन्यांत बदलण्यात किंवा अपग्रेड करण्यात उत्सुक आहात का? | ನೀವು 6 ತಿಂಗಳಲ್ಲಿ ಬದಲಾಯಿಸಲು ಅಥವಾ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಲು ಆಸಕ್ತಿ ಹೊಂದಿದ್ದೀರಾ? |
 | `q_step_counter` | Shared | Question {n} of {total} | प्रश्न {n} / {total} | प्रश्न {n} पैकी {total} | ಪ್ರಶ್ನೆ {n} / {total} |
 | `question_progress_param` | Shared | Question {n} of {total} | प्रश्न {n} / {total} | प्रश्न {n} / {total} | ಪ್ರಶ್ನೆ {n} / {total} |
 | `quick_actions` | Shared | Quick Actions | त्वरित कार्य | जलद कृती | ತ್ವರಿತ ಕ್ರಿಯೆಗಳು |
@@ -646,12 +646,11 @@ Total verified keys: **737**
 | `subvention_note` | Shared | Subvention cost is sponsored jointly by Urban Company and the brand. | सबवेंशन लागत अर्बन कंपनी और ब्रांड द्वारा संयुक्त रूप से प्रायोजित है। | सबव्हेन्शनचा खर्च अर्बन कंपनी आणि ब्रँड संयुक्तपणे उचलतात. | ಬಡ್ಡಿ ವೆಚ್ಚವನ್ನು ಅರ್ಬನ್ ಕಂಪನಿ ಮತ್ತು ಬ್ರ್ಯಾಂಡ್ ಜಂಟಿಯಾಗಿ ಭರಿಸುತ್ತವೆ. |
 | `survey_configure_label` | Survey | Configure: | कॉन्फ़िगर करें: | कॉन्फिगर करा: | ಕಾನ್ಫಿಗರ್ ಮಾಡಿ: |
 | `survey_discount_applied` | Survey | 10% Survey Discount Applied | 10% सर्वे छूट लागू की गई | 10% सर्व्हे सूट लागू केली | 10% ಸಮೀಕ್ಷಾ ರಿಯಾಯಿತಿ ಅನ್ವಯಿಸಲಾಗಿದೆ |
-| `survey_discount_applied_badge` | Survey | 10% Survey Discount Applied! | 10% सर्वे छूट लागू! | १०% सर्व्हे सवलत लागू केली! | 10% ಸಮೀಕ್ಷೆ ರಿಯಾಯಿತಿ ಅನ್ವಯಿಸಲಾಗಿದೆ! |
 | `survey_discount_applied_label` | Survey | 10% Survey Discount: | 10% सर्वेक्षण छूट: | 10% सर्वेक्षण सूट: | 10% ಸಮೀಕ್ಷೆ ರಿಯಾಯಿತಿ: |
 | `survey_discount_applied_toast` | Survey | 10% Survey Discount Applied Successfully! | 10% सर्वे छूट सफलतापूर्वक लागू की गई! | 10% सर्व्हे सूट यशस्वीरित्या लागू झाली! | 10% ಸಮೀಕ್ಷಾ ರಿಯಾಯಿತಿ ಯಶಸ್ವಿಯಾಗಿ ಅನ್ವಯಿಸಲಾಗಿದೆ! |
-| `survey_discount_label` | Survey | 10% Survey Discount: | 10% सर्वे छूट: | १०% सर्व्हे सवलत: | 10% ಸಮೀಕ್ಷೆ ರಿಯಾಯಿತಿ: |
-| `survey_discount_opt_desc` | Survey | Takes 1 minute. Answer 4 quick questions about appliances at home for instant 10% off. | 1 मिनट लगता है। 10% तत्काल छूट के लिए 4 त्वरित प्रश्नों के उत्तर दें। | १ मिनिट लागेल. त्वरित १०% सवलतीसाठी घरातील उपकरणांबद्दल ४ जलद प्रश्नांची उत्तरे द्या. | 1 ನಿಮಿಷ ಸಾಕು. 10% ತಕ್ಷಣದ ರಿಯಾಯಿತಿಗಾಗಿ 4 ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ. |
-| `survey_discount_opt_title` | Survey | Fill a short survey for a 10% discount | 10% छूट के लिए एक छोटा सर्वे भरें | १०% सवलतीसाठी एक छोटा सर्व्हे भरा | 10% ರಿಯಾಯಿತಿಗಾಗಿ ಸಣ್ಣ ಸಮೀಕ್ಷೆ ಭರ್ತಿ ಮಾಡಿ |
+| `survey_discount_cooldown_notice` | Survey | Survey discount available again on {date} | सर्वेक्षण छूट {date} को पुनः उपलब्ध होगी | सर्वेक्षण सूट {date} रोजी पुन्हा उपलब्ध होईल | ಸಮೀಕ್ಷೆ ರಿಯಾಯಿತಿ {date} ರಂದು ಮತ್ತೆ ಲಭ್ಯವಿರುತ್ತದೆ |
+| `survey_offer_card_desc` | Survey | Answer 4 quick questions about appliances at home for instant 10% off today's service fee. | आज के सेवा शुल्क पर तुरंत 10% छूट पाने के लिए घर के उपकरणों के बारे में 4 त्वरित प्रश्नों के उत्तर दें। | आजच्या सेवा शुल्कावर त्वरित 10% सूट मिळवण्यासाठी घरातील उपकरणांबद्दल 4 जलद प्रश्नांची उत्तरे द्या. | ಇಂದಿನ ಸೇವಾ ಶುಲ್ಕದಲ್ಲಿ ತಕ್ಷಣದ 10% ರಿಯಾಯಿತಿಗಾಗಿ ಮನೆಯಲ್ಲಿರುವ ಉಪಕರಣಗಳ ಕುರಿತು 4 ತ್ವರಿತ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ. |
+| `survey_offer_card_title` | Survey | Fill a short survey for 10% discount | 10% छूट के लिए एक छोटा सर्वे भरें | 10% सुटीसाठी एक लहान सर्व्हे भरा | 10% ರಿಯಾಯಿತಿಗಾಗಿ ಸಣ್ಣ ಸಮೀಕ್ಷೆಯನ್ನು ಭರ್ತಿ ಮಾಡಿ |
 | `survey_offer_desc` | Survey | Takes 1 minute. Get 10% instant discount applied to your payment. | केवल 1 मिनट लगेगा। अपने भुगतान पर 10% की त्वरित छूट पाएं। | फक्त 1 मिनिट लागेल. तुमच्या पेमेंटवर 10% त्वरित सूट मिळवा. | ಕೇವಲ 1 ನಿಮಿಷ ತೆಗೆದುಕೊಳ್ಳುತ್ತದೆ. ನಿಮ್ಮ ಪಾವತಿಯ ಮೇಲೆ 10% ತ್ವರಿತ ರಿಯಾಯಿತಿ ಪಡೆಯಿರಿ. |
 | `survey_offer_title` | Survey | Fill a short survey for a discount | छूट के लिए एक छोटा सर्वे भरें | सूट मिळवण्यासाठी एक छोटा सर्व्हे भरा | ರಿಯಾಯಿತಿಗಾಗಿ ಒಂದು ಸಣ್ಣ ಸಮೀಕ್ಷೆಯನ್ನು ಭರ್ತಿ ಮಾಡಿ |
 | `survey_save_param` | Survey | Save {pct}% on today's service (Rs {amount}) | आज की सेवा पर {pct}% बचाएं (Rs {amount}) | आजच्या सेवेवर {pct}% वाचवा (Rs {amount}) | ಇಂದಿನ ಸೇವೆಯಲ್ಲಿ {pct}% ಉಳಿಸಿ (Rs {amount}) |

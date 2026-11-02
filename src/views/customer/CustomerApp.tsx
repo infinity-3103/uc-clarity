@@ -9,7 +9,8 @@ import { KfsModal } from '../../components/KfsModal';
 import { AAConsentModal } from '../../components/AAConsentModal';
 import { ApplianceArt } from '../../components/ApplianceArt';
 import { SurveyForm } from '../../components/SurveyForm';
-import { CHECKOUT_SURVEY_DISCOUNT_PCT } from '../../config/assumptions';
+import { SURVEY_DISCOUNT_PCT } from '../../config/assumptions';
+import { isSurveyDiscountEligible, getSurveyDiscountAvailableDate, formatSurveyDiscountDate } from '../../domain/leads';
 import { useT } from '../../i18n';
 import { cityLabel, zoneLabel, applianceLabel, faultLabel, statusLabel } from '../../i18n/formatters';
 
@@ -49,6 +50,7 @@ import {
   MapPin,
   Search,
   Sparkles,
+  Tag,
 } from 'lucide-react';
 
 export const CustomerApp: React.FC = () => {
@@ -65,6 +67,8 @@ export const CustomerApp: React.FC = () => {
   const exitLoanCoolingOff = useStore((state) => state.exitLoanCoolingOff);
   const raiseGrievance = useStore((state) => state.raiseGrievance);
   const submitExitSurvey = useStore((state) => state.submitExitSurvey);
+  const declineExitSurvey = useStore((state) => state.declineExitSurvey);
+  const simulatedDate = useStore((state) => state.simulatedDate);
   const deleteCustomerData = useStore((state) => state.deleteCustomerData);
   const triggerPushNotification = useStore((state) => state.triggerPushNotification);
   const placeDirectOrder = useStore((state) => state.placeDirectOrder);
@@ -130,11 +134,6 @@ export const CustomerApp: React.FC = () => {
     category: ApplianceType;
   } | null>(null);
 
-  // Checkout Survey Discount State
-  const [isSurveyModalOpen, setIsSurveyModalOpen] = useState<boolean>(false);
-  const [surveyDiscountApplied, setSurveyDiscountApplied] = useState<boolean>(false);
-  const [optInSurvey, setOptInSurvey] = useState<boolean>(false);
-
   const handleSelectFullPayment = (tradeInCredit: number) => {
     if (!activeReq) return;
     const price = NEW_PRICE[activeReq.applianceType] || 48500;
@@ -151,14 +150,7 @@ export const CustomerApp: React.FC = () => {
   const handleConfirmFullPayment = () => {
     if (!fullPaymentProduct) return;
 
-    if (optInSurvey && !surveyDiscountApplied) {
-      setIsSurveyModalOpen(true);
-      return;
-    }
-
-    const baseAmount = Math.max(0, fullPaymentProduct.price - fullPaymentTradeIn);
-    const surveyDiscount = surveyDiscountApplied ? Math.round(baseAmount * CHECKOUT_SURVEY_DISCOUNT_PCT) : 0;
-    const netAmountPaid = Math.max(0, baseAmount - surveyDiscount);
+    const netAmountPaid = Math.max(0, fullPaymentProduct.price - fullPaymentTradeIn);
 
     placeDirectOrder({
       customerId: customer.id,
@@ -167,7 +159,7 @@ export const CustomerApp: React.FC = () => {
       brand: fullPaymentProduct.brand,
       category: fullPaymentProduct.category,
       price: fullPaymentProduct.price,
-      tradeInCredit: fullPaymentTradeIn + surveyDiscount,
+      tradeInCredit: fullPaymentTradeIn,
       paymentMethod: fullPaymentMethod,
       deliverySlot: 'Tomorrow, 10:00 AM - 1:00 PM',
     });
@@ -175,7 +167,6 @@ export const CustomerApp: React.FC = () => {
       selectCustomerChoice(activeReq.id, 'REPLACE');
     }
     setIsFullPaymentOpen(false);
-    setCurrentTab('exitsurvey');
   };
 
   // Exit Survey State
@@ -885,6 +876,67 @@ export const CustomerApp: React.FC = () => {
                       </button>
                     )}
                   </div>
+
+                  {/* Service Fee & Post-Booking Survey Discount Offer (Issue 1) */}
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-600 font-medium">{t('inspection_service_fee_label')}</span>
+                      <div className="text-right">
+                        <span className="font-bold text-slate-900">
+                          Rs {activeReq.serviceFee.toLocaleString('en-IN')}
+                        </span>
+                        {activeReq.discountApplied && activeReq.discountApplied > 0 ? (
+                          <span className="block text-[11px] text-emerald-600 font-semibold">
+                            -{activeReq.discountApplied} ({t('survey_discount_applied')})
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    {!activeReq.exitSurvey && !activeReq.surveyDeclined && (
+                      <>
+                        {isSurveyDiscountEligible(customer, simulatedDate) ? (
+                          <div className="mt-2 p-2.5 bg-purple-50 rounded-lg border border-purple-200 space-y-2">
+                            <div className="flex items-start gap-2">
+                              <Tag className="w-4 h-4 text-purple-600 shrink-0 mt-0.5" />
+                              <div>
+                                <span className="font-bold text-purple-950 block">
+                                  {t('survey_offer_card_title')}
+                                </span>
+                                <span className="text-[11px] text-purple-800 leading-tight block">
+                                  {t('survey_offer_card_desc')}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2 pt-1">
+                              <button
+                                type="button"
+                                onClick={() => setCurrentTab('exitsurvey')}
+                                className="flex-1 py-1.5 px-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-bold shadow-xs cursor-pointer text-center"
+                              >
+                                {t('take_survey_btn')}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => declineExitSurvey(activeReq.id)}
+                                className="py-1.5 px-2.5 text-slate-500 hover:text-slate-800 text-xs font-medium rounded-lg border border-slate-200 bg-white cursor-pointer"
+                              >
+                                {t('skip_survey_btn')}
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          customer.lastSurveyDiscountAt && (
+                            <div className="mt-2 text-[11px] text-slate-500 italic bg-white p-2 rounded border border-slate-200">
+                              {t('survey_discount_cooldown_notice', {
+                                date: formatSurveyDiscountDate(getSurveyDiscountAvailableDate(customer)!)
+                              })}
+                            </div>
+                          )
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 {/* When inspection is submitted: Comparison Screen appears (Section 8) */}
@@ -1248,15 +1300,18 @@ export const CustomerApp: React.FC = () => {
               source="exit"
               title={t('exit_survey_title')}
               description={t('exit_survey_desc')}
-              onComplete={(discountPct) => {
+              onComplete={(answers) => {
                 if (activeReq) {
-                  submitExitSurvey(activeReq.id, [
-                    { type: 'AC', ageBand: '3_TO_5' as any, issue: 'NONE' as any },
-                  ]);
+                  submitExitSurvey(activeReq.id, answers);
                 }
                 setCurrentTab('tracker');
               }}
-              onCancel={() => setCurrentTab('tracker')}
+              onCancel={() => {
+                if (activeReq) {
+                  declineExitSurvey(activeReq.id);
+                }
+                setCurrentTab('tracker');
+              }}
             />
           </div>
         )}
@@ -1324,61 +1379,15 @@ export const CustomerApp: React.FC = () => {
                   <span>-Rs {fullPaymentTradeIn.toLocaleString('en-IN')}</span>
                 </div>
               )}
-              {surveyDiscountApplied && (
-                <div className="flex justify-between text-emerald-700 font-bold">
-                  <span>{t('survey_discount_applied_label')}</span>
-                  <span>
-                    -Rs {Math.round(
-                      Math.max(0, fullPaymentProduct.price - fullPaymentTradeIn) * CHECKOUT_SURVEY_DISCOUNT_PCT
-                    ).toLocaleString('en-IN')}
-                  </span>
-                </div>
-              )}
               <div className="flex justify-between font-bold text-slate-900 border-t border-slate-200 pt-1 text-sm">
                 <span>{t('total_amount_label')}</span>
                 <span>
                   Rs {Math.max(
                     0,
-                    Math.max(0, fullPaymentProduct.price - fullPaymentTradeIn) -
-                      (surveyDiscountApplied
-                        ? Math.round(Math.max(0, fullPaymentProduct.price - fullPaymentTradeIn) * CHECKOUT_SURVEY_DISCOUNT_PCT)
-                        : 0)
+                    fullPaymentProduct.price - fullPaymentTradeIn
                   ).toLocaleString('en-IN')}
                 </span>
               </div>
-            </div>
-
-            {/* Survey Discount Opt-In */}
-            <div className="p-3 bg-purple-50 rounded-xl border border-purple-200 space-y-2">
-              <label className="flex items-start gap-2.5 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={optInSurvey}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    setOptInSurvey(checked);
-                    if (checked && !surveyDiscountApplied) {
-                      setIsSurveyModalOpen(true);
-                    }
-                  }}
-                  className="mt-0.5 rounded text-purple-600 focus:ring-purple-500 cursor-pointer"
-                />
-                <div>
-                  <span className="font-bold text-purple-950 block">
-                    {t('survey_offer_title')}
-                  </span>
-                  <span className="text-[11px] text-purple-800 leading-tight block">
-                    {t('survey_offer_desc')}
-                  </span>
-                </div>
-              </label>
-
-              {surveyDiscountApplied && (
-                <div className="flex items-center gap-1.5 text-xs text-emerald-700 font-bold bg-white px-2.5 py-1 rounded-lg border border-emerald-200">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{t('survey_discount_applied')}</span>
-                </div>
-              )}
             </div>
 
             <div className="space-y-1.5">
@@ -1418,35 +1427,10 @@ export const CustomerApp: React.FC = () => {
               {t('pay_rs_confirm_btn', {
                 amount: Math.max(
                   0,
-                  Math.max(0, fullPaymentProduct.price - fullPaymentTradeIn) -
-                    (surveyDiscountApplied
-                      ? Math.round(Math.max(0, fullPaymentProduct.price - fullPaymentTradeIn) * CHECKOUT_SURVEY_DISCOUNT_PCT)
-                      : 0)
+                  fullPaymentProduct.price - fullPaymentTradeIn
                 ).toLocaleString('en-IN'),
               })}
             </button>
-          </div>
-        </div>
-      )}
-
-      {/* Checkout Survey Modal */}
-      {isSurveyModalOpen && (
-        <div className="fixed inset-0 z-60 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-sm">
-            <SurveyForm
-              customerId={customer.id}
-              city={customer.city}
-              zoneId={customer.zoneId}
-              source="checkout"
-              onComplete={() => {
-                setSurveyDiscountApplied(true);
-                setIsSurveyModalOpen(false);
-              }}
-              onCancel={() => {
-                setOptInSurvey(false);
-                setIsSurveyModalOpen(false);
-              }}
-            />
           </div>
         </div>
       )}

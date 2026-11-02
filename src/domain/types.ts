@@ -36,6 +36,7 @@ export interface Customer {
   monthlyIncomeHint?: number;
   consents: ConsentRecord[];
   appliances: OwnedAppliance[];
+  lastSurveyDiscountAt?: string;
   deleted?: boolean;
 }
 
@@ -111,7 +112,7 @@ export interface SurveyResponse {
   zoneId: string;
   answers: SurveyAnswerItem[];
   timestamp: string;
-  source: 'checkout' | 'exit';
+  source: 'exit';
 }
 
 export interface SalesLead {
@@ -155,6 +156,7 @@ export interface ServiceRequest {
   scheduledSlot?: string;
   exitSurvey?: ExitSurvey;
   discountApplied?: number;
+  surveyDeclined?: boolean;
   deliveryStatus?: 'PENDING' | 'DELIVERED';
 }
 

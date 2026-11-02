@@ -24,7 +24,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
     customerFields: [
       {
         key: 'brand',
-        label: 'lbl_brand',
+        label: 'lbl_ac_brand',
         type: 'select',
         options: ['Voltas', 'Daikin', 'LG', 'Hitachi', 'Carrier', 'Blue Star', 'Other'],
         whyWeAsk: 'Helps us match certified technicians with appropriate spare parts.',
@@ -32,7 +32,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'ageYears',
-        label: 'lbl_appliance_age',
+        label: 'lbl_ac_age',
         type: 'number',
         placeholder: 'e.g. 5',
         whyWeAsk: 'Equipment lifespan informs whether repair or replacement is economical.',
@@ -79,7 +79,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'coolingIssue',
-        label: 'lbl_cooling_performance',
+        label: 'lbl_ac_condition',
         type: 'select',
         options: ['normal', 'weak cooling', 'not cooling'],
         whyWeAsk: 'Distinguishes between airflow blockage and thermodynamic system failures.',
@@ -186,7 +186,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
     customerFields: [
       {
         key: 'brand',
-        label: 'lbl_brand',
+        label: 'lbl_fridge_brand',
         type: 'select',
         options: ['LG', 'Samsung', 'Whirlpool', 'Godrej', 'Haier', 'Other'],
         whyWeAsk: 'Assists with matching brand-certified spare parts.',
@@ -194,7 +194,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'ageYears',
-        label: 'lbl_appliance_age',
+        label: 'lbl_fridge_age',
         type: 'number',
         whyWeAsk: 'Determines whether the refrigeration system has exceeded economic life.',
         defaultValue: 6,
@@ -209,7 +209,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'symptom',
-        label: 'lbl_observed_symptom',
+        label: 'lbl_fridge_condition',
         type: 'select',
         options: ['not cooling', 'noise', 'ice build-up', 'leakage', 'other'],
         whyWeAsk: 'Pinpoints whether the fault lies in air distribution or the cooling circuit.',
@@ -279,7 +279,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
     customerFields: [
       {
         key: 'brand',
-        label: 'lbl_brand',
+        label: 'lbl_washer_brand',
         type: 'select',
         options: ['IFB', 'LG', 'Samsung', 'Bosch', 'Whirlpool', 'Other'],
         whyWeAsk: 'Guides the technician to bring correct drive belts and control modules.',
@@ -287,7 +287,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'ageYears',
-        label: 'lbl_appliance_age',
+        label: 'lbl_washer_age',
         type: 'number',
         whyWeAsk: 'Helps evaluate mechanical wear relative to typical 10-year design life.',
         defaultValue: 6,
@@ -302,7 +302,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'symptom',
-        label: 'lbl_observed_symptom',
+        label: 'lbl_washer_condition',
         type: 'select',
         options: ['not spinning', 'not draining', 'vibration', 'noise', 'error code', 'other'],
         whyWeAsk: 'Categorizes issue into drainage, drive motor, or balancing suspension.',
@@ -374,7 +374,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
     customerFields: [
       {
         key: 'brand',
-        label: 'lbl_brand',
+        label: 'lbl_geyser_brand',
         type: 'select',
         options: ['Bajaj', 'AO Smith', 'Racold', 'Havells', 'Crompton', 'Other'],
         whyWeAsk: 'Ensures correct heating element thread and flange compatibility.',
@@ -382,7 +382,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'ageYears',
-        label: 'lbl_appliance_age',
+        label: 'lbl_geyser_age',
         type: 'number',
         whyWeAsk: 'Water heater tanks face internal pressure and corrosion with age.',
         defaultValue: 5,
@@ -405,7 +405,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'symptom',
-        label: 'lbl_symptom',
+        label: 'lbl_geyser_condition',
         type: 'select',
         options: ['not heating', 'leakage', 'tripping', 'noise'],
         whyWeAsk: 'Electrical tripping indicates safety earth leakage; leakage indicates tank stress.',
@@ -475,7 +475,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
     customerFields: [
       {
         key: 'brand',
-        label: 'lbl_brand',
+        label: 'lbl_purifier_brand',
         type: 'select',
         options: ['Kent', 'Aquaguard', 'Livpure', 'Pureit', 'Native', 'Other'],
         whyWeAsk: 'Filter cartridges and booster pump fittings vary by brand standard.',
@@ -483,7 +483,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'ageYears',
-        label: 'lbl_appliance_age',
+        label: 'lbl_purifier_age',
         type: 'number',
         whyWeAsk: 'Membrane housings and pump heads experience fatigue over multi-year cycles.',
         defaultValue: 4,
@@ -506,7 +506,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       },
       {
         key: 'symptom',
-        label: 'lbl_observed_symptom',
+        label: 'lbl_purifier_condition',
         type: 'select',
         options: ['low flow', 'bad taste', 'leakage', 'not starting'],
         whyWeAsk: 'Separates filter fouling from electrical power supply issues.',

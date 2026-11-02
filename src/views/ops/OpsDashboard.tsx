@@ -6,6 +6,16 @@ import { calculateUnitEconomics, formatIndianCurrency, ECONOMICS_DISCLAIMER } fr
 import { EXIT_SURVEY_TARGET_CONSENT, NUDGE_MAX_PER_WEEK } from '../../config/assumptions';
 import { CityHeatMap } from '../../components/CityHeatMap';
 import {
+  useT,
+  cityLabel,
+  zoneLabel,
+  applianceLabel,
+  statusLabel,
+  leanLabel,
+  formatJobReference,
+  issueLabel,
+} from '../../i18n';
+import {
   BarChart3,
   MapPin,
   Users,
@@ -37,6 +47,7 @@ import {
 } from 'recharts';
 
 export const OpsDashboard: React.FC = () => {
+  const { t } = useT();
   const serviceRequests = useStore((state) => state.serviceRequests);
   const professionals = useStore((state) => state.professionals);
   const customers = useStore((state) => state.customers);
@@ -371,7 +382,7 @@ export const OpsDashboard: React.FC = () => {
                           : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                       }`}
                     >
-                      {cat}
+                      {cat === 'ALL' ? 'All' : applianceLabel(cat, t)}
                     </button>
                   ))}
                 </div>
@@ -482,7 +493,7 @@ export const OpsDashboard: React.FC = () => {
                         salesDeployments.map((dep) => (
                           <tr key={`${dep.partnerId}-${dep.toZoneId}`} className="hover:bg-purple-50/40">
                             <td className="px-4 py-3 font-semibold text-slate-900">{dep.partnerName}</td>
-                            <td className="px-4 py-3 font-medium text-purple-700">{dep.bestCategory}</td>
+                            <td className="px-4 py-3 font-medium text-purple-700">{applianceLabel(dep.bestCategory, t)}</td>
                             <td className="px-4 py-3 text-slate-600">{dep.fromZoneName}</td>
                             <td className="px-4 py-3 font-semibold text-indigo-700">{dep.toZoneName}</td>
                             <td className="px-4 py-3 font-bold text-slate-800">#{dep.rank}</td>
@@ -534,14 +545,14 @@ export const OpsDashboard: React.FC = () => {
                         const pro = professionals.find((p) => p.id === req.professionalId);
                         return (
                           <tr key={req.id} className="hover:bg-slate-50/80">
-                            <td className="px-4 py-3 font-mono text-[11px] text-slate-500">{req.id}</td>
-                            <td className="px-4 py-3 font-semibold text-slate-900">{req.applianceType}</td>
+                            <td className="px-4 py-3 font-mono text-[11px] text-slate-500">{formatJobReference(req.id)}</td>
+                            <td className="px-4 py-3 font-semibold text-slate-900">{applianceLabel(req.applianceType, t)}</td>
                             <td className="px-4 py-3 font-medium text-purple-700">{pro?.name || 'Assigned'}</td>
                             <td className="px-4 py-3 text-slate-600">0.31 / 0.35</td>
                             <td className="px-4 py-3 text-slate-600">0.25 / 0.25</td>
                             <td className="px-4 py-3 text-slate-600">0.18 / 0.20</td>
                             <td className="px-4 py-3 text-slate-600">0.20 / 0.20</td>
-                            <td className="px-4 py-3 font-semibold text-slate-800">{req.status}</td>
+                            <td className="px-4 py-3 font-semibold text-slate-800">{statusLabel(req.status, t)}</td>
                           </tr>
                         );
                       })}
@@ -592,9 +603,9 @@ export const OpsDashboard: React.FC = () => {
                   <div key={r.id} className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-start">
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-slate-900">{r.brand} {r.applianceType} (Age: {r.ageYears}y)</span>
+                        <span className="font-bold text-slate-900">{r.brand} {applianceLabel(r.applianceType, t)} (Age: {r.ageYears}y)</span>
                         <span className="text-[10px] px-2 py-0.5 rounded bg-purple-100 text-purple-800 font-semibold">
-                          Lean: {r.recommendation?.lean}
+                          Lean: {leanLabel(r.recommendation?.lean, t)}
                         </span>
                       </div>
                       <p className="text-[11px] text-slate-600 mt-1">
@@ -851,16 +862,7 @@ export const OpsDashboard: React.FC = () => {
                       {(['AC', 'FRIDGE', 'WASHER', 'GEYSER', 'PURIFIER'] as ApplianceType[]).map((app) => {
                         const isSelected = selectedLeadAppliances.includes(app);
                         const isSingle = selectedLeadAppliances.length !== 5 && isSelected;
-                        const label =
-                          app === 'FRIDGE'
-                            ? 'Fridge'
-                            : app === 'WASHER'
-                            ? 'Washer'
-                            : app === 'GEYSER'
-                            ? 'Geyser'
-                            : app === 'PURIFIER'
-                            ? 'Purifier'
-                            : 'AC';
+                        const label = applianceLabel(app, t);
                         return (
                           <button
                             key={app}
@@ -944,17 +946,17 @@ export const OpsDashboard: React.FC = () => {
                               <td className="px-4 py-3 font-mono text-[11px] text-slate-600">
                                 Customer #{lead.customerId.replace('cust-', '').slice(0, 4)}
                               </td>
-                              <td className="px-4 py-3 font-semibold text-slate-900">{lead.appliance}</td>
-                              <td className="px-4 py-3 text-slate-600">{lead.city}</td>
-                              <td className="px-4 py-3 text-slate-600">{zoneName}</td>
+                              <td className="px-4 py-3 font-semibold text-slate-900">{applianceLabel(lead.appliance, t)}</td>
+                              <td className="px-4 py-3 text-slate-600">{cityLabel(lead.city, t)}</td>
+                              <td className="px-4 py-3 text-slate-600">{zoneLabel(lead.zoneId, zones, t)}</td>
                               <td className="px-4 py-3">
                                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${priorityClass}`}>
                                   {lead.priority}
                                 </span>
                               </td>
                               <td className="px-4 py-3 text-slate-600">{lead.ageYearsBand}</td>
-                              <td className="px-4 py-3 text-slate-600 max-w-xs truncate" title={lead.issue}>
-                                {lead.issue}
+                              <td className="px-4 py-3 text-slate-600 max-w-xs truncate" title={issueLabel(lead.issue, t)}>
+                                {issueLabel(lead.issue, t)}
                               </td>
                               <td className="px-4 py-3 capitalize font-medium text-slate-800">
                                 {lead.replacementInterest}
@@ -1014,18 +1016,7 @@ export const OpsDashboard: React.FC = () => {
                     </span>
                     {(['Overall', 'AC', 'FRIDGE', 'WASHER', 'GEYSER', 'PURIFIER'] as (ApplianceType | 'Overall')[]).map(
                       (cat) => {
-                      const label =
-                        cat === 'Overall'
-                          ? 'Overall'
-                          : cat === 'AC'
-                          ? 'AC'
-                          : cat === 'FRIDGE'
-                          ? 'Fridge'
-                          : cat === 'WASHER'
-                          ? 'Washer'
-                          : cat === 'GEYSER'
-                          ? 'Geyser'
-                          : 'Purifier';
+                      const label = cat === 'Overall' ? 'Overall' : applianceLabel(cat, t);
 
                       return (
                         <button
@@ -1095,8 +1086,8 @@ export const OpsDashboard: React.FC = () => {
                             <td className="px-4 py-3 font-semibold text-purple-700 group-hover:underline">
                               {item.name}
                             </td>
-                            <td className="px-4 py-3 text-slate-600">{item.city}</td>
-                            <td className="px-4 py-3 font-medium text-slate-900">{item.bestCategory}</td>
+                            <td className="px-4 py-3 text-slate-600">{cityLabel(item.city, t)}</td>
+                            <td className="px-4 py-3 font-medium text-slate-900">{applianceLabel(item.bestCategory, t)}</td>
                             <td className="px-4 py-3 font-bold text-slate-900">{item.unitsSold} units</td>
                             <td className="px-4 py-3 font-semibold text-emerald-600">{item.conversionRatePct}%</td>
                             <td className="px-4 py-3 text-purple-600 font-medium text-[11px]">

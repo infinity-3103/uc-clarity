@@ -15,7 +15,7 @@ import { Toast } from '../../components/Toast';
 import { SURVEY_DISCOUNT_PCT } from '../../config/assumptions';
 import { isSurveyDiscountEligible, getSurveyDiscountAvailableDate, formatSurveyDiscountDate } from '../../domain/leads';
 import { useT } from '../../i18n';
-import { cityLabel, zoneLabel, applianceLabel, faultLabel, statusLabel } from '../../i18n/formatters';
+import { cityLabel, zoneLabel, applianceLabel, faultLabel, statusLabel, optionLabel } from '../../i18n/formatters';
 
 const NATIVE_CATEGORIES = [
   { id: 'ALL', labelKey: 'cat_all' },
@@ -680,7 +680,7 @@ export const CustomerApp: React.FC = () => {
                           })}
                         </span>
                         <h4 className="text-sm font-semibold text-slate-900 mt-0.5">
-                          {field.label}
+                          {t(field.label)}
                         </h4>
                         {field.whyWeAsk && (
                           <div className="mt-1 flex items-start gap-1.5 text-[11px] text-slate-500 bg-slate-50 p-2 rounded-lg border border-slate-100">
@@ -709,7 +709,7 @@ export const CustomerApp: React.FC = () => {
                                   : 'border-slate-200 hover:bg-slate-50 text-slate-700'
                               }`}
                             >
-                              {opt}
+                              {optionLabel(opt, t)}
                             </button>
                           ))}
                         </div>
@@ -1086,12 +1086,12 @@ export const CustomerApp: React.FC = () => {
                               >
                                 <div>
                                   <span className="font-mono font-bold text-purple-900 block">
-                                    {ticket.id} ({ticket.type})
+                                    {ticket.id} ({ticket.type === 'COMPLAINT' ? t('ticket_type_complaint') : t('ticket_type_feedback')})
                                   </span>
                                   <span className="text-slate-500 line-clamp-1">{ticket.message}</span>
                                 </div>
                                 <span className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 font-bold border border-amber-200 text-[9px]">
-                                  {ticket.status}
+                                  {statusLabel(ticket.status, t)}
                                 </span>
                               </div>
                             ))}

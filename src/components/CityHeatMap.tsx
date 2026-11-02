@@ -3,6 +3,7 @@ import { useStore } from '../store/useStore';
 import { City, ApplianceType, Zone } from '../domain/types';
 import { computeZoneDemand, DemandContext, DemandBand } from '../domain/demand';
 import { planSalesDeployment } from '../domain/allocation';
+import { useT, cityLabel, zoneLabel } from '../i18n';
 import {
   Thermometer,
   Droplets,
@@ -153,6 +154,7 @@ export const CityHeatMap: React.FC<CityHeatMapProps> = ({
   const cityWaterHardness = useStore((state) => state.cityWaterHardness);
   const cityVoltageStability = useStore((state) => state.cityVoltageStability);
   const triggerPushNotification = useStore((state) => state.triggerPushNotification);
+  const { t } = useT();
 
   // Time range pill: 7d, 30d, 90d (default 90d)
   const [rangeDays, setRangeDays] = useState<7 | 30 | 90>(90);
@@ -565,8 +567,8 @@ export const CityHeatMap: React.FC<CityHeatMapProps> = ({
                     <Navigation className="w-3.5 h-3.5 text-purple-600" />
                     <h4 className="font-bold text-sm text-slate-900">{inspectedZone.displayName}</h4>
                   </div>
-                  <p className="text-[11px] text-slate-400 mt-0.5">
-                    Zone ID: <span className="font-mono text-purple-600">{inspectedZone.zone.id}</span>
+                  <p className="text-[11px] text-slate-500 mt-0.5">
+                    {zoneLabel(inspectedZone.zone.id, zones, t)} ({cityLabel(selectedCity, t)})
                   </p>
                 </div>
 

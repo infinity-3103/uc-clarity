@@ -297,7 +297,20 @@ function isAllowedText(text: string): boolean {
   return words.every((w) => ALLOWLIST_WORDS.has(w) || ALLOWLIST_NAMES.has(w));
 }
 
-// In-scope files to inspect
+export function isRenderedRawIdentifier(text: string): boolean {
+  const trimmed = text.trim();
+  if (!trimmed) return false;
+  // Flag identifiers: snake_case, UPPER_SNAKE, lowerCamelCase tokens, zone- / sr- ids, and _label suffix
+  if (/^[a-z]+(_[a-z0-9]+)+$/.test(trimmed)) return true;
+  if (/^[A-Z]+(_[A-Z0-9]+)+$/.test(trimmed)) return true;
+  if (/^[a-z]+[A-Z][a-zA-Z0-9]*$/.test(trimmed)) return true;
+  if (/^zone-[a-z0-9-]+$/.test(trimmed)) return true;
+  if (/^sr-[a-z0-9-]+$/.test(trimmed)) return true;
+  if (/_label$/.test(trimmed)) return true;
+  return false;
+}
+
+// In-scope files to inspect for i18n translations
 const IN_SCOPE_FILES = [
   'src/components/AAConsentModal.tsx',
   'src/components/ComparisonScreen.tsx',
@@ -313,6 +326,13 @@ const IN_SCOPE_FILES = [
   'src/config/appliances.ts',
   'src/config/assumptions.ts',
   'src/data/seed.ts',
+];
+
+export const IDENTIFIER_AUDIT_FILES = [
+  ...IN_SCOPE_FILES,
+  'src/views/ops/OpsDashboard.tsx',
+  'src/components/CityHeatMap.tsx',
+  'src/components/DemoPersonaSwitcher.tsx',
 ];
 
 export function auditFile(filePath: string): AuditHit[] {
@@ -338,6 +358,17 @@ export function auditFile(filePath: string): AuditHit[] {
     // 1. JSXText (e.g. <span>Hello World</span>)
     JSXText(p: any) {
       const val = p.node.value;
+      const trimmed = val.trim();
+      if (!trimmed) return;
+      if (isRenderedRawIdentifier(trimmed) && !ALLOWLIST_EXACT.has(trimmed)) {
+        hits.push({
+          file: filePath,
+          line: p.node.loc?.start.line || 0,
+          type: 'RawIdentifierInJSXText',
+          text: trimmed,
+        });
+        return;
+      }
       if (/[a-zA-Z]{2,}/.test(val) && !isAllowedText(val)) {
         hits.push({
           file: filePath,
@@ -495,6 +526,55 @@ export function auditFile(filePath: string): AuditHit[] {
   return hits;
 }
 
+export function auditIdentifiersForFile(filePath: string): AuditHit[] {
+  const fullPath = path.resolve(process.cwd(), filePath);
+  if (!fs.existsSync(fullPath)) return [];
+
+  const content = fs.readFileSync(fullPath, 'utf8');
+  let ast: any;
+  try {
+    ast = parser.parse(content, {
+      sourceType: 'module',
+      plugins: ['typescript', 'jsx'],
+    });
+  } catch {
+    return [];
+  }
+
+  const hits: AuditHit[] = [];
+  traverse(ast, {
+    JSXText(p: any) {
+      const val = p.node.value.trim();
+      if (!val) return;
+      if (isRenderedRawIdentifier(val) && !ALLOWLIST_EXACT.has(val)) {
+        hits.push({
+          file: filePath,
+          line: p.node.loc?.start.line || 0,
+          type: 'RawIdentifier',
+          text: val,
+        });
+      }
+    },
+    StringLiteral(p: any) {
+      if (!p.parentPath.isJSXExpressionContainer?.()) return;
+      const jsxParent = p.parentPath.parentPath;
+      if (!jsxParent?.isJSXElement?.() && !jsxParent?.isJSXFragment?.()) return;
+      const val = p.node.value.trim();
+      if (!val) return;
+      if (isRenderedRawIdentifier(val) && !ALLOWLIST_EXACT.has(val)) {
+        hits.push({
+          file: filePath,
+          line: p.node.loc?.start.line || 0,
+          type: 'RawIdentifierString',
+          text: val,
+        });
+      }
+    },
+  });
+
+  return hits;
+}
+
 export function runAudit(): { totalHits: number; hitsByFile: Record<string, AuditHit[]> } {
   let totalHits = 0;
   const hitsByFile: Record<string, AuditHit[]> = {};
@@ -504,6 +584,14 @@ export function runAudit(): { totalHits: number; hitsByFile: Record<string, Audi
     if (fileHits.length > 0) {
       hitsByFile[file] = fileHits;
       totalHits += fileHits.length;
+    }
+  }
+
+  for (const file of IDENTIFIER_AUDIT_FILES) {
+    const idHits = auditIdentifiersForFile(file);
+    if (idHits.length > 0) {
+      hitsByFile[file] = [...(hitsByFile[file] || []), ...idHits];
+      totalHits += idHits.length;
     }
   }
 

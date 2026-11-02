@@ -3,7 +3,7 @@ import { useStore } from '../../store/useStore';
 import { MARKETPLACE_PRODUCTS } from '../../config/assumptions';
 import { MarketplaceProduct, ApplianceType } from '../../domain/types';
 import { ApplianceArt } from '../../components/ApplianceArt';
-import { useT, cityLabel } from '../../i18n';
+import { useT, cityLabel, zoneLabel } from '../../i18n';
 import {
   Search,
   Star,
@@ -41,6 +41,7 @@ export const MarketplaceView: React.FC = () => {
   const simulatedCity = useStore((state) => state.simulatedCity);
   const placeDirectOrder = useStore((state) => state.placeDirectOrder);
   const directOrders = useStore((state) => state.directOrders);
+  const zones = useStore((state) => state.zones);
 
   const customer = customers.find((c) => c.id === selectedCustomerId) || customers[0];
 
@@ -508,8 +509,8 @@ export const MarketplaceView: React.FC = () => {
                   <p className="text-slate-600 text-[11px]">
                     {t('address_zone_param', {
                       name: customer.name,
-                      zone: customer.zoneId.split('-').pop() || '',
-                      city: cityLabel(simulatedCity, t),
+                      zone: zoneLabel(customer.zoneId, zones, t),
+                      city: cityLabel(customer.city || simulatedCity, t),
                     })}
                   </p>
                 </div>

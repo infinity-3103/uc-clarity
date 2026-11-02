@@ -2,7 +2,7 @@
 
 This document provides the complete dictionary across all 4 supported languages: English (`en`), Hindi (`hi`), Marathi (`mr`), and Kannada (`kn`).
 
-Total verified keys: **756**
+Total verified keys: **825**
 
 | Key | Context | en | hi | mr | kn |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -26,7 +26,7 @@ Total verified keys: **756**
 | `active_request` | Shared | Active Request | सक्रिय अनुरोध | सक्रिय विनंती | ಸಕ್ರಿಯ ವಿನಂತಿ |
 | `active_request_badge` | Shared | Active Request | सक्रिय अनुरोध | सक्रिय विनंती | ಸಕ್ರಿಯ ವಿನಂತಿ |
 | `active_request_param` | Shared | Active Request: {brand} {appliance} | सक्रिय अनुरोध: {brand} {appliance} | सक्रिय विनंती: {brand} {appliance} | ಸಕ್ರಿಯ ವಿನಂತಿ: {brand} {appliance} |
-| `address_zone_param` | Shared | {name}, Building 4, Zone {zone}, {city} | {name}, बिल्डिंग 4, ज़ोन {zone}, {city} | {name}, इमारत ४, झोन {zone}, {city} | {name}, ಕಟ್ಟಡ 4, ವಲಯ {zone}, {city} |
+| `address_zone_param` | Shared | {name}, Building 4, {zone}, {city} | {name}, बिल्डिंग 4, {zone}, {city} | {name}, इमारत ४, {zone}, {city} | {name}, ಕಟ್ಟಡ 4, {zone}, {city} |
 | `age_1_to_3` | Survey | 1 to 3 yrs | 1 से 3 वर्ष | 1 ते 3 वर्षे | 1 ರಿಂದ 3 ವರ್ಷಗಳು |
 | `age_3_to_5` | Survey | 3 to 5 yrs | 3 से 5 वर्ष | 3 ते 5 वर्षे | 3 ರಿಂದ 5 ವರ್ಷಗಳು |
 | `age_5_to_8` | Survey | 5 to 8 yrs | 5 से 8 वर्ष | 5 ते 8 वर्षे | 5 ರಿಂದ 8 ವರ್ಷಗಳು |
@@ -96,10 +96,12 @@ Total verified keys: **756**
 | `booking_subtitle` | Customer | Transparent diagnostic visit with standardized benchmarks | मानकीकृत मानकों के साथ पारदर्शी निदान विजिट | प्रमाणित निकषांसह पारदर्शक तपासणी भेट | ಪ್ರಮಾಣಿತ ಮಾನದಂಡಗಳೊಂದಿಗೆ ಪಾರದರ್ಶಕ ತಪಾಸಣಾ ಭೇಟಿ |
 | `browse_all_appliances_btn` | Shared | Browse All ACs, Washers & Refrigerators | सभी एसी, वॉशर और रेफ्रिजरेटर देखें | सर्व एसी, वॉशर आणि रेफ्रिजरेटर पहा | ಎಲ್ಲಾ ಎಸಿ, ವಾಷರ್ ಮತ್ತು ರೆಫ್ರಿಜರೇಟರ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಿ |
 | `btn_back` | Shared | Back | पीछे | मागे | ಹಿಂದೆ |
+| `btn_cancel` | Shared | Cancel | रद्द करें | रद्द करा | ರದ್ದುಮಾಡಿ |
 | `btn_done` | Shared | Done | पूर्ण | पूर्ण | ಮುಗಿದಿದೆ |
 | `btn_next` | Shared | Next | आगे | पुढे | ಮುಂದೆ |
 | `btn_previous` | Shared | Previous | पिछला | मागील | ಹಿಂದಿನ |
 | `btn_skip` | Shared | Skip | छोड़ें | वगळा | ಬಿಟ್ಟುಬಿಡಿ |
+| `btn_submit` | Shared | Submit | जमा करें | सादर करा | ಸಲ್ಲಿಸಿ |
 | `btn_submit_survey_discount` | Shared | Submit Survey & Apply Discount | सर्वे जमा करें और छूट पाएं | सर्व्हे सबमिट करा आणि सूट मिळवा | ಸಮೀಕ್ಷೆಯನ್ನು ಸಲ್ಲಿಸಿ ಮತ್ತು ರಿಯಾಯಿತಿ ಪಡೆಯಿರಿ |
 | `buy_new_replacement` | Marketplace | Buy New Replacement | नया रिप्लेसमेंट खरीदें | नवीन रिप्लेसमेंट खरेदी करा | ಹೊಸ ಬದಲಿಯನ್ನು ಖರೀದಿಸಿ |
 | `buy_now_full_btn` | Marketplace | Buy Now (Pay in Full) | अभी खरीदें (पूर्ण भुगतान) | आत्ताच खरेदी करा (पूर्ण पेमेंट) | ಈಗಲೇ ಖರೀದಿಸಿ (ಪೂರ್ಣ ಪಾವತಿ) |
@@ -329,6 +331,9 @@ Total verified keys: **756**
 | `kfs_tenor` | Modal | Tenor: | अवधि: | मुदत: | ಅವಧಿ: |
 | `kfs_tenor_installments` | Modal | {tenor} Equated Monthly Installments | {tenor} समान मासिक किस्तें | {tenor} समान मासिक हप्ते | {tenor} ಸಮಾನ ಮಾಸಿಕ ಕಂತುಗಳು |
 | `kfs_total_payable` | Modal | Total Amount Payable: | कुल देय राशि: | एकूण देय रक्कम: | ಪಾವತಿಸಬೇಕಾದ ಒಟ್ಟು ಮೊತ್ತ: |
+| `lbl_ac_age` | Assumption | AC age | एसी की आयु | एसीचे वय | ಎಸಿ ವಯಸ್ಸು |
+| `lbl_ac_brand` | Assumption | AC brand | एसी ब्रांड | एसी ब्रँड | ಎಸಿ ಬ್ರಾಂಡ್ |
+| `lbl_ac_condition` | Assumption | AC condition | एसी की स्थिति | एसीची स्थिती | ಎಸಿ ಸ್ಥಿತಿ |
 | `lbl_appliance_age` | Assumption | Appliance Age (years) | उपकरण की उम्र (वर्ष) | उपकरणाचे वय (वर्षे) | ಉಪಕರಣದ ವಯಸ್ಸು (ವರ್ಷಗಳು) |
 | `lbl_bee_star_rating` | Assumption | BEE Star Rating | BEE स्टार रेटिंग | BEE स्टार रेटिंग | BEE ಸ್ಟಾರ್ ರೇಟಿಂಗ್ |
 | `lbl_booster_pump_pressure` | Assumption | Booster Pump Pressure | बूस्टर पंप दबाव | बूस्टर पंप दाब | ಬೂಸ್ಟರ್ ಪಂಪ್ ಒತ್ತಡ |
@@ -349,8 +354,14 @@ Total verified keys: **756**
 | `lbl_drum_spider_wear` | Assumption | Drum and Spider Wear Level | ड्रम और स्पाइडर घिसाव स्तर | ड्रम आणि स्पायडर झीज पातळी | ಡ್ರಮ್ ಸವೆತದ ಮಟ್ಟ |
 | `lbl_earthing_safe` | Assumption | Earthing & Insulation Safe | अर्थिंग और इंसुलेशन सुरक्षित | अर्थिंग आणि इन्सुलेशन सुरक्षित | ಅರ್ಥಿಂಗ್ ಮತ್ತು ಇನ್ಸುಲೇಶನ್ ಸುರಕ್ಷಿತ |
 | `lbl_evaporator_condition` | Assumption | Evaporator Condition | इवेपोरेटर स्थिति | इव्हॅपोरेटर स्थिती | ಇವಾಪರೇಟರ್ ಸ್ಥಿತಿ |
+| `lbl_fridge_age` | Assumption | Fridge age | फ्रिज की आयु | फ्रिजचे वय | ಫ್ರಿಡ್ಜ್ ವಯಸ್ಸು |
+| `lbl_fridge_brand` | Assumption | Fridge brand | फ्रिज ब्रांड | फ्रिज ब्रँड | ಫ್ರಿಡ್ಜ್ ಬ್ರಾಂಡ್ |
+| `lbl_fridge_condition` | Assumption | Fridge condition | फ्रिज की स्थिति | फ्रिजची स्थिती | ಫ್ರಿಡ್ಜ್ ಸ್ಥಿತಿ |
 | `lbl_fridge_temp` | Assumption | Fridge Compartment Temp (°C) | फ्रिज कम्पार्टमेंट तापमान (°C) | फ्रिज कप्पा तापमान (°C) | ಫ್ರಿಡ್ಜ್ ತಾಪಮಾನ (°C) |
 | `lbl_gas_leak_check` | Assumption | Gas Leak Check | गैस रिसाव जांच | गॅस गळती तपासणी | ಗ್ಯಾಸ್ ಸೋರಿಕೆ ಪರಿಶೀಲನೆ |
+| `lbl_geyser_age` | Assumption | Geyser age | गीजर की आयु | गीझरचे वय | ಗೀಸರ್ ವಯಸ್ಸು |
+| `lbl_geyser_brand` | Assumption | Geyser brand | गीजर ब्रांड | गीझर ब्रँड | ಗೀಸರ್ ಬ್ರಾಂಡ್ |
+| `lbl_geyser_condition` | Assumption | Geyser condition | गीजर की स्थिति | गीझरची स्थिती | ಗೀಸರ್ ಸ್ಥಿತಿ |
 | `lbl_geyser_type` | Assumption | Geyser Type | गीज़र प्रकार | गिझर प्रकार | ಗೀಸರ್ ಪ್ರಕಾರ |
 | `lbl_hard_water_home` | Assumption | Hard Water Supply in Home | घर में कठोर जल आपूर्ति | घरातील खारे पाणी पुरवठा | ಮನೆಯಲ್ಲಿ ಗಡಸು ನೀರು |
 | `lbl_hard_water_supply` | Assumption | Hard Water Supply | कठोर जल आपूर्ति | खारे पाणी पुरवठा | ಗಡಸು ನೀರು ಸರಬರಾಜು |
@@ -370,6 +381,9 @@ Total verified keys: **756**
 | `lbl_primary_likely_fault` | Assumption | Primary Likely Fault | प्राथमिक संभावित दोष | प्राथमिक संभाव्य बिघाड | ಪ್ರಾಥಮಿಕ ಸಂಭಾವ್ಯ ದೋಷ |
 | `lbl_purification_tech` | Assumption | Purification Technology | शुद्धिकरण तकनीक | शुद्धीकरण तंत्रज्ञान | ಶುದ್ಧೀಕರಣ ತಂತ್ರಜ್ಞಾನ |
 | `lbl_purified_flow_rate` | Assumption | Purified Water Flow Rate Normal | शुद्ध पानी प्रवाह दर सामान्य | शुद्ध पाण्याचा प्रवाह सामान्य | ಶುದ್ಧ ನೀರಿನ ಹರಿವು ಸಾಮಾನ್ಯ |
+| `lbl_purifier_age` | Assumption | Purifier age | प्यूरिफायर की आयु | प्युरिफायरचे वय | ಪ್ಯೂರಿಫೈಯರ್ ವಯಸ್ಸು |
+| `lbl_purifier_brand` | Assumption | Purifier brand | प्यूरिफायर ब्रांड | प्युरिफायर ब्रँड | ಪ್ಯೂರಿಫೈಯರ್ ಬ್ರಾಂಡ್ |
+| `lbl_purifier_condition` | Assumption | Purifier condition | प्यूरिफायर की स्थिति | प्युरिफायरची स्थिती | ಪ್ಯೂರಿಫೈಯರ್ ಸ್ಥಿತಿ |
 | `lbl_refrigerant_leak_status` | Assumption | Refrigerant Leak Status | रेफ्रिजरेंट रिसाव स्थिति | रेफ्रिजरंट गळती स्थिती | ರೆಫ್ರಿಜರೆಂಟ್ ಸೋರಿಕೆ ಸ್ಥಿತಿ |
 | `lbl_repeat_faults_12m` | Assumption | Faults Repeated in Last 12 Months | पिछले 12 महीनों में बार-बार खराबी | मागील १२ महिन्यांतील वारंवार बिघाड | ಕಳೆದ 12 ತಿಂಗಳುಗಳಲ್ಲಿ ಮರುಕಳಿಸಿದ ದೋಷಗಳು |
 | `lbl_ro_membrane_rejection` | Assumption | RO Membrane Rejection Status | RO मेम्ब्रेन रिजेक्शन स्थिति | RO मेम्ब्रेन कार्यक्षमता | RO ಮೆಂಬರೇನ್ ಕಾರ್ಯಕ್ಷಮತೆ |
@@ -382,8 +396,15 @@ Total verified keys: **756**
 | `lbl_thermostat_reading_normal` | Assumption | Thermostat Reading Normal | थर्मोस्टेट रीडिंग सामान्य | थर्मोस्टॅट रीडिंग सामान्य | ಥರ್ಮೋಸ್ಟಾಟ್ ರೀಡಿಂಗ್ ಸಾಮಾನ್ಯ |
 | `lbl_tonnage` | Assumption | Tonnage | टनेज | टनेज | ಟನ್ ಸಾಮರ್ಥ್ಯ |
 | `lbl_unusual_noise_vibration` | Assumption | Unusual Noise or Vibration | असामान्य आवाज या कंपन | असामान्य आवाज किंवा कंपन | ಅಸಾಮಾನ್ಯ ಶಬ್ದ ಅಥವಾ ಕಂಪನ |
+| `lbl_washer_age` | Assumption | Washer age | वॉशर की आयु | वॉशरचे वय | ವಾಷರ್ ವಯಸ್ಸು |
+| `lbl_washer_brand` | Assumption | Washer brand | वॉशर ब्रांड | वॉशर ब्रँड | ವಾಷರ್ ಬ್ರಾಂಡ್ |
+| `lbl_washer_condition` | Assumption | Washer condition | वॉशर की स्थिति | वॉशरची स्थिती | ವಾಷರ್ ಸ್ಥಿತಿ |
 | `lean_both_repair` | Shared | Both options are viable; repair offers lower immediate cash expenditure. | दोनों विकल्प व्यावहारिक हैं; मरम्मत में तत्काल कम नकद खर्च होता है। | दोन्ही पर्याय व्यवहार्य आहेत; दुरुस्तीमध्ये तत्काळ कमी रोख खर्च होतो. | ಎರಡೂ ಆಯ್ಕೆಗಳು ಉತ್ತಮವಾಗಿವೆ; ದುರಸ್ತಿಗೆ ಕಡಿಮೆ ತಕ್ಷಣದ ನಗದು ವೆಚ್ಚವಾಗುತ್ತದೆ. |
 | `lean_both_replace` | Shared | Both options are viable; replacement offers comprehensive warranty and modern efficiency. | दोनों विकल्प व्यावहारिक हैं; नए उपकरण में व्यापक वारंटी और आधुनिक दक्षता मिलती है। | दोन्ही पर्याय व्यवहार्य आहेत; नवीन उपकरणामध्ये सर्वसमावेशक वॉरंटी आणि आधुनिक कार्यक्षमता मिळते. | ಎರಡೂ ಆಯ್ಕೆಗಳು ಉತ್ತಮವಾಗಿವೆ; ಬದಲಿ ಉಪಕರಣವು ಸಮಗ್ರ ಖಾತರಿ ಮತ್ತು ಆಧುನಿಕ ದಕ್ಷತೆಯನ್ನು ನೀಡುತ್ತದೆ. |
+| `lean_label_both_repair` | Shared | Both (Leans Repair) | दोनों (मरम्मत की ओर) | दोन्ही (दुरुस्तीकडे कल) | ಎರಡೂ (ದುರಸ್ತಿಗೆ ಒಲವು) |
+| `lean_label_both_replace` | Shared | Both (Leans Replace) | दोनों (बदलने की ओर) | दोन्ही (बदलण्याकडे कल) | ಎರಡೂ (ಬದಲಿಗೆ ಒಲವು) |
+| `lean_label_repair` | Shared | Repair | मरम्मत | दुरुस्ती | ದುರಸ್ತಿ |
+| `lean_label_replace` | Shared | Replace | रिप्लेसमेंट | बदला | ಬದಲಿ |
 | `lean_repair` | Shared | Based on age and repair cost, repair looks more economical. | उम्र और मरम्मत की लागत के आधार पर, मरम्मत अधिक किफायती लगती है। | वय आणि दुरुस्ती खर्चाच्या आधारे, दुरुस्ती करणे अधिक किफायतशीर वाटते. | ವಯಸ್ಸು ಮತ್ತು ದುರಸ್ತಿ ವೆಚ್ಚದ ಆಧಾರದ ಮೇಲೆ, ದುರಸ್ತಿ ಮಾಡುವುದು ಹೆಚ್ಚು ಆರ್ಥಿಕವಾಗಿ ಕಾಣುತ್ತದೆ. |
 | `lean_replace` | Shared | Based on appliance age and component condition, replacement offers superior long-term value. | उपकरण की उम्र और पुर्जों की स्थिति के आधार पर, नया उपकरण लंबे समय में बेहतर मूल्य प्रदान करता है। | उपकरणाचे वय आणि भागांची स्थिती पाहता, नवीन उपकरण दीर्घकाळात उत्तम मूल्य देते. | ಉಪಕರಣದ ವಯಸ್ಸು ಮತ್ತು ಭಾಗಗಳ ಸ್ಥಿತಿಯ ಆಧಾರದ ಮೇಲೆ, ಬದಲಿ ಉಪಕರಣವು ದೀರ್ಘಾವಧಿಯಲ್ಲಿ ಉತ್ತಮ ಮೌಲ್ಯವನ್ನು ನೀಡುತ್ತದೆ. |
 | `likely_fault_fallback` | Shared | Component wear | घटक घिसाव | सुट्या भागांची झीज | ಭಾಗಗಳ ಸವೆತ |
@@ -437,6 +458,42 @@ Total verified keys: **756**
 | `one_time_full_payment_title` | Shared | One-Time Full Payment | एकमुश्त पूरा भुगतान | एकवेळचे पूर्ण पेमेंट | ಏಕಕಾಲದ ಪೂರ್ಣ ಪಾವತಿ |
 | `one_time_payment` | Shared | One-Time Payment | एकमुश्त भुगतान | एकवेळचे देयक | ಒಂದು ಬಾರಿಯ ಪಾವತಿ |
 | `one_time_settlement` | Shared | One-time settlement: | एकमुश्त निपटान: | एकवेळ पेमेंट: | ಒಂದು ಬಾರಿ ಪಾವತಿ: |
+| `opt_6_to_12` | Assumption | 6 to 12 months | 6 से 12 महीने | ६ ते १२ महिने | 6 ರಿಂದ 12 ತಿಂಗಳು |
+| `opt_bad_taste` | Assumption | Bad taste or odour | खराब स्वाद या गंध | खराब चव किंवा वास | ಕೆಟ್ಟ ರುಚಿ ಅಥವಾ ವಾಸನೆ |
+| `opt_borewell` | Assumption | Borewell | बोरवेल | बोअरवेल | ಬೋರ್‌ವೆಲ್ |
+| `opt_double_door_frost_free` | Assumption | Double door frost-free | डबल डोर फ्रॉस्ट-फ्री | डबल डोअर फ्रॉस्ट-फ्री | ಡಬಲ್ ಡೋರ್ ಫ್ರಾಸ್ಟ್-ಫ್ರೀ |
+| `opt_error_code` | Assumption | Error code displayed | एरर कोड दिख रहा है | एरर कोड दिसत आहे | ದೋಷ ಕೋಡ್ ತೋರಿಸುತ್ತಿದೆ |
+| `opt_front_load` | Assumption | Front load | फ्रंट लोड | फ्रंट लोड | ಫ್ರಂಟ್ ಲೋಡ್ |
+| `opt_ice_build_up` | Assumption | Excess ice build-up | अत्यधिक बर्फ जमना | जास्त बर्फ साचणे | ಹೆಚ್ಚುವರಿ ಹಿಮ ಸಂಗ್ರಹ |
+| `opt_instant` | Assumption | Instant | इंस्टेंट | इन्स्टंट | ತ್ವರಿತ |
+| `opt_leakage` | Assumption | Water leakage | पानी का रिसाव | पाण्याची गळती | ನೀರು ಸೋರಿಕೆ |
+| `opt_low_flow` | Assumption | Low flow rate | कम पानी का बहाव | कमी पाण्याचा प्रवाह | ಕಡಿಮೆ ನೀರಿನ ಹರಿವು |
+| `opt_municipal` | Assumption | Municipal | नगर निगम | महानगरपालिका | ಪುರಸಭೆಯ ನೀರು |
+| `opt_never` | Assumption | Never | कभी नहीं | कधीही नाही | ಎಂದಿಗೂ ಇಲ್ಲ |
+| `opt_no` | Assumption | No | नहीं | नाही | ಇಲ್ಲ |
+| `opt_noise` | Assumption | Unusual noise | असामान्य आवाज़ | असामान्य आवाज | ಅಸಾಮಾನ್ಯ ಶಬ್ದ |
+| `opt_normal` | Assumption | Normal | सामान्य | सामान्य | ಸಾಮಾನ್ಯ |
+| `opt_not_cooling` | Assumption | Not cooling | कूलिंग नहीं हो रही | थंड होत नाही | ಕೂಲಿಂಗ್ ಆಗುತ್ತಿಲ್ಲ |
+| `opt_not_draining` | Assumption | Not draining | पानी नहीं निकल रहा | पाणी बाहेर पडत नाही | ನೀರು ಹರಿಯುತ್ತಿಲ್ಲ |
+| `opt_not_heating` | Assumption | Not heating | पानी गर्म नहीं हो रहा | गरम होत नाही | ಬಿಸಿಯಾಗುತ್ತಿಲ್ಲ |
+| `opt_not_spinning` | Assumption | Not spinning | ड्रम नहीं घूम रहा | ड्रम फिरत नाही | ತಿರುಗುತ್ತಿಲ್ಲ |
+| `opt_not_starting` | Assumption | Not starting | चालू नहीं हो रहा | सुरू होत नाही | ಪ್ರಾರಂಭವಾಗುತ್ತಿಲ್ಲ |
+| `opt_not_sure` | Assumption | Not sure | पता नहीं | नक्की माहिती नाही | ಖಚಿತವಿಲ್ಲ |
+| `opt_other` | Assumption | Other issue | अन्य समस्या | इतर समस्या | ಇತರ ಸಮಸ್ಯೆ |
+| `opt_over_12` | Assumption | Over 12 months | 12 महीने से अधिक | १२ महिन्यांपेक्षा जास्त | 12 ತಿಂಗಳಿಗಿಂತ ಹೆಚ್ಚು |
+| `opt_ro` | Assumption | RO | RO | RO | RO |
+| `opt_ro_uv` | Assumption | RO + UV | RO + UV | RO + UV | RO + UV |
+| `opt_side_by_side` | Assumption | Side by side | साइड बाय साइड | साइड बाय साइड | ಪಕ್ಕ-ಪಕ್ಕದ ಬಾಗಿಲು |
+| `opt_single_door` | Assumption | Single door | सिंगल डोर | सिंगल डोअर | ಏಕ ಬಾಗಿಲು |
+| `opt_storage` | Assumption | Storage | स्टोरेज | स्टोरेज | ಸ್ಟೋರೇಜ್ |
+| `opt_tanker` | Assumption | Tanker | टैंकर | टँकर | ಟ್ಯಾಂಕರ್ |
+| `opt_top_load` | Assumption | Top load | टॉप लोड | टॉप लोड | ಟಾಪ್ ಲೋಡ್ |
+| `opt_tripping` | Assumption | Power tripping | पावर ट्रिप हो रही है | पॉवर ट्रिप होत आहे | ವಿದ್ಯುತ್ ಟ್ರಿಪ್ ಆಗುತ್ತಿದೆ |
+| `opt_under_6_months` | Assumption | Under 6 months | 6 महीने से कम | ६ महिन्यांपेक्षा कमी | 6 ತಿಂಗಳೊಳಗೆ |
+| `opt_uv` | Assumption | UV | UV | UV | UV |
+| `opt_vibration` | Assumption | Excess vibration | अत्यधिक कंपन | जास्त कंपन | ಹೆಚ್ಚು ಕಂಪನ |
+| `opt_weak_cooling` | Assumption | Weak cooling | कम कूलिंग | कमी कूलिंग | ದುರ್ಬಲ ಕೂಲಿಂಗ್ |
+| `opt_yes` | Assumption | Yes | हाँ | होय | ಹೌದು |
 | `option_repair` | Shared | Repair Option | मरम्मत विकल्प | दुरुस्ती पर्याय | ದುರಸ್ತಿ ಆಯ್ಕೆ |
 | `option_replace` | Shared | New Energy-Efficient Replacement | नया ऊर्जा-कुशल रिप्लेसमेंट | नवीन ऊर्जा-कार्यक्षम पर्याय | ಹೊಸ ಶಕ್ತಿ-ದಕ್ಷ ಬದಲಿ ಆಯ್ಕೆ |
 | `or_emi_monthly_param` | Shared | (or Rs {amount}/mo on EMI) | (या ईएमआई पर Rs {amount}/माह) | (किंवा ईएमआय वर Rs {amount}/महिना) | (ಅಥವಾ ಇಎಂಐ ನಲ್ಲಿ Rs {amount}/ತಿಂಗಳಿಗೆ) |
@@ -592,6 +649,7 @@ Total verified keys: **756**
 | `repair_description_param` | Shared | Comprehensive repair and calibration for {fault}. | {fault} के लिए संपूर्ण मरम्मत और कैलिब्रेशन। | {fault} साठी संपूर्ण दुरुस्ती आणि कॅलिब्रेशन. | {fault} ಗಾಗಿ ಸಮಗ್ರ ದುರಸ್ತಿ ಮತ್ತು ಮಾಪನಾಂಕ ನಿರ್ಣಯ. |
 | `repair_option` | Shared | Repair Option | मरम्मत विकल्प | दुरुस्ती पर्याय | ದುರಸ್ತಿ ಆಯ್ಕೆ |
 | `retail_price` | Shared | Retail price: | खुदरा मूल्य: | किरकोळ किंमत: | ಚಿಲ್ಲರೆ ಬೆಲೆ: |
+| `retail_price_label` | Shared | Retail price | खुदरा मूल्य | किरकोळ किंमत | ಚಿಲ್ಲರೆ ಬೆಲೆ |
 | `retained_for_legal_reasons_prefix` | Shared | Statutory loan and KFS agreements will be marked  | बैंकिंग कानून के अनुसार वैधानिक ऋण और केएफएस समझौतों को  | बँकिंग कायद्यानुसार कायदेशीर कर्ज आणि केएफएस करार  | ಬ್ಯಾಂಕಿಂಗ್ ಕಾಯಿದೆಯ ಪ್ರಕಾರ ಶಾಸನಬದ್ಧ ಸಾಲ ಮತ್ತು ಕೆಎಫ್‌ಎಸ್ ಒಪ್ಪಂದಗಳನ್ನು  |
 | `retained_for_legal_reasons_suffix` | Shared |  per banking law. |  चिह्नित किया जाएगा। |  म्हणून ठेवले जातील. |  ಎಂದು ಗುರುತಿಸಲಾಗುತ್ತದೆ. |
 | `retained_for_legal_reasons_text` | Shared | retained for legal reasons | कानूनी कारणों से सुरक्षित | कायदेशीर कारणांसाठी जतन | ಕಾನೂನು ಕಾರಣಗಳಿಗಾಗಿ ಉಳಿಸಲಾಗಿದೆ |
@@ -647,15 +705,24 @@ Total verified keys: **756**
 | `status_comparison_shown` | Shared | Comparison Shown | तुलना दिखाई गई | तुलना दाखवली | ಹೋಲಿಕೆ ತೋರಿಸಲಾಗಿದೆ |
 | `status_completed` | Shared | Completed | पूर्ण हुआ | पूर्ण झाले | ಪೂರ್ಣಗೊಂಡಿದೆ |
 | `status_confirmed` | Shared | Confirmed | पुष्ट | निश्चित | ದೃಢೀಕರಿಸಲಾಗಿದೆ |
+| `status_deferred` | Shared | Deferred | स्थगित | पुढे ढकलले | ಮುಂದೂಡಲಾಗಿದೆ |
 | `status_delivered` | Shared | Delivered | डिलीवर हुआ | वितरित केले | ವಿತರಿಸಲಾಗಿದೆ |
+| `status_diagnosed` | Shared | Diagnosed | निदान पूर्ण | तपासणी पूर्ण | ಪರೀಕ್ಷಿಸಲಾಗಿದೆ |
+| `status_disbursed` | Shared | Disbursed | संवितरित | वितरित | ವಿತರಿಸಲಾಗಿದೆ |
 | `status_dispatched` | Shared | Dispatched | भेजा गया | पाठवले | ರವಾನಿಸಲಾಗಿದೆ |
 | `status_idle` | Shared | Idle | उपलब्ध | मोकळे | ಲಭ್ಯವಿದೆ |
+| `status_in_progress` | Shared | In Progress | प्रगति पर | प्रगतीपथावर | ಪ್ರಗತಿಯಲ್ಲಿದೆ |
+| `status_in_review` | Shared | In Review | समीक्षाधीन | पुनरावलोकनात | ಪರಿಶೀಲನೆಯಲ್ಲಿದೆ |
 | `status_inspected` | Shared | Inspected | जांच पूर्ण | तपासणी पूर्ण | ಪರಿಶೀಲಿಸಲಾಗಿದೆ |
 | `status_on_job` | Shared | On Job | काम पर | कामावर | ಕೆಲಸದಲ್ಲಿದ್ದಾರೆ |
+| `status_open` | Shared | Open | खुला | खुले | ತೆರೆದಿದೆ |
 | `status_pending` | Shared | Pending | लंबित | प्रलंबित | ಬಾಕಿ ಉಳಿದಿದೆ |
 | `status_rejected` | Shared | Rejected | अस्वीकृत | नाकारले | ತಿರಸ್ಕರಿಸಲಾಗಿದೆ |
 | `status_repair_chosen` | Shared | Repair Chosen | मरम्मत चुनी गई | दुरुस्ती निवडली | ದುರಸ್ತಿ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ |
 | `status_replace_chosen` | Shared | Replace Chosen | रिप्लेसमेंट चुनी गई | बदली निवडली | ಬದಲಿ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ |
+| `status_requested` | Shared | Requested | अनुरोधित | विनंती केली | ವಿನಂತಿಸಲಾಗಿದೆ |
+| `status_resolved` | Shared | Resolved | समाधान हुआ | निवारण झाले | ಪರಿಹರಿಸಲಾಗಿದೆ |
+| `status_sanctioned` | Shared | Sanctioned | स्वीकृत | मंजूर | ಮಂಜೂರಾಗಿದೆ |
 | `step_check` | Shared | Check | जांचें | तपासा | ಪರಿಶೀಲಿಸಿ |
 | `step_done` | Shared | Done | पूर्ण | पूर्ण | ಮುಗಿಯಿತು |
 | `step_go` | Shared | Go | जाएं | जा | ಹೋಗಿ |
@@ -687,6 +754,8 @@ Total verified keys: **756**
 | `tab_tracker` | Customer | Tracker | ट्रैकर | ट्रॅकर | ಟ್ರ್ಯಾಕರ್ |
 | `take_survey_btn` | Shared | Fill Survey for 10% Off | 10% छूट के लिए सर्वे भरें | 10% सुटीसाठी सर्व्हे भरा | 10% ರಿಯಾಯಿತಿಗಾಗಿ ಸಮೀಕ್ಷೆ ಭರ್ತಿ ಮಾಡಿ |
 | `tenor_months_param` | Shared | {tenor} Months | {tenor} महीने | {tenor} महिने | {tenor} ತಿಂಗಳುಗಳು |
+| `ticket_type_complaint` | Shared | Complaint | शिकायत | तक्रार | ದೂರು |
+| `ticket_type_feedback` | Shared | Feedback | प्रतिक्रिया | अभिप्राय | ಪ್ರತಿಕ್ರಿಯೆ |
 | `tickets_header` | Shared | Aarambh Bank Support Tickets | आरंभ बैंक सहायता टिकट | आरंभ बँक सहाय्य तिकीटे | ಆರಂಭ್ ಬ್ಯಾಂಕ್ ಬೆಂಬಲ ಟಿಕೆಟ್‌ಗಳು |
 | `tile_native_marketplace` | Shared | Native Marketplace | नेटिव मार्केटप्लेस | नेटिव्ह मार्केटप्लेस | ಸ್ಥಳೀಯ ಮಾರುಕಟ್ಟೆ |
 | `tile_zero_cost_emi` | Shared | Zero-cost EMI offers | जीरो-कॉस्ट ईएमआई ऑफ़र | शून्य-खर्च ईएमआय ऑफर्स | ಉಚಿತ ಇಎಂಐ ಕೊಡುಗೆಗಳು |

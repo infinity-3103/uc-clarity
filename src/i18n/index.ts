@@ -7,6 +7,13 @@ import { kn } from './kn';
 
 export * from './formatters';
 
+export function humanizeKey(key: string): string {
+  if (!key) return '';
+  let s = key.replace(/_label$/, '').replace(/^lbl_/, '').replace(/^status_/, '');
+  s = s.replace(/[_-]+/g, ' ').trim();
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
+}
+
 const dictionaries: Record<Language, Record<string, string>> = {
   en: en as Record<string, string>,
   hi: hi as Record<string, string>,
@@ -75,11 +82,18 @@ export function useT() {
         fallbackEvents.push({ key, lang: currentLanguage, language: currentLanguage });
         fallbackLog.push({ key, language: currentLanguage });
       }
-      text = (en as Record<string, string>)[key] !== undefined
-        ? (en as Record<string, string>)[key]
-        : fallback !== undefined
-        ? fallback
-        : key;
+      const enVal = (en as Record<string, string>)[key];
+      if (enVal !== undefined && enVal !== null && enVal !== '') {
+        text = enVal;
+      } else if (fallback !== undefined && fallback !== null && fallback !== '') {
+        text = fallback;
+      } else {
+        const isDev = Boolean((import.meta as any).env?.DEV);
+        if (isDev) {
+          console.error(`[i18n missing] Key "${key}" missing in English dictionary. Falling back to humanized string.`);
+        }
+        text = humanizeKey(key);
+      }
     }
 
     if (params && typeof text === 'string') {

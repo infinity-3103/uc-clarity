@@ -895,6 +895,21 @@ export const en = {
   ops_why_score_desc: 'Demand scores combine historical volume (40%), ambient climate stress (25%), appliance fleet age (20%), and open survey leads (15%).',
   ops_rebalance_action: 'Rebalance: suggest moves into this zone',
   ops_hot_regions_desc: 'Suggests repositioning idle pros to zones where demand exceeds coverage.',
+  order_thank_you_param: 'Thank you, {firstName}!',
+  order_copied: 'Copied!',
+  order_copy_ref: 'Copy',
+  order_timeline_confirmed: 'Confirmed',
+  order_timeline_dispatched: 'Dispatched',
+  order_timeline_delivered: 'Delivered',
+  order_timeline_installed: 'Installed',
+  order_trade_in_applied_note: 'Our technician will inspect and pick up your old {appliance} during installation. Trade-in credit of Rs {amount} has been applied.',
+  order_financing_applied_note: 'Financing via Aarambh Bank at Rs {emi}/mo for {tenor} months. 1-day cooling-off period active. Track or cancel under Tracker.',
+  order_view_tracker_btn: 'View in Tracker',
+  order_download_receipt_btn: 'Download Receipt',
+  order_processing_label: 'Confirming order...',
+  order_try_again_btn: 'Try Again',
+  delivery_address_label: 'Delivery Address:',
+  view_kfs_document_link: 'View Key Fact Statement (KFS)',
 };
 
 export type TranslationKey = keyof typeof en;

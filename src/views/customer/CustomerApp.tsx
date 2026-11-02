@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useStore } from '../../store/useStore';
-import { ApplianceType } from '../../domain/types';
+import { ApplianceType, DirectOrder } from '../../domain/types';
 import { APPLIANCE_FORMS } from '../../config/appliances';
 import { NATIVE_PURIFIERS, NEW_PRICE, SERVICE_FEE, BUYER_FIRST_SERVICE_DISCOUNT_PCT, MARKETPLACE_PRODUCTS } from '../../config/assumptions';
 import { ComparisonScreen } from '../../components/ComparisonScreen';
@@ -12,6 +12,7 @@ import { SurveyForm } from '../../components/SurveyForm';
 import { BankFeedbackSheet } from '../../components/BankFeedbackSheet';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { Toast } from '../../components/Toast';
+import { OrderConfirmationView } from '../../components/OrderConfirmationView';
 import { SURVEY_DISCOUNT_PCT } from '../../config/assumptions';
 import { isSurveyDiscountEligible, getSurveyDiscountAvailableDate, formatSurveyDiscountDate } from '../../domain/leads';
 import { useT } from '../../i18n';
@@ -52,6 +53,7 @@ import {
   X,
   MapPin,
   Search,
+  Loader2,
   Sparkles,
   Tag,
 } from 'lucide-react';
@@ -147,6 +149,8 @@ export const CustomerApp: React.FC = () => {
   const [isFullPaymentOpen, setIsFullPaymentOpen] = useState<boolean>(false);
   const [fullPaymentMethod, setFullPaymentMethod] = useState<'FULL_UPI' | 'FULL_CARD' | 'FULL_NETBANKING'>('FULL_UPI');
   const [fullPaymentTradeIn, setFullPaymentTradeIn] = useState<number>(0);
+  const [isProcessingFullPayment, setIsProcessingFullPayment] = useState<boolean>(false);
+  const [fullPaymentCompletedOrder, setFullPaymentCompletedOrder] = useState<DirectOrder | null>(null);
   const [fullPaymentProduct, setFullPaymentProduct] = useState<{
     name: string;
     brand: string;
@@ -164,29 +168,38 @@ export const CustomerApp: React.FC = () => {
       category: activeReq.applianceType,
     });
     setFullPaymentTradeIn(tradeInCredit);
+    setFullPaymentCompletedOrder(null);
+    setIsProcessingFullPayment(false);
     setIsFullPaymentOpen(true);
   };
 
   const handleConfirmFullPayment = () => {
-    if (!fullPaymentProduct) return;
+    if (!fullPaymentProduct || isProcessingFullPayment) return;
+    setIsProcessingFullPayment(true);
 
     const netAmountPaid = Math.max(0, fullPaymentProduct.price - fullPaymentTradeIn);
 
-    placeDirectOrder({
-      customerId: customer.id,
-      productId: `prod-replace-${fullPaymentProduct.category.toLowerCase()}`,
-      productName: fullPaymentProduct.name,
-      brand: fullPaymentProduct.brand,
-      category: fullPaymentProduct.category,
-      price: fullPaymentProduct.price,
-      tradeInCredit: fullPaymentTradeIn,
-      paymentMethod: fullPaymentMethod,
-      deliverySlot: 'Tomorrow, 10:00 AM - 1:00 PM',
-    });
-    if (activeReq) {
-      selectCustomerChoice(activeReq.id, 'REPLACE');
-    }
-    setIsFullPaymentOpen(false);
+    setTimeout(() => {
+      try {
+        const order = placeDirectOrder({
+          customerId: customer.id,
+          productId: `prod-replace-${fullPaymentProduct.category.toLowerCase()}`,
+          productName: fullPaymentProduct.name,
+          brand: fullPaymentProduct.brand,
+          category: fullPaymentProduct.category,
+          price: fullPaymentProduct.price,
+          tradeInCredit: fullPaymentTradeIn,
+          paymentMethod: fullPaymentMethod,
+          deliverySlot: 'Tomorrow, 10:00 AM - 1:00 PM',
+        });
+        if (activeReq) {
+          selectCustomerChoice(activeReq.id, 'REPLACE');
+        }
+        setFullPaymentCompletedOrder(order);
+      } finally {
+        setIsProcessingFullPayment(false);
+      }
+    }, 800);
   };
 
   // Exit Survey State
@@ -261,7 +274,7 @@ export const CustomerApp: React.FC = () => {
       tradeInCredit: pendingLoanParams.tradeInCredit,
       path: customer.hasCreditHistory ? 'BUREAU' : 'AA',
     });
-    setIsKfsOpen(false);
+    // In-place confirmation: do not unmount KfsModal; KfsModal transitions to OrderConfirmationView
   };
 
   // Render Subscreens
@@ -1340,12 +1353,21 @@ export const CustomerApp: React.FC = () => {
         <>
           <KfsModal
             productName={pendingLoanParams.productName}
+            category={activeReq?.applianceType || 'AC'}
             principal={pendingLoanParams.principal}
             tenorMonths={pendingLoanParams.tenor}
             monthlyEMI={Math.round((pendingLoanParams.principal - pendingLoanParams.tradeInCredit) / pendingLoanParams.tenor)}
+            tradeInCredit={pendingLoanParams.tradeInCredit}
+            customerName={customer.name}
+            city={customer.city}
+            zoneId={customer.zoneId}
             isOpen={isKfsOpen}
             onClose={() => setIsKfsOpen(false)}
             onConfirm={handleConfirmLoan}
+            onViewTracker={() => {
+              setIsKfsOpen(false);
+              setCurrentTab('tracker');
+            }}
           />
 
           <AAConsentModal
@@ -1368,7 +1390,7 @@ export const CustomerApp: React.FC = () => {
       {/* Instant Full Payment Checkout Modal */}
       {isFullPaymentOpen && fullPaymentProduct && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-4 border border-slate-200 text-xs space-y-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-sm w-full p-4 border border-slate-200 text-xs space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-100 pb-2">
               <div>
                 <h4 className="font-bold text-sm text-slate-900">{t('one_time_full_payment_title')}</h4>
@@ -1376,77 +1398,110 @@ export const CustomerApp: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={() => setIsFullPaymentOpen(false)}
-                className="p-1 rounded text-slate-400 hover:text-slate-600"
+                onClick={() => {
+                  setIsFullPaymentOpen(false);
+                  setFullPaymentCompletedOrder(null);
+                  setIsProcessingFullPayment(false);
+                }}
+                className="p-1 rounded text-slate-400 hover:text-slate-600 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
-              <span className="font-semibold text-slate-900 block">{fullPaymentProduct.name}</span>
-              <div className="flex justify-between text-slate-500">
-                <span>{t('original_price_label')}</span>
-                <span>Rs {fullPaymentProduct.price.toLocaleString('en-IN')}</span>
-              </div>
-              {fullPaymentTradeIn > 0 && (
-                <div className="flex justify-between text-emerald-700 font-medium">
-                  <span>{t('old_unit_trade_in_label')}</span>
-                  <span>-Rs {fullPaymentTradeIn.toLocaleString('en-IN')}</span>
-                </div>
-              )}
-              <div className="flex justify-between font-bold text-slate-900 border-t border-slate-200 pt-1 text-sm">
-                <span>{t('total_amount_label')}</span>
-                <span>
-                  Rs {Math.max(
-                    0,
-                    fullPaymentProduct.price - fullPaymentTradeIn
-                  ).toLocaleString('en-IN')}
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="font-semibold text-slate-700 block">{t('select_payment_mode_label')}</label>
-              {PAYMENT_METHODS.map((m) => {
-                const Icon = m.icon;
-                return (
-                  <button
-                    key={m.id}
-                    type="button"
-                    onClick={() => setFullPaymentMethod(m.id as any)}
-                    className={`w-full p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
-                      fullPaymentMethod === m.id
-                        ? 'border-purple-600 bg-purple-50 text-purple-950 font-bold'
-                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Icon className="w-4 h-4 text-purple-600" />
-                      <span>{t(m.labelKey)}</span>
+            {fullPaymentCompletedOrder ? (
+              <OrderConfirmationView
+                order={fullPaymentCompletedOrder}
+                customerName={customer.name}
+                city={customer.city}
+                zoneId={customer.zoneId}
+                isMobile={true}
+                onViewTracker={() => {
+                  setIsFullPaymentOpen(false);
+                  setFullPaymentCompletedOrder(null);
+                  setCurrentTab('tracker');
+                }}
+                onClose={() => {
+                  setIsFullPaymentOpen(false);
+                  setFullPaymentCompletedOrder(null);
+                }}
+              />
+            ) : (
+              <>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+                  <span className="font-semibold text-slate-900 block">{fullPaymentProduct.name}</span>
+                  <div className="flex justify-between text-slate-500">
+                    <span>{t('original_price_label')}</span>
+                    <span>Rs {fullPaymentProduct.price.toLocaleString('en-IN')}</span>
+                  </div>
+                  {fullPaymentTradeIn > 0 && (
+                    <div className="flex justify-between text-emerald-700 font-medium">
+                      <span>{t('old_unit_trade_in_label')}</span>
+                      <span>-Rs {fullPaymentTradeIn.toLocaleString('en-IN')}</span>
                     </div>
-                  </button>
-                );
-              })}
-            </div>
+                  )}
+                  <div className="flex justify-between font-bold text-slate-900 border-t border-slate-200 pt-1 text-sm">
+                    <span>{t('total_amount_label')}</span>
+                    <span>
+                      Rs {Math.max(
+                        0,
+                        fullPaymentProduct.price - fullPaymentTradeIn
+                      ).toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
 
-            <div className="p-2.5 bg-emerald-50 rounded-lg border border-emerald-200 text-[11px] text-emerald-900 flex items-center gap-2">
-              <Truck className="w-4 h-4 shrink-0 text-emerald-700" />
-              <span>{t('complimentary_delivery_unboxing')}</span>
-            </div>
+                <div className="space-y-1.5">
+                  <label className="font-semibold text-slate-700 block">{t('select_payment_mode_label')}</label>
+                  {PAYMENT_METHODS.map((m) => {
+                    const Icon = m.icon;
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setFullPaymentMethod(m.id as any)}
+                        className={`w-full p-2.5 rounded-xl border text-left flex items-center justify-between transition-all ${
+                          fullPaymentMethod === m.id
+                            ? 'border-purple-600 bg-purple-50 text-purple-950 font-bold'
+                            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Icon className="w-4 h-4 text-purple-600" />
+                          <span>{t(m.labelKey)}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
 
-            <button
-              type="button"
-              onClick={handleConfirmFullPayment}
-              className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer"
-            >
-              {t('pay_rs_confirm_btn', {
-                amount: Math.max(
-                  0,
-                  fullPaymentProduct.price - fullPaymentTradeIn
-                ).toLocaleString('en-IN'),
-              })}
-            </button>
+                <div className="p-2.5 bg-emerald-50 rounded-lg border border-emerald-200 text-[11px] text-emerald-900 flex items-center gap-2">
+                  <Truck className="w-4 h-4 shrink-0 text-emerald-700" />
+                  <span>{t('complimentary_delivery_unboxing')}</span>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={isProcessingFullPayment}
+                  onClick={handleConfirmFullPayment}
+                  className="w-full py-2.5 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white font-bold rounded-xl shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2"
+                >
+                  {isProcessingFullPayment ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>{t('order_processing_label')}</span>
+                    </>
+                  ) : (
+                    t('pay_rs_confirm_btn', {
+                      amount: Math.max(
+                        0,
+                        fullPaymentProduct.price - fullPaymentTradeIn
+                      ).toLocaleString('en-IN'),
+                    })
+                  )}
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -3,6 +3,7 @@ import { useStore } from '../../store/useStore';
 import { MARKETPLACE_PRODUCTS } from '../../config/assumptions';
 import { MarketplaceProduct, ApplianceType } from '../../domain/types';
 import { ApplianceArt } from '../../components/ApplianceArt';
+import { OrderConfirmationView } from '../../components/OrderConfirmationView';
 import { useT, cityLabel, zoneLabel } from '../../i18n';
 import {
   Search,
@@ -16,6 +17,7 @@ import {
   X,
   ShoppingBag,
   CheckCircle2,
+  Loader2,
 } from 'lucide-react';
 
 const CATEGORIES = [
@@ -57,6 +59,7 @@ export const MarketplaceView: React.FC = () => {
   const [selectedTenor, setSelectedTenor] = useState<number>(12);
   const [applyTradeIn, setApplyTradeIn] = useState<boolean>(true);
   const [completedOrder, setCompletedOrder] = useState<any | null>(null);
+  const [isProcessingOrder, setIsProcessingOrder] = useState<boolean>(false);
 
   // Filtered & Sorted Products
   const filteredProducts = useMemo(() => {
@@ -82,31 +85,45 @@ export const MarketplaceView: React.FC = () => {
     setCheckoutProduct(product);
     setCheckoutType(type);
     setCompletedOrder(null);
+    setIsProcessingOrder(false);
   };
 
-  // Execute purchase
+  const handleCloseCheckout = () => {
+    setCheckoutProduct(null);
+    setCompletedOrder(null);
+    setIsProcessingOrder(false);
+  };
+
+  // Execute purchase with 1s processing state
   const handleExecuteOrder = () => {
-    if (!checkoutProduct) return;
+    if (!checkoutProduct || isProcessingOrder) return;
+    setIsProcessingOrder(true);
 
     const tradeInDiscount = applyTradeIn ? 3000 : 0;
     const finalPrice = Math.max(0, checkoutProduct.price - tradeInDiscount);
     const monthlyEMI = Math.round(finalPrice / selectedTenor);
 
-    const order = placeDirectOrder({
-      customerId: customer.id,
-      productId: checkoutProduct.id,
-      productName: checkoutProduct.name,
-      brand: checkoutProduct.brand,
-      category: checkoutProduct.category,
-      price: checkoutProduct.price,
-      tradeInCredit: tradeInDiscount,
-      paymentMethod: checkoutType === 'FULL' ? fullPaymentMethod : 'NO_COST_EMI',
-      tenorMonths: checkoutType === 'EMI' ? selectedTenor : undefined,
-      monthlyEMI: checkoutType === 'EMI' ? monthlyEMI : undefined,
-      deliverySlot: 'Tomorrow, 10:00 AM - 1:00 PM',
-    });
+    setTimeout(() => {
+      try {
+        const order = placeDirectOrder({
+          customerId: customer.id,
+          productId: checkoutProduct.id,
+          productName: checkoutProduct.name,
+          brand: checkoutProduct.brand,
+          category: checkoutProduct.category,
+          price: checkoutProduct.price,
+          tradeInCredit: tradeInDiscount,
+          paymentMethod: checkoutType === 'FULL' ? fullPaymentMethod : 'NO_COST_EMI',
+          tenorMonths: checkoutType === 'EMI' ? selectedTenor : undefined,
+          monthlyEMI: checkoutType === 'EMI' ? monthlyEMI : undefined,
+          deliverySlot: 'Tomorrow, 10:00 AM - 1:00 PM',
+        });
 
-    setCompletedOrder(order);
+        setCompletedOrder(order);
+      } finally {
+        setIsProcessingOrder(false);
+      }
+    }, 800);
   };
 
   return (
@@ -423,7 +440,7 @@ export const MarketplaceView: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={() => setCheckoutProduct(null)}
+                onClick={handleCloseCheckout}
                 className="p-1 rounded text-slate-400 hover:text-white"
               >
                 <X className="w-5 h-5" />
@@ -431,58 +448,14 @@ export const MarketplaceView: React.FC = () => {
             </div>
 
             {completedOrder ? (
-              /* Order Success Screen */
-              <div className="p-6 text-center space-y-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <div className="space-y-1">
-                  <h4 className="text-lg font-bold text-slate-900">{t('order_confirmed_title')}</h4>
-                  <p className="text-xs text-slate-600">
-                    {t('order_placed_desc', { product: completedOrder.productName })}
-                  </p>
-                </div>
-
-                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-left text-xs space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">{t('order_reference_label')}</span>
-                    <span className="font-mono font-bold text-slate-900">{completedOrder.id}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">{t('payment_option_label')}</span>
-                    <span className="font-semibold text-slate-900">{completedOrder.paymentMethod}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-500">{t('amount_paid_label')}</span>
-                    <span className="font-bold text-slate-900">
-                      Rs {completedOrder.finalPrice.toLocaleString('en-IN')}
-                    </span>
-                  </div>
-                  {completedOrder.monthlyEMI && (
-                    <div className="flex justify-between text-purple-700 font-semibold">
-                      <span>{t('monthly_installment')}</span>
-                      <span>
-                        {t('monthly_installment_param', {
-                          amount: completedOrder.monthlyEMI.toLocaleString('en-IN'),
-                          tenor: completedOrder.tenorMonths,
-                        })}
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex justify-between border-t border-slate-200 pt-2">
-                    <span className="text-slate-500">{t('delivery_slot_label')}</span>
-                    <span className="font-medium text-slate-800">{completedOrder.deliverySlot}</span>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setCheckoutProduct(null)}
-                  className="w-full py-2.5 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-xl shadow-xs cursor-pointer"
-                >
-                  {t('continue_shopping_btn')}
-                </button>
-              </div>
+              <OrderConfirmationView
+                order={completedOrder}
+                customerName={customer.name}
+                city={simulatedCity}
+                zoneId={customer.zoneId}
+                onContinueShopping={handleCloseCheckout}
+                onClose={handleCloseCheckout}
+              />
             ) : (
               /* Active Checkout Form */
               <div className="p-5 space-y-5 text-xs">
@@ -634,20 +607,35 @@ export const MarketplaceView: React.FC = () => {
                 </div>
 
                 {/* Final Confirm Button */}
+                {/* Final Confirm Button with processing state */}
                 <button
                   type="button"
+                  disabled={isProcessingOrder}
                   onClick={handleExecuteOrder}
-                  className="w-full py-3 bg-amber-400 hover:bg-amber-500 text-slate-950 font-black text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className={`w-full py-3 rounded-xl font-black text-sm shadow-md transition-all flex items-center justify-center gap-2 ${
+                    isProcessingOrder
+                      ? 'bg-amber-300 text-slate-700 cursor-not-allowed opacity-80'
+                      : 'bg-amber-400 hover:bg-amber-500 text-slate-950 cursor-pointer'
+                  }`}
                 >
-                  <span>
-                    {t('confirm_place_order_param', {
-                      amount: Math.max(
-                        0,
-                        applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price
-                      ).toLocaleString('en-IN'),
-                    })}
-                  </span>
-                  <ArrowRight className="w-4 h-4" />
+                  {isProcessingOrder ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-slate-900" />
+                      <span>{t('order_processing_label')}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>
+                        {t('confirm_place_order_param', {
+                          amount: Math.max(
+                            0,
+                            applyTradeIn ? Math.max(0, checkoutProduct.price - 3000) : checkoutProduct.price
+                          ).toLocaleString('en-IN'),
+                        })}
+                      </span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
               </div>
             )}

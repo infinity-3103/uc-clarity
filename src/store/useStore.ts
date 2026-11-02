@@ -701,7 +701,7 @@ export const useStore = create<AppStoreState>()(
           paymentMethod: orderData.paymentMethod,
           tenorMonths: orderData.tenorMonths,
           monthlyEMI: orderData.monthlyEMI,
-          deliverySlot: orderData.deliverySlot || 'Tomorrow, 11:00 AM - 2:00 PM',
+          deliverySlot: orderData.deliverySlot || 'Tomorrow, 10:00 AM - 1:00 PM',
           status: 'CONFIRMED',
           createdAt: get().simulatedDate,
         };

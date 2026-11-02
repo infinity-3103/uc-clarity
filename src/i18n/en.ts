@@ -782,6 +782,28 @@ export const en = {
   p_demand_by_category_param: 'Demand by Category in {city}:',
   p_leads_count_param: '{count} leads',
   p_pts_count_param: '{score} pts',
+
+  // Bank Feedback & In-App UI (Issue 2)
+  bank_feedback_title: 'Aarambh Bank Support & Feedback',
+  bank_mode_feedback: 'Feedback',
+  bank_mode_complaint: 'Complaint / Grievance',
+  bank_topic_loan_terms: 'Loan terms',
+  bank_topic_charges: 'Charges',
+  bank_topic_cooling_off: 'Cooling-off',
+  bank_topic_repayment: 'Repayment',
+  bank_topic_service: 'Service',
+  bank_topic_other: 'Other',
+  bank_rating_label: 'Rate your financing experience:',
+  bank_message_label: 'Your Message (minimum 10 characters):',
+  bank_message_placeholder: 'Describe your query, grievance, or feedback...',
+  bank_message_min_length: 'Please enter at least 10 characters.',
+  bank_success_title: 'Ticket Submitted Successfully',
+  bank_success_next_steps: 'Our customer grievance officer will review your ticket within 24 business hours.',
+  give_bank_feedback_link: 'Give feedback on Aarambh Bank',
+  tickets_header: 'Aarambh Bank Support Tickets',
+  p_tool_loan_applied_toast: 'Tool kit application submitted to Aarambh Bank.',
+  p_insurance_active_toast: 'Insurance certificate active for current season.',
+  p_advance_disbursed_toast: 'Advance of Rs 5,000 disbursed via UPI.',
 };
 
 export type TranslationKey = keyof typeof en;

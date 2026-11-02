@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '../store/useStore';
+import { ConfirmDialog } from './ConfirmDialog';
 import {
   Smartphone,
   Wrench,
@@ -11,6 +12,7 @@ import {
 } from 'lucide-react';
 
 export const TopBar: React.FC = () => {
+  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState<boolean>(false);
   const currentRole = useStore((state) => state.currentRole);
   const setRole = useStore((state) => state.setRole);
   const resetDemo = useStore((state) => state.resetDemo);
@@ -80,11 +82,7 @@ export const TopBar: React.FC = () => {
           </button>
 
           <button
-            onClick={() => {
-              if (window.confirm('Reset demo state back to seeded initial data?')) {
-                resetDemo();
-              }
-            }}
+            onClick={() => setIsResetConfirmOpen(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/30 text-slate-300 hover:text-rose-300 border border-slate-700 hover:border-rose-700/50 text-xs font-medium transition-all"
             title="Reset to Seeded Baseline"
           >
@@ -93,6 +91,18 @@ export const TopBar: React.FC = () => {
           </button>
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={isResetConfirmOpen}
+        title="Reset Demo"
+        message="Reset demo state back to seeded initial data?"
+        confirmLabel="Reset Demo"
+        onConfirm={() => {
+          resetDemo();
+          setIsResetConfirmOpen(false);
+        }}
+        onCancel={() => setIsResetConfirmOpen(false)}
+      />
     </header>
   );
 };

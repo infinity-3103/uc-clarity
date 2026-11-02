@@ -167,6 +167,28 @@ export interface AASummary {
   foir: number;
 }
 
+export type BankFeedbackType = 'FEEDBACK' | 'COMPLAINT';
+export type BankFeedbackTopic =
+  | 'LOAN_TERMS'
+  | 'CHARGES'
+  | 'COOLING_OFF'
+  | 'REPAYMENT'
+  | 'SERVICE'
+  | 'OTHER';
+export type BankFeedbackStatus = 'SUBMITTED' | 'UNDER_REVIEW' | 'RESOLVED';
+
+export interface BankFeedback {
+  id: string;
+  loanId?: string;
+  customerId: string;
+  type: BankFeedbackType;
+  topic: BankFeedbackTopic;
+  rating?: number;
+  message: string;
+  createdAt: string;
+  status: BankFeedbackStatus;
+}
+
 export interface LoanApplication {
   id: string;
   requestId: string;

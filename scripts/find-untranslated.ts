@@ -128,6 +128,8 @@ const ALLOWLIST_EXACT = new Set([
   'FULL_UPI',
   'FULL_CARD',
   'FULL_NETBANKING',
+  'COMPLAINT',
+  'FEEDBACK',
   'NO_COST_EMI',
   'REPAIR',
   'REPLACE',

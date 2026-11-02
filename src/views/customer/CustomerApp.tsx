@@ -9,6 +9,9 @@ import { KfsModal } from '../../components/KfsModal';
 import { AAConsentModal } from '../../components/AAConsentModal';
 import { ApplianceArt } from '../../components/ApplianceArt';
 import { SurveyForm } from '../../components/SurveyForm';
+import { BankFeedbackSheet } from '../../components/BankFeedbackSheet';
+import { ConfirmDialog } from '../../components/ConfirmDialog';
+import { Toast } from '../../components/Toast';
 import { SURVEY_DISCOUNT_PCT } from '../../config/assumptions';
 import { isSurveyDiscountEligible, getSurveyDiscountAvailableDate, formatSurveyDiscountDate } from '../../domain/leads';
 import { useT } from '../../i18n';
@@ -60,6 +63,7 @@ export const CustomerApp: React.FC = () => {
   const serviceRequests = useStore((state) => state.serviceRequests);
   const professionals = useStore((state) => state.professionals);
   const loanApplications = useStore((state) => state.loanApplications);
+  const bankFeedback = useStore((state) => state.bankFeedback);
   const nudges = useStore((state) => state.nudges);
   const bookService = useStore((state) => state.bookService);
   const selectCustomerChoice = useStore((state) => state.selectCustomerChoice);
@@ -105,6 +109,22 @@ export const CustomerApp: React.FC = () => {
     tradeInCredit: number;
     productName: string;
   } | null>(null);
+
+  // In-App Dialog & Bank Feedback State (Issue 2)
+  const [isBankFeedbackOpen, setIsBankFeedbackOpen] = useState<boolean>(false);
+  const [bankFeedbackMode, setBankFeedbackMode] = useState<'FEEDBACK' | 'COMPLAINT'>('COMPLAINT');
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const openBankComplaint = () => {
+    setBankFeedbackMode('COMPLAINT');
+    setIsBankFeedbackOpen(true);
+  };
+
+  const openBankFeedback = () => {
+    setBankFeedbackMode('FEEDBACK');
+    setIsBankFeedbackOpen(true);
+  };
 
   // Top App Mode Switcher: Services vs Native Marketplace
   const [appMode, setAppMode] = useState<'services' | 'native'>('services');
@@ -1025,22 +1045,59 @@ export const CustomerApp: React.FC = () => {
                       <span className="font-medium text-emerald-700">{t('scheduled_badge')}</span>
                     </div>
 
-                    {/* Grievance Action */}
-                    <div className="pt-1 flex justify-between text-[11px]">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const note = prompt(t('grievance_prompt_text'));
-                          if (note) raiseGrievance(customerLoan.id, note);
-                        }}
-                        className="text-purple-700 underline"
-                      >
-                        {t('raise_grievance_btn')}
-                      </button>
-                      {customerLoan.grievanceRaised && (
-                        <span className="text-amber-700 font-medium">{t('grievance_submitted_badge')}</span>
-                      )}
+                    {/* Grievance & Feedback Actions (Issue 2) */}
+                    <div className="pt-2 border-t border-slate-100 flex flex-col gap-1.5 text-[11px]">
+                      <div className="flex justify-between items-center">
+                        <button
+                          type="button"
+                          onClick={openBankComplaint}
+                          className="text-purple-700 font-semibold underline cursor-pointer"
+                        >
+                          {t('raise_grievance_btn')}
+                        </button>
+                        {customerLoan.grievanceRaised && (
+                          <span className="text-amber-700 font-medium">{t('grievance_submitted_badge')}</span>
+                        )}
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={openBankFeedback}
+                          className="text-purple-700 hover:text-purple-900 underline cursor-pointer"
+                        >
+                          {t('give_bank_feedback_link')}
+                        </button>
+                      </div>
                     </div>
+
+                    {/* Submitted Bank Tickets List */}
+                    {bankFeedback.filter((fb) => fb.customerId === customer.id).length > 0 && (
+                      <div className="mt-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+                        <span className="font-bold text-slate-800 text-[10px] uppercase tracking-wider block">
+                          {t('tickets_header')}
+                        </span>
+                        <div className="space-y-1">
+                          {bankFeedback
+                            .filter((fb) => fb.customerId === customer.id)
+                            .map((ticket) => (
+                              <div
+                                key={ticket.id}
+                                className="p-1.5 bg-white rounded-lg border border-slate-200 flex justify-between items-center text-[10px]"
+                              >
+                                <div>
+                                  <span className="font-mono font-bold text-purple-900 block">
+                                    {ticket.id} ({ticket.type})
+                                  </span>
+                                  <span className="text-slate-500 line-clamp-1">{ticket.message}</span>
+                                </div>
+                                <span className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 font-bold border border-amber-200 text-[9px]">
+                                  {ticket.status}
+                                </span>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -1272,17 +1329,8 @@ export const CustomerApp: React.FC = () => {
               </p>
               <button
                 type="button"
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      t('delete_confirm_prompt')
-                    )
-                  ) {
-                    deleteCustomerData(customer.id);
-                    alert(t('delete_success_alert'));
-                  }
-                }}
-                className="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-xs shadow-sm transition-colors"
+                onClick={() => setIsDeleteConfirmOpen(true)}
+                className="w-full py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-xs shadow-sm transition-colors cursor-pointer"
               >
                 {t('delete_my_data_btn')}
               </button>
@@ -1433,6 +1481,34 @@ export const CustomerApp: React.FC = () => {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Delete Data Confirmation Dialog (Issue 2) */}
+      <ConfirmDialog
+        isOpen={isDeleteConfirmOpen}
+        title={t('right_to_be_forgotten_title')}
+        message={t('delete_confirm_prompt')}
+        confirmLabel={t('delete_my_data_btn')}
+        onConfirm={() => {
+          deleteCustomerData(customer.id);
+          setIsDeleteConfirmOpen(false);
+          setToastMessage(t('delete_success_alert'));
+        }}
+        onCancel={() => setIsDeleteConfirmOpen(false)}
+      />
+
+      {/* Aarambh Bank Feedback & Grievance Bottom Sheet (Issue 2) */}
+      <BankFeedbackSheet
+        isOpen={isBankFeedbackOpen}
+        customerId={customer.id}
+        loanId={customerLoan?.id}
+        initialMode={bankFeedbackMode}
+        onClose={() => setIsBankFeedbackOpen(false)}
+      />
+
+      {/* In-App Toast Notices (Issue 2) */}
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
       )}
     </div>
   );

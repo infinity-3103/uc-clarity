@@ -7,6 +7,7 @@ import { Photo, ApplianceType } from '../../domain/types';
 import { computeCityDemand } from '../../domain/demand';
 import { planSalesDeployment } from '../../domain/allocation';
 import { PartnerDemoSelector } from '../../components/PartnerDemoSelector';
+import { Toast } from '../../components/Toast';
 import {
   cityLabel,
   zoneLabel,
@@ -76,6 +77,7 @@ export const ProfessionalApp: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<'jobs' | 'sales' | 'earnings' | 'loans' | 'demand'>('jobs');
   const [isSelectorOpen, setIsSelectorOpen] = useState<boolean>(false);
   const [isInspecting, setIsInspecting] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Active job for this professional
   const activeJob =
@@ -814,7 +816,7 @@ export const ProfessionalApp: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={() => alert('Tool kit application submitted to Aarambh Bank.')}
+                onClick={() => setToastMessage(t('p_tool_loan_applied_toast'))}
                 className="min-h-[56px] w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer"
               >
                 {t('p_apply_tool_loan_btn')}
@@ -834,7 +836,7 @@ export const ProfessionalApp: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={() => alert('Insurance certificate active for current season.')}
+                onClick={() => setToastMessage(t('p_insurance_active_toast'))}
                 className="min-h-[56px] w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer"
               >
                 {t('p_view_policy_btn')}
@@ -854,7 +856,7 @@ export const ProfessionalApp: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={() => alert('Advance of ₹5,000 disbursed via UPI.')}
+                onClick={() => setToastMessage(t('p_advance_disbursed_toast'))}
                 className="min-h-[56px] w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer"
               >
                 {t('p_withdraw_advance_btn')}
@@ -1016,6 +1018,10 @@ export const ProfessionalApp: React.FC = () => {
           );
         })}
       </div>
+
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
+      )}
     </div>
   );
 };

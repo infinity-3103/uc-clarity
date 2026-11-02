@@ -2,7 +2,7 @@
 
 This document provides the complete dictionary across all 4 supported languages: English (`en`), Hindi (`hi`), Marathi (`mr`), and Kannada (`kn`).
 
-Total verified keys: **736**
+Total verified keys: **756**
 
 | Key | Context | en | hi | mr | kn |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -66,6 +66,21 @@ Total verified keys: **736**
 | `badge_top_rated` | Assumption | Top Rated | टॉप रेटेड | टॉप रेटेड | ಉನ್ನತ ರೇಟಿಂಗ್ |
 | `badge_uc_flagship` | Assumption | UC Flagship | यूसी फ्लैगशिप | यूसी फ्लॅगशिप | ಯುಸಿ ಫ್ಲ್ಯಾಗ್‌ಶಿಪ್ |
 | `badge_value_pick` | Assumption | Value Pick | किफायती विकल्प | किफायतशीर पर्याय | ಉತ್ತಮ ಮೌಲ್ಯದ ಆಯ್ಕೆ |
+| `bank_feedback_title` | Shared | Aarambh Bank Support & Feedback | आरंभ बैंक सहायता और प्रतिक्रिया | आरंभ बँक सहाय्य आणि अभिप्राय | ಆರಂಭ್ ಬ್ಯಾಂಕ್ ಬೆಂಬಲ ಮತ್ತು ಪ್ರತಿಕ್ರಿಯೆ |
+| `bank_message_label` | Shared | Your Message (minimum 10 characters): | आपका संदेश (न्यूनतम 10 अक्षर): | तुमचा संदेश (किमान 10 अक्षरे): | ನಿಮ್ಮ ಸಂದೇಶ (ಕನಿಷ್ಠ 10 ಅಕ್ಷರಗಳು): |
+| `bank_message_min_length` | Shared | Please enter at least 10 characters. | कृपया कम से कम 10 अक्षर दर्ज करें। | कृपया किमान 10 अक्षरे प्रविष्ट करा. | ದಯವಿಟ್ಟು ಕನಿಷ್ಠ 10 ಅಕ್ಷರಗಳನ್ನು ನಮೂದಿಸಿ. |
+| `bank_message_placeholder` | Shared | Describe your query, grievance, or feedback... | अपने प्रश्न, शिकायत या प्रतिक्रिया का वर्णन करें... | तुमची शंका, तक्रार किंवा अभिप्राय लिहा... | ನಿಮ್ಮ ಪ್ರಶ್ನೆ, ದೂರು ಅಥವಾ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ವಿವರಿಸಿ... |
+| `bank_mode_complaint` | Shared | Complaint / Grievance | शिकायत / निवारण | तक्रार / निवारण | ದೂರು / ಪರಿಹಾರ |
+| `bank_mode_feedback` | Shared | Feedback | प्रतिक्रिया | अभिप्राय | ಪ್ರತಿಕ್ರಿಯೆ |
+| `bank_rating_label` | Shared | Rate your financing experience: | अपने वित्तीय अनुभव को रेट करें: | तुमच्या वित्तपुरवठा अनुभवाला रेटिंग द्या: | ನಿಮ್ಮ ಹಣಕಾಸು ಅನುಭವವನ್ನು ರೇಟ್ ಮಾಡಿ: |
+| `bank_success_next_steps` | Shared | Our customer grievance officer will review your ticket within 24 business hours. | हमारे ग्राहक शिकायत अधिकारी 24 व्यावसायिक घंटों के भीतर आपके टिकट की समीक्षा करेंगे। | आमचे ग्राहक तक्रार निवारण अधिकारी 24 व्यावसायिक तासांत तुमच्या तिकिटाचे पुनरावलोकन करतील. | ನಮ್ಮ ಗ್ರಾಹಕ ಕುಂದುಕೊರತೆ ಅಧಿಕಾರಿಗಳು 24 ವ್ಯವಹಾರ ಗಂಟೆಗಳ ಒಳಗೆ ನಿಮ್ಮ ಟಿಕೆಟ್ ಪರಿಶೀಲಿಸುತ್ತಾರೆ. |
+| `bank_success_title` | Shared | Ticket Submitted Successfully | टिकट सफलतापूर्वक जमा किया गया | तिकीट यशस्वीरित्या सादर केले | ಟಿಕೆಟ್ ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ |
+| `bank_topic_charges` | Shared | Charges | शुल्क | शुल्क | ಶುಲ್ಕಗಳು |
+| `bank_topic_cooling_off` | Shared | Cooling-off | कूलिंग-ऑफ | कूलिंग-ऑफ | ಕೂಲಿಂಗ್-ಆಫ್ |
+| `bank_topic_loan_terms` | Shared | Loan terms | ऋण की शर्तें | कर्जाच्या अटी | ಸಾಲದ ನಿಯಮಗಳು |
+| `bank_topic_other` | Shared | Other | अन्य | इतर | ಇತರ |
+| `bank_topic_repayment` | Shared | Repayment | पुनर्भुगतान | परतफेड | ಮರುಪಾವತಿ |
+| `bank_topic_service` | Shared | Service | सेवा | सेवा | ಸೇವೆ |
 | `banner_app_title` | Shared | Urban Company | अर्बन कंपनी | अर्बन कंपनी | ಅರ್ಬನ್ ಕಂಪನಿ |
 | `banner_dismiss` | Shared | Dismiss | हटाएं | हटवा | ವಜಾಗೊಳಿಸಿ |
 | `banner_now` | Shared | now | अभी | आत्ता | ಈಗ |
@@ -211,6 +226,7 @@ Total verified keys: **736**
 | `full_payment_title` | Shared | Complete Purchase | भुगतान पूरा करें | पेमेंट पूर्ण करा | ಖರೀದಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ |
 | `full_store_btn` | Shared | Full Store | पूरा स्टोर | संपूर्ण स्टोअर | ಸಂಪೂರ್ಣ ಮಳಿಗೆ |
 | `genuine_warranty` | Shared | Genuine Warranty | असली वारंटी | खरे वॉरंटी | ಅಸಲಿ ಖಾತರಿ |
+| `give_bank_feedback_link` | Shared | Give feedback on Aarambh Bank | आरंभ बैंक पर अपनी प्रतिक्रिया दें | आरंभ बँकेबद्दल अभिप्राय द्या | ಆರಂಭ್ ಬ್ಯಾಂಕ್ ಕುರಿತು ಪ್ರತಿಕ್ರಿಯೆ ನೀಡಿ |
 | `grant` | Shared | Grant | अनुमति दें | संमती द्या | ಸಮ್ಮತಿ ನೀಡಿ |
 | `grant_credit_assessment_consent` | Shared | Grant Credit Line Assessment Consent | क्रेडिट लाइन मूल्यांकन सहमति दें | क्रेडिट मूल्यांकन संमती द्या | ಕ್ರೆಡಿಟ್ ಮೌಲ್ಯಮಾಪನ ಸಮ್ಮತಿ ನೀಡಿ |
 | `grievance_prompt_text` | Shared | Describe grievance or feedback for Aarambh Bank: | आरंभ बैंक के लिए शिकायत या प्रतिक्रिया लिखें: | आरंभ बँकेसाठी तक्रार किंवा अभिप्राय लिहा: | ಆರಂಭ್ ಬ್ಯಾಂಕ್‌ಗಾಗಿ ದೂರು ಅಥವಾ ಪ್ರತಿಕ್ರಿಯೆ ಬರೆಯಿರಿ: |
@@ -431,6 +447,7 @@ Total verified keys: **736**
 | `orders_count_param` | Marketplace | {count} Orders | {count} ऑर्डर | {count} ऑर्डर्स | {count} ಆರ್ಡರ್‌ಗಳು |
 | `original_price_label` | Shared | Original Price: | मूल कीमत: | मूळ किंमत: | ಮೂಲ ಬೆಲೆ: |
 | `p_advance_desc` | Partner | Withdraw ₹5,000 against completed jobs | पूर्ण कार्यों के बदले ₹5,000 निकालें | पूर्ण केलेल्या कामांवर ₹5,000 उचल घ्या | ಪೂರ್ಣಗೊಂಡ ಕೆಲಸಗಳ ಮೇಲೆ ₹5,000 ಹಿಂಪಡೆಯಿರಿ |
+| `p_advance_disbursed_toast` | Partner | Advance of Rs 5,000 disbursed via UPI. | यूपीआई के माध्यम से Rs 5,000 का अग्रिम भुगतान किया गया। | यूपीआय द्वारे Rs 5,000 वितरित केले गेले. | ಯುಪಿಐ ಮೂಲಕ Rs 5,000 ವಿತರಿಸಲಾಗಿದೆ. |
 | `p_advance_title` | Partner | Instant Advance | त्वरित अग्रिम | तातडीची उचल | ತ್ವರಿತ ಮುಂಗಡ |
 | `p_apply_loan` | Partner | Check EMI Eligibility | ईएमआई पात्रता जांचें | ईएमआय पात्रता तपासा | ಇಎಂಐ ಅರ್ಹತೆ ಪರಿಶೀಲಿಸಿ |
 | `p_apply_tool_loan_btn` | Partner | Apply for Tool Loan | टूल ऋण के लिए आवेदन करें | साहित्य कर्जासाठी अर्ज करा | ಉಪಕರಣ ಸಾಲಕ್ಕೆ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ |
@@ -456,6 +473,7 @@ Total verified keys: **736**
 | `p_health_shield_title` | Partner | Accident & Health Shield | दुर्घटना और स्वास्थ्य सुरक्षा | अपघात व आरोग्य संरक्षण | ಅಪಘಾತ ಮತ್ತು ಆರೋಗ್ಯ ಕವಚ |
 | `p_high_demand` | Partner | High | उच्च | उच्च | ಹೆಚ್ಚು |
 | `p_inspection_form_title` | Partner | Inspection & Diagnostic Findings | जांच और तकनीकी निष्कर्ष | तपासणी आणि तांत्रिक निष्कर्ष | ತಪಾಸಣೆ ಮತ್ತು ತಾಂತ್ರಿಕ ವರದಿ |
+| `p_insurance_active_toast` | Partner | Insurance certificate active for current season. | वर्तमान सीज़न के लिए बीमा प्रमाणपत्र सक्रिय है। | चालू हंगामासाठी विमा प्रमाणपत्र सक्रिय आहे. | ಪ್ರಸ್ತುತ ಸೀಸನ್‌ಗಾಗಿ ವಿಮಾ ಪ್ರಮಾಣಪತ್ರ ಸಕ್ರಿಯವಾಗಿದೆ. |
 | `p_job_status_active` | Partner | In Progress | प्रगति पर | सुरू आहे | ಪ್ರಗತಿಯಲ್ಲಿದೆ |
 | `p_job_status_assigned` | Partner | Assigned | सौंपा गया | सोपवले | ನಿಯೋಜಿಸಲಾಗಿದೆ |
 | `p_job_status_completed` | Partner | Completed | पूर्ण हुआ | पूर्ण झाले | ಪೂರ್ಣಗೊಂಡಿದೆ |
@@ -513,6 +531,7 @@ Total verified keys: **736**
 | `p_tab_sales` | Partner | Sales | बिक्री | विक्री | ಮಾರಾಟ |
 | `p_target_free_track` | Partner | Target Free (Track Only) | टारगेट-मुक्त (केवल ट्रैक करें) | लक्ष्यमुक्त (फक्त ट्रॅक करा) | ಗುರಿ ಮುಕ್ತ (ಟ್ರ್ಯಾಕ್ ಮಾತ್ರ) |
 | `p_target_param` | Partner | Target: {zone} | लक्ष्य: {zone} | लक्ष्य: {zone} | ಗುರಿ: {zone} |
+| `p_tool_loan_applied_toast` | Partner | Tool kit application submitted to Aarambh Bank. | टूल किट आवेदन आरंभ बैंक में जमा कर दिया गया है। | टूल किट अर्ज आरंभ बँकेत सादर केला गेला आहे. | ಟೂಲ್ ಕಿಟ್ ಅರ್ಜಿಯನ್ನು ಆರಂಭ್ ಬ್ಯಾಂಕ್‌ಗೆ ಸಲ್ಲಿಸಲಾಗಿದೆ. |
 | `p_tool_loan_desc` | Partner | Up to ₹15,000 for verified equipment | सत्यापित उपकरणों के लिए ₹15,000 तक | प्रमाणित उपकरणांसाठी ₹15,000 पर्यंत | ದೃಢೀಕೃತ ಸಾಧನಗಳಿಗಾಗಿ ₹15,000 ವರೆಗೆ |
 | `p_tool_loan_title` | Partner | Tool Kit Loan | टूल किट ऋण | साहित्य संच कर्ज | ಉಪಕರಣ ಕಿಟ್ ಸಾಲ |
 | `p_top_zones` | Partner | Top 3 Zones in City | शहर के शीर्ष 3 क्षेत्र | शहरातील अव्वल 3 भाग | ನಗರದ ಟಾಪ್ 3 ವಲಯಗಳು |
@@ -668,6 +687,7 @@ Total verified keys: **736**
 | `tab_tracker` | Customer | Tracker | ट्रैकर | ट्रॅकर | ಟ್ರ್ಯಾಕರ್ |
 | `take_survey_btn` | Shared | Fill Survey for 10% Off | 10% छूट के लिए सर्वे भरें | 10% सुटीसाठी सर्व्हे भरा | 10% ರಿಯಾಯಿತಿಗಾಗಿ ಸಮೀಕ್ಷೆ ಭರ್ತಿ ಮಾಡಿ |
 | `tenor_months_param` | Shared | {tenor} Months | {tenor} महीने | {tenor} महिने | {tenor} ತಿಂಗಳುಗಳು |
+| `tickets_header` | Shared | Aarambh Bank Support Tickets | आरंभ बैंक सहायता टिकट | आरंभ बँक सहाय्य तिकीटे | ಆರಂಭ್ ಬ್ಯಾಂಕ್ ಬೆಂಬಲ ಟಿಕೆಟ್‌ಗಳು |
 | `tile_native_marketplace` | Shared | Native Marketplace | नेटिव मार्केटप्लेस | नेटिव्ह मार्केटप्लेस | ಸ್ಥಳೀಯ ಮಾರುಕಟ್ಟೆ |
 | `tile_zero_cost_emi` | Shared | Zero-cost EMI offers | जीरो-कॉस्ट ईएमआई ऑफ़र | शून्य-खर्च ईएमआय ऑफर्स | ಉಚಿತ ಇಎಂಐ ಕೊಡುಗೆಗಳು |
 | `total_amount_label` | Shared | Total Amount: | कुल राशि: | एकूण रक्कम: | ಒಟ್ಟು ಮೊತ್ತ: |

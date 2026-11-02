@@ -21,6 +21,7 @@ import {
   SurveyResponse,
   SalesLead,
   SurveyAnswerItem,
+  BankFeedback,
 } from '../domain/types';
 import { createSeedData } from '../data/seed';
 import { evaluateRecommendation } from '../domain/scoring';
@@ -70,6 +71,7 @@ export interface AppStoreState {
   currentLanguage: Language;
   surveyResponses: SurveyResponse[];
   salesLeads: SalesLead[];
+  bankFeedback: BankFeedback[];
 
   // Actions
   setRole: (role: 'customer' | 'professional' | 'ops' | 'marketplace' | 'split') => void;
@@ -150,6 +152,7 @@ export interface AppStoreState {
   advanceLoanCoolingOff: (loanId: string) => void;
   exitLoanCoolingOff: (loanId: string) => void;
   raiseGrievance: (loanId: string, note: string) => void;
+  addBankFeedback: (entry: Omit<BankFeedback, 'id' | 'createdAt' | 'status'>) => string;
   manualUnderwriteDecision: (loanId: string, decision: 'APPROVED' | 'REJECTED', reason: string) => void;
 
   // Professional programme
@@ -228,6 +231,7 @@ export const useStore = create<AppStoreState>()(
       currentLanguage: 'en',
       surveyResponses: initialSeed.surveyResponses || [],
       salesLeads: initialSeed.salesLeads || [],
+      bankFeedback: [],
 
       setRole: (role) => set({ currentRole: role }),
       setLanguage: (lang) => set({ currentLanguage: lang }),
@@ -820,6 +824,36 @@ export const useStore = create<AppStoreState>()(
         get().logEvent('Customer', 'GRIEVANCE_RAISED', { loanId, note });
       },
 
+      addBankFeedback: (entry) => {
+        const nextId = `BF-${String(get().bankFeedback.length + 1).padStart(4, '0')}`;
+        const newRecord: BankFeedback = {
+          id: nextId,
+          ...entry,
+          createdAt: get().simulatedDate,
+          status: 'SUBMITTED',
+        };
+
+        set((state) => ({
+          bankFeedback: [newRecord, ...state.bankFeedback],
+          loanApplications:
+            entry.loanId && entry.type === 'COMPLAINT'
+              ? state.loanApplications.map((l) =>
+                  l.id === entry.loanId
+                    ? { ...l, grievanceRaised: true, grievanceNote: entry.message }
+                    : l
+                )
+              : state.loanApplications,
+        }));
+
+        get().logEvent('Customer', entry.type === 'COMPLAINT' ? 'GRIEVANCE_RAISED' : 'BANK_FEEDBACK_SUBMITTED', {
+          feedbackId: nextId,
+          loanId: entry.loanId,
+          topic: entry.topic,
+        });
+
+        return nextId;
+      },
+
       manualUnderwriteDecision: (loanId, decision, reason) => {
         set((state) => ({
           loanApplications: state.loanApplications.map((l) =>
@@ -985,6 +1019,7 @@ export const useStore = create<AppStoreState>()(
           eventLog: fresh.eventLog,
           surveyResponses: fresh.surveyResponses || [],
           salesLeads: fresh.salesLeads || [],
+          bankFeedback: [],
         });
       },
     }),

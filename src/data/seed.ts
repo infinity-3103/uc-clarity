@@ -156,12 +156,120 @@ export function createSeedData() {
     ],
   });
 
-  // Additional 38 customers
+  // Demo Persona 3: Amit Patel (Kolkata, Salt Lake)
+  const amitConsents: ConsentRecord[] = [
+    { id: 'c-amit-diag', customerId: 'cust-amit', purpose: 'DIAGNOSTICS', granted: false, noticeVersion: 'v1', at: '2026-03-03T10:00:00Z' },
+    { id: 'c-amit-mktg', customerId: 'cust-amit', purpose: 'MARKETING', granted: false, noticeVersion: 'v1', at: '2026-03-03T10:00:00Z' },
+    { id: 'c-amit-credit', customerId: 'cust-amit', purpose: 'CREDIT_ASSESSMENT', granted: false, noticeVersion: 'v1', at: '2026-03-03T10:00:00Z' },
+    { id: 'c-amit-bank', customerId: 'cust-amit', purpose: 'BANK_SHARING', granted: false, noticeVersion: 'v1', at: '2026-03-03T10:00:00Z' },
+  ];
+
+  customers.push({
+    id: 'cust-amit',
+    name: 'Amit Patel',
+    phone: '+91 98300 45678',
+    city: 'Kolkata',
+    zoneId: 'zone-kolkata-salt-lake',
+    hasCreditHistory: true,
+    bureauScore: 680,
+    monthlyIncomeHint: 55000,
+    consents: amitConsents,
+    lastSurveyDiscountAt: '2025-08-15T10:00:00Z', // 7 months ago: eligible
+    appliances: [
+      {
+        id: 'app-amit-ac',
+        type: 'AC',
+        brand: 'Voltas',
+        ageYears: 8,
+        notes: 'note_ac_moderate_wear',
+      },
+      {
+        id: 'app-amit-washer',
+        type: 'WASHER',
+        brand: 'IFB',
+        ageYears: 5,
+        notes: 'note_washer_normal',
+      },
+    ],
+  });
+
+  // Demo Persona 4: Vikram Rao (Bengaluru, Indiranagar)
+  const vikramConsents: ConsentRecord[] = [
+    { id: 'c-vikram-diag', customerId: 'cust-vikram', purpose: 'DIAGNOSTICS', granted: false, noticeVersion: 'v1', at: '2026-03-04T10:00:00Z' },
+    { id: 'c-vikram-mktg', customerId: 'cust-vikram', purpose: 'MARKETING', granted: false, noticeVersion: 'v1', at: '2026-03-04T10:00:00Z' },
+    { id: 'c-vikram-credit', customerId: 'cust-vikram', purpose: 'CREDIT_ASSESSMENT', granted: false, noticeVersion: 'v1', at: '2026-03-04T10:00:00Z' },
+    { id: 'c-vikram-bank', customerId: 'cust-vikram', purpose: 'BANK_SHARING', granted: false, noticeVersion: 'v1', at: '2026-03-04T10:00:00Z' },
+  ];
+
+  customers.push({
+    id: 'cust-vikram',
+    name: 'Vikram Rao',
+    phone: '+91 98450 78901',
+    city: 'Bengaluru',
+    zoneId: 'zone-bengaluru-indiranagar',
+    hasCreditHistory: true,
+    bureauScore: 790,
+    monthlyIncomeHint: 140000,
+    consents: vikramConsents,
+    appliances: [
+      {
+        id: 'app-vikram-fridge',
+        type: 'FRIDGE',
+        brand: 'LG',
+        ageYears: 4,
+        notes: 'note_fridge_good_condition',
+      },
+      {
+        id: 'app-vikram-purifier',
+        type: 'PURIFIER',
+        brand: 'Kent',
+        ageYears: 3,
+        notes: 'note_purifier_filter_due',
+      },
+    ],
+  });
+
+  // Demo Persona 5: Priya Sharma (Delhi, Dwarka)
+  const priyaConsents: ConsentRecord[] = [
+    { id: 'c-priya-diag', customerId: 'cust-priya', purpose: 'DIAGNOSTICS', granted: false, noticeVersion: 'v1', at: '2026-03-05T10:00:00Z' },
+    { id: 'c-priya-mktg', customerId: 'cust-priya', purpose: 'MARKETING', granted: false, noticeVersion: 'v1', at: '2026-03-05T10:00:00Z' },
+    { id: 'c-priya-credit', customerId: 'cust-priya', purpose: 'CREDIT_ASSESSMENT', granted: false, noticeVersion: 'v1', at: '2026-03-05T10:00:00Z' },
+    { id: 'c-priya-bank', customerId: 'cust-priya', purpose: 'BANK_SHARING', granted: false, noticeVersion: 'v1', at: '2026-03-05T10:00:00Z' },
+  ];
+
+  customers.push({
+    id: 'cust-priya',
+    name: 'Priya Sharma',
+    phone: '+91 98110 23456',
+    city: 'Delhi',
+    zoneId: 'zone-delhi-dwarka',
+    hasCreditHistory: false,
+    monthlyIncomeHint: 38000,
+    consents: priyaConsents,
+    appliances: [
+      {
+        id: 'app-priya-ac',
+        type: 'AC',
+        brand: 'Daikin',
+        ageYears: 7,
+        notes: 'note_ac_weak_cooling',
+      },
+      {
+        id: 'app-priya-geyser',
+        type: 'GEYSER',
+        brand: 'Bajaj',
+        ageYears: 3,
+        notes: 'note_geyser_good',
+      },
+    ],
+  });
+
+  // Additional 35 customers
   const firstNames = ['Aarav', 'Ananya', 'Rohan', 'Sneha', 'Vikram', 'Pooja', 'Aditya', 'Divya', 'Karan', 'Neha', 'Rahul', 'Priya', 'Amit', 'Tanvi', 'Manish', 'Simran', 'Suresh', 'Deepa', 'Gaurav', 'Isha'];
   const lastNames = ['Sharma', 'Patel', 'Deshmukh', 'Mukherjee', 'Nair', 'Iyer', 'Gupta', 'Banerjee', 'Rao', 'Reddy', 'Singh', 'Kulkarni', 'Joshi', 'Chopra', 'Malhotra', 'Bose'];
   const applianceTypesList: ApplianceType[] = ['AC', 'FRIDGE', 'WASHER', 'GEYSER', 'PURIFIER'];
 
-  for (let i = 3; i <= 40; i++) {
+  for (let i = 6; i <= 40; i++) {
     const isThinFile = i % 4 === 0;
     const cityObj = cityZoneConfigs[i % cityZoneConfigs.length];
     const zoneName = cityObj.zones[i % cityObj.zones.length];
@@ -196,7 +304,6 @@ export function createSeedData() {
         { id: `c-${custId}-bank`, customerId: custId, purpose: 'BANK_SHARING', granted: false, noticeVersion: 'v1', at: '2026-02-15T09:00:00Z' },
       ],
       appliances: ownedApps,
-      lastSurveyDiscountAt: i === 3 ? '2025-08-15T10:00:00Z' : undefined, // 7 months ago: eligible
     });
   }
 
@@ -900,7 +1007,7 @@ export function createSeedData() {
     },
     {
       id: 'srvy-seed-3',
-      customerId: 'cust-3',
+      customerId: 'cust-priya',
       city: 'Delhi',
       zoneId: 'zone-delhi-dwarka',
       answers: [
@@ -916,7 +1023,7 @@ export function createSeedData() {
     },
     {
       id: 'srvy-seed-4',
-      customerId: 'cust-4',
+      customerId: 'cust-vikram',
       city: 'Bengaluru',
       zoneId: 'zone-bengaluru-whitefield',
       answers: [
@@ -932,7 +1039,7 @@ export function createSeedData() {
     },
     {
       id: 'srvy-seed-5',
-      customerId: 'cust-5',
+      customerId: 'cust-amit',
       city: 'Kolkata',
       zoneId: 'zone-kolkata-salt-lake',
       answers: [
@@ -983,7 +1090,7 @@ export function createSeedData() {
       appliance: 'WASHER',
       city: 'Delhi',
       zoneId: 'zone-delhi-dwarka',
-      customerId: 'cust-3',
+      customerId: 'cust-priya',
       priority: 'HIGH',
       priorityScore: 5,
       createdAt: '2026-03-12T10:16:00Z',
@@ -997,7 +1104,7 @@ export function createSeedData() {
       appliance: 'PURIFIER',
       city: 'Bengaluru',
       zoneId: 'zone-bengaluru-whitefield',
-      customerId: 'cust-4',
+      customerId: 'cust-vikram',
       priority: 'HIGH',
       priorityScore: 6,
       createdAt: '2026-03-12T11:46:00Z',
@@ -1011,7 +1118,7 @@ export function createSeedData() {
       appliance: 'GEYSER',
       city: 'Kolkata',
       zoneId: 'zone-kolkata-salt-lake',
-      customerId: 'cust-5',
+      customerId: 'cust-amit',
       priority: 'HIGH',
       priorityScore: 8,
       createdAt: '2026-03-13T09:21:00Z',

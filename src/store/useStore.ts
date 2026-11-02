@@ -235,7 +235,15 @@ export const useStore = create<AppStoreState>()(
 
       setRole: (role) => set({ currentRole: role }),
       setLanguage: (lang) => set({ currentLanguage: lang }),
-      selectCustomer: (customerId) => set({ selectedCustomerId: customerId }),
+      selectCustomer: (customerId) => {
+        const cust = get().customers.find((c) => c.id === customerId);
+        const activeReq = get().serviceRequests.find((r) => r.customerId === customerId);
+        set({
+          selectedCustomerId: customerId,
+          activeRequestId: activeReq ? activeReq.id : null,
+          simulatedCity: cust?.city || get().simulatedCity,
+        });
+      },
       selectProfessional: (proId) => set({ selectedProfessionalId: proId }),
       setActiveRequestId: (requestId) => set({ activeRequestId: requestId }),
       setSimulatedDate: (date) => set({ simulatedDate: date }),

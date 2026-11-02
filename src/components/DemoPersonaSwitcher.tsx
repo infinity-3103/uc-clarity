@@ -14,58 +14,51 @@ export const DemoPersonaSwitcher: React.FC = () => {
   const activeCustomer = customers.find((c) => c.id === selectedCustomerId) || customers[0];
   const activeReqs = serviceRequests.filter((r) => r.customerId === activeCustomer?.id);
 
-  const personas = [
-    {
-      id: 'cust-riya',
-      name: 'Riya Mehta',
-      city: 'Mumbai',
-      creditType: 'BUREAU',
-      score: 742,
-      desc: 'Prime credit score. Directly opens Key Fact Statement (KFS) without bank statement review.',
-      tag: 'Bureau Prime Path',
-      color: 'border-purple-300 bg-purple-50 text-purple-950',
-    },
-    {
-      id: 'cust-arjun',
-      name: 'Arjun Verma',
-      city: 'Pune',
-      creditType: 'THIN_FILE',
-      score: null,
-      desc: 'No credit bureau history. Requires RBI Account Aggregator (AA) consent for cashflow underwriting.',
-      tag: 'Thin-File AA Path',
-      color: 'border-amber-300 bg-amber-50 text-amber-950',
-    },
-    {
-      id: 'cust-amit',
-      name: 'Amit Patel',
-      city: 'Kolkata',
-      creditType: 'BUREAU',
-      score: 680,
-      desc: 'Moderate bureau credit score. Eligible for standard 3 to 9-month Aarambh Bank tenors.',
-      tag: 'Bureau Standard',
-      color: 'border-blue-300 bg-blue-50 text-blue-950',
-    },
-    {
-      id: 'cust-vikram',
-      name: 'Vikram Rao',
-      city: 'Bengaluru',
-      creditType: 'BUREAU',
-      score: 790,
-      desc: 'Super-prime credit history. Instant pre-approved loan sanctions up to 24-month tenors.',
-      tag: 'Bureau Super-Prime',
-      color: 'border-emerald-300 bg-emerald-50 text-emerald-950',
-    },
-    {
-      id: 'cust-priya',
-      name: 'Priya Sharma',
-      city: 'Delhi',
-      creditType: 'THIN_FILE',
-      score: null,
-      desc: 'First-time credit applicant. Evaluated through bank transaction cashflow and average balance.',
-      tag: 'Thin-File AA Path',
-      color: 'border-rose-300 bg-rose-50 text-rose-950',
-    },
-  ];
+  // Build persona list dynamically from store.customers
+  const personas = customers.slice(0, 5).map((c) => {
+    const isThin = !c.hasCreditHistory;
+    const isSuperPrime = c.bureauScore && c.bureauScore >= 750;
+    const isPrime = c.bureauScore && c.bureauScore >= 700 && c.bureauScore < 750;
+
+    const tag = isThin
+      ? 'Thin-File AA Path'
+      : isSuperPrime
+      ? 'Bureau Super-Prime'
+      : isPrime
+      ? 'Bureau Prime Path'
+      : 'Bureau Standard';
+
+    const desc = isThin
+      ? c.id === 'cust-priya'
+        ? 'First-time credit applicant. Evaluated through bank transaction cashflow and average balance.'
+        : 'No credit bureau history. Requires RBI Account Aggregator (AA) consent for cashflow underwriting.'
+      : isSuperPrime
+      ? 'Super-prime credit history. Instant pre-approved loan sanctions up to 24-month tenors.'
+      : isPrime
+      ? 'Prime credit score. Directly opens Key Fact Statement (KFS) without bank statement review.'
+      : 'Moderate bureau credit score. Eligible for standard 3 to 9-month Aarambh Bank tenors.';
+
+    const color = isThin
+      ? c.id === 'cust-priya'
+        ? 'border-rose-300 bg-rose-50 text-rose-950'
+        : 'border-amber-300 bg-amber-50 text-amber-950'
+      : isSuperPrime
+      ? 'border-emerald-300 bg-emerald-50 text-emerald-950'
+      : isPrime
+      ? 'border-purple-300 bg-purple-50 text-purple-950'
+      : 'border-blue-300 bg-blue-50 text-blue-950';
+
+    return {
+      id: c.id,
+      name: c.name,
+      city: c.city,
+      creditType: isThin ? 'THIN_FILE' : 'BUREAU',
+      score: c.bureauScore || null,
+      desc,
+      tag,
+      color,
+    };
+  });
 
   return (
     <div className="bg-white rounded-3xl border border-slate-200/90 shadow-lg p-5 space-y-4 text-slate-800">
@@ -135,8 +128,16 @@ export const DemoPersonaSwitcher: React.FC = () => {
           return (
             <div
               key={p.id}
+              role="button"
+              tabIndex={0}
               onClick={() => selectCustomer(p.id)}
-              className={`p-3 rounded-2xl border text-xs cursor-pointer transition-all flex flex-col justify-between space-y-1.5 ${
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  selectCustomer(p.id);
+                }
+              }}
+              className={`p-3 rounded-2xl border text-xs cursor-pointer transition-all flex flex-col justify-between space-y-1.5 focus:outline-none focus:ring-2 focus:ring-purple-500 ${
                 isSelected
                   ? 'border-purple-600 bg-purple-50/70 shadow-sm ring-1 ring-purple-500'
                   : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/80'

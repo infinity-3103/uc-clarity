@@ -22,6 +22,7 @@ export const PartnerDemoSelector: React.FC<PartnerDemoSelectorProps> = ({
   const serviceRequests = useStore((state) => state.serviceRequests);
   const zones = useStore((state) => state.zones);
   const salesLeads = useStore((state) => state.salesLeads);
+  const setSimulatedCity = useStore((state) => state.setSimulatedCity);
   const { t } = useT();
 
   const currentPro = professionals.find((p) => p.id === selectedProId) || professionals[0];
@@ -32,7 +33,7 @@ export const PartnerDemoSelector: React.FC<PartnerDemoSelectorProps> = ({
     if (currentPro && currentPro.city !== activeCity) {
       setActiveCity(currentPro.city);
     }
-  }, [selectedProId]);
+  }, [selectedProId, currentPro?.city]);
 
   // Derived sales deployments
   const salesDeployments = planSalesDeployment(professionals, zones, salesLeads);
@@ -42,8 +43,18 @@ export const PartnerDemoSelector: React.FC<PartnerDemoSelectorProps> = ({
 
   const handleSelect = (proId: string) => {
     selectProfessional(proId);
+    setSimulatedCity(activeCity);
     if (onPartnerSelect) {
       onPartnerSelect(proId);
+    }
+  };
+
+  const handleCityClick = (city: City) => {
+    setActiveCity(city);
+    setSimulatedCity(city);
+    const firstProInCity = professionals.find((p) => p.city === city);
+    if (firstProInCity) {
+      selectProfessional(firstProInCity.id);
     }
   };
 
@@ -64,8 +75,8 @@ export const PartnerDemoSelector: React.FC<PartnerDemoSelectorProps> = ({
               <button
                 key={city}
                 type="button"
-                onClick={() => setActiveCity(city)}
-                className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all shrink-0 flex items-center gap-1 cursor-pointer ${
+                onClick={() => handleCityClick(city)}
+                className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all shrink-0 flex items-center gap-1 cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500 ${
                   isSelected
                     ? 'bg-slate-900 text-white shadow-xs'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'

@@ -209,16 +209,27 @@ export const CityHeatMap: React.FC<CityHeatMapProps> = ({
     return planSalesDeployment(professionals, zones, salesLeads, demandContext);
   }, [professionals, zones, salesLeads, demandContext]);
 
-  // Compute demand for each zone strictly via computeZoneDemand
+  // Compute demand for each zone strictly via computeZoneDemand with dynamic normalization
   const zoneCalculations = useMemo(() => {
     const category =
       applianceFilter === 'ALL' ? 'ALL' : (applianceFilter as ApplianceType);
 
-    return cityZones.map((zone) => {
+    const rawList = cityZones.map((zone) => {
       const demandRes = computeZoneDemand(zone, category, rangeDays, demandContext);
-      const demandScore = demandRes.score;
-      const level: DemandBand = demandRes.level;
+      return {
+        zone,
+        demandRes,
+        demandScore: demandRes.score,
+        level: demandRes.level,
+      };
+    });
 
+    const scores = rawList.map((r) => r.demandScore);
+    const minDemand = scores.length > 0 ? Math.min(...scores) : 0;
+    const maxDemand = scores.length > 0 ? Math.max(...scores) : 100;
+    const scoreRange = Math.max(1, maxDemand - minDemand);
+
+    return rawList.map(({ zone, demandRes, demandScore, level }, index) => {
       const prosInZone = professionals.filter(
         (p) => p.zoneId === zone.id && p.city === selectedCity
       );
@@ -237,22 +248,22 @@ export const CityHeatMap: React.FC<CityHeatMapProps> = ({
         label: zone.name,
       };
 
-      // Single-hue purple gradient styling
-      let fillClass = 'rgba(147, 51, 234, 0.18)'; // Low: soft lavender
-      let strokeColor = '#c084fc';
-      let badgeBg = 'bg-purple-50 text-purple-700 border-purple-200';
-      let radius = 48;
+      // Dynamic normalization within selected city (0.0 to 1.0)
+      const norm = (demandScore - minDemand) / scoreRange;
+      const radius = Math.round(38 + norm * 32); // 38px to 70px
+      const opacity = (0.18 + norm * 0.50).toFixed(2);
+      const fillClass = `rgba(107, 33, 168, ${opacity})`;
+      const strokeColor = norm > 0.65 ? '#581c87' : norm > 0.35 ? '#7e22ce' : '#c084fc';
+      const isDarkCircle = norm > 0.65;
 
+      // Collision offset: alternate vertical offset for odd/even index
+      const labelYOffset = (index % 2 === 0 || mapped.y < 150) ? 24 : -24;
+
+      let badgeBg = 'bg-purple-50 text-purple-700 border-purple-200';
       if (level === 'High') {
-        fillClass = 'rgba(107, 33, 168, 0.65)'; // High: deep vivid purple
-        strokeColor = '#581c87';
         badgeBg = 'bg-purple-900 text-purple-100 border-purple-950';
-        radius = 68;
       } else if (level === 'Medium') {
-        fillClass = 'rgba(126, 34, 206, 0.38)'; // Medium: medium purple
-        strokeColor = '#7e22ce';
         badgeBg = 'bg-purple-100 text-purple-800 border-purple-300';
-        radius = 56;
       }
 
       return {
@@ -273,6 +284,9 @@ export const CityHeatMap: React.FC<CityHeatMapProps> = ({
         strokeColor,
         badgeBg,
         radius,
+        norm,
+        isDarkCircle,
+        labelYOffset,
       };
     });
   }, [
@@ -491,22 +505,22 @@ export const CityHeatMap: React.FC<CityHeatMapProps> = ({
                     {z.demandScore}
                   </text>
 
-                  {/* Zone Name Badge */}
-                  <g transform="translate(0, 24)" className="pointer-events-none">
+                  {/* Zone Name Badge with Contrast and Collision Offset */}
+                  <g transform={`translate(0, ${z.labelYOffset})`} className="pointer-events-none">
                     <rect
                       x="-44"
                       y="-7"
                       width="88"
                       height="15"
                       rx="4"
-                      fill={isSelected ? '#581C87' : '#FFFFFF'}
-                      stroke={isSelected ? '#3B0764' : '#E2E8F0'}
+                      fill={isSelected ? '#581C87' : z.isDarkCircle ? '#3B0764' : '#FFFFFF'}
+                      stroke={isSelected ? '#3B0764' : z.isDarkCircle ? '#1E1B4B' : '#E2E8F0'}
                       strokeWidth="1"
                       className="filter drop-shadow-xs"
                     />
                     <text
                       y="4"
-                      fill={isSelected ? '#FFFFFF' : '#1E293B'}
+                      fill={isSelected || z.isDarkCircle ? '#FFFFFF' : '#1E293B'}
                       fontSize="8"
                       fontWeight="bold"
                       textAnchor="middle"
@@ -543,6 +557,25 @@ export const CityHeatMap: React.FC<CityHeatMapProps> = ({
                 </g>
               );
             })}
+
+            {/* Hover Tooltip Overlay */}
+            {hoveredZoneData && (
+              <g
+                transform={`translate(${Math.min(500, Math.max(180, hoveredZoneData.x))}, ${Math.max(50, hoveredZoneData.y - hoveredZoneData.radius - 16)})`}
+                className="pointer-events-none filter drop-shadow-md"
+              >
+                <rect x="-95" y="-40" width="190" height="52" rx="8" fill="#0F172A" opacity="0.95" />
+                <text y="-22" fill="#FFFFFF" fontSize="10" fontWeight="bold" textAnchor="middle">
+                  {hoveredZoneData.name}: {hoveredZoneData.demandScore} requests
+                </text>
+                <text y="-9" fill="#CBD5E1" fontSize="8" textAnchor="middle">
+                  Partners: {hoveredZoneData.activeProsCount} stationed • Coverage: {Math.round((hoveredZoneData.activeProsCount / Math.max(1, hoveredZoneData.demandScore)) * 100)}%
+                </text>
+                <text y="4" fill="#C084FC" fontSize="7.5" textAnchor="middle">
+                  Weather: {currentTemp}°C • {currentAQI} AQI • {currentHumidity}% RH
+                </text>
+              </g>
+            )}
           </svg>
 
           {/* Quick Map Footer Note */}
@@ -685,11 +718,40 @@ export const CityHeatMap: React.FC<CityHeatMapProps> = ({
                 className="w-full py-2 px-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-all flex items-center justify-center gap-2"
               >
                 <Navigation className="w-3.5 h-3.5" />
-                <span>Rebalance & Reposition to {inspectedZone.name}</span>
+                <span>{t('ops_rebalance_action')}</span>
               </button>
             </div>
           </div>
         )}
+      </div>
+
+      {/* Why This Score Breakdown Under Heatmap */}
+      <div className="p-4 bg-slate-50 border-t border-slate-200 space-y-2">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-purple-600" />
+          <span className="text-xs font-bold text-slate-800">{t('ops_why_score_title')}</span>
+        </div>
+        <p className="text-[11px] text-slate-600 leading-relaxed">
+          {t('ops_why_score_desc')}
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-[11px]">
+          <div className="p-2 bg-white rounded-lg border border-slate-200">
+            <div className="text-slate-400 font-medium">Historical Volume</div>
+            <div className="font-bold text-slate-800">40% weight</div>
+          </div>
+          <div className="p-2 bg-white rounded-lg border border-slate-200">
+            <div className="text-slate-400 font-medium">Ambient Weather</div>
+            <div className="font-bold text-slate-800">25% weight</div>
+          </div>
+          <div className="p-2 bg-white rounded-lg border border-slate-200">
+            <div className="text-slate-400 font-medium">Appliance Fleet Age</div>
+            <div className="font-bold text-slate-800">20% weight</div>
+          </div>
+          <div className="p-2 bg-white rounded-lg border border-slate-200">
+            <div className="text-slate-400 font-medium">Survey Leads</div>
+            <div className="font-bold text-slate-800">15% weight</div>
+          </div>
+        </div>
       </div>
     </div>
   );

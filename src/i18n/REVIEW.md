@@ -836,3 +836,14 @@ Total verified keys: **825**
 | `error_boundary_reset` | Shared | Reset Demo | डेमो रीसेट करें | डेमो रीसेट करा | ಡೆಮೊ ಮರುಹೊಂದಿಸಿ |
 | `error_boundary_retry` | Shared | Try Again | पुनः प्रयास करें | पुन्हा प्रयत्न करा | ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ |
 | `error_boundary_details` | Shared | Technical details | तकनीकी विवरण | तांत्रिक तपशील | ತಾಂತ್ರಿಕ ವಿವರಗಳು |
+| `ops_reposition_empty` | Ops | No repositioning needed in {city}. Demand is balanced. | {city} में किसी पुनर्स्थापन की आवश्यकता नहीं है। मांग संतुलित है। | {city} मध्ये कोणत्याही पुनर्स्थापनेची आवश्यकता नाही. मागणी संतुलित आहे. | {city} ನಲ್ಲಿ ಯಾವುದೇ ಮರುಹೊಂದಾಣಿಕೆ ಅಗತ್ಯವಿಲ್ಲ. ಬೇಡಿಕೆ ಸಮತೋಲನದಲ್ಲಿದೆ. |
+| `ops_reposition_pending` | Ops | Pending | लंबित | प्रलंबित | ಬಾಕಿ ಇದೆ |
+| `ops_reposition_applied` | Ops | Applied | लागू किया गया | लागू केले | ಅನ್ವಯಿಸಲಾಗಿದೆ |
+| `ops_reposition_apply` | Ops | Apply Suggestion | सुझाव लागू करें | सूचना लागू करा | ಸಲಹೆ ಅನ್ವಯಿಸಿ |
+| `ops_reposition_undo` | Ops | Undo | पूर्ववत करें | पूर्ववत करा | ರದ್ದುಮಾಡಿ |
+| `ops_reposition_gap` | Ops | +{gap} requests | +{gap} अनुरोध | +{gap} विनंत्या | +{gap} ವಿನಂತಿಗಳು |
+| `ops_coverage_ratio` | Ops | Coverage: {origin}% vs {dest}% | कवरेज: {origin}% बनाम {dest}% | कव्हरेज: {origin}% वि {dest}% | ವ್ಯಾಪ್ತಿ: {origin}% ವಿರುದ್ಧ {dest}% |
+| `ops_why_score_title` | Ops | Why this score? | यह स्कोर क्यों? | हा स्कोअर का? | ಈ ಸ್ಕೋರ್ ಏಕೆ? |
+| `ops_why_score_desc` | Ops | Demand scores combine historical volume (40%), ambient climate stress (25%), appliance fleet age (20%), and open survey leads (15%). | मांग स्कोर ऐतिहासिक मांग (40%), परिवेशी जलवायु तनाव (25%), उपकरण आयु (20%), और खुले सर्वेक्षण लीड (15%) को जोड़ते हैं। | मागणी स्कोअर ऐतिहासिक मागणी (४०%), हवामानाचा ताण (२५%), उपकरणांचे वय (२०%) आणि सर्व्हे लीड्स (१५%) एकत्र करतात. | ಬೇಡಿಕೆಯ ಸ್ಕೋರ್ ಐತಿಹಾಸಿಕ ಪ್ರಮಾಣ (40%), ಹವಾಮಾನ ಒತ್ತಡ (25%), ಉಪಕರಣಗಳ ವಯಸ್ಸು (20%), ಮತ್ತು ಸಮೀಕ್ಷೆಯ ಲೀಡ್‌ಗಳನ್ನು (15%) ಸಂಯೋಜಿಸುತ್ತದೆ. |
+| `ops_rebalance_action` | Ops | Rebalance: suggest moves into this zone | पुनर्संतुलन: इस क्षेत्र में स्थानांतरण का सुझाव दें | पुनर्संतुलन: या झोनमध्ये स्थलांतराची सूचना द्या | ಮರುಸಮತೋಲನ: ಈ ವಲಯಕ್ಕೆ ಸ್ಥಳಾಂತರವನ್ನು ಸೂಚಿಸಿ |
+| `ops_hot_regions_desc` | Ops | Suggests repositioning idle pros to zones where demand exceeds coverage. | खाली तकनीशियनों को उन क्षेत्रों में भेजने का सुझाव देता है जहां मांग कवरेज से अधिक है। | रिकाम्या तंत्रज्ञांना अशा झोनमध्ये पाठवण्याची सूचना देते जिथे मागणी कव्हरेजपेक्षा जास्त आहे। | ಬೇಡಿಕೆಯು ವ್ಯಾಪ್ತಿಗಿಂತ ಹೆಚ್ಚಿರುವ ವಲಯಗಳಿಗೆ ಖಾಲಿ ಇರುವ ತಂತ್ರಜ್ಞರನ್ನು ಮರುಹೊಂದಿಸಲು ಸೂಚಿಸುತ್ತದೆ. |

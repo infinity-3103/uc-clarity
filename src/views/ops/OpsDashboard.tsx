@@ -56,6 +56,7 @@ export const OpsDashboard: React.FC = () => {
   const deletionRequests = useStore((state) => state.deletionRequests);
   const repositionSuggestions = useStore((state) => state.repositionSuggestions);
   const applyRepositionSuggestion = useStore((state) => state.applyRepositionSuggestion);
+  const undoRepositionSuggestion = useStore((state) => state.undoRepositionSuggestion);
   const simulatedCity = useStore((state) => state.simulatedCity);
   const cityTemperatures = useStore((state) => state.cityTemperatures);
   const cityHumidity = useStore((state) => state.cityHumidity);
@@ -76,6 +77,7 @@ export const OpsDashboard: React.FC = () => {
 
   const [selectedCityForMap, setSelectedCityForMap] = useState<City>(simulatedCity);
   const [selectedApplianceFilter, setSelectedApplianceFilter] = useState<string>('ALL');
+  const [repositionCity, setRepositionCity] = useState<City>(simulatedCity);
 
   // Lead Filters: City & Appliance with Select All
   const [selectedLeadCities, setSelectedLeadCities] = useState<City[]>([
@@ -397,53 +399,173 @@ export const OpsDashboard: React.FC = () => {
               />
 
               {/* Repositioning Suggestions (Section 11) */}
-              <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
-                <div className="flex items-center justify-between">
+              <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                       Dynamic Repositioning Suggestions
                     </h3>
                     <p className="text-[11px] text-slate-500 mt-0.5">
-                      Suggests repositioning idle pros to zones where demand exceeds coverage.
+                      {t('ops_hot_regions_desc')}
                     </p>
                   </div>
                   <span className="text-xs font-semibold px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-300">
-                    {repositionSuggestions.filter((s) => !s.applied).length} pending
+                    {repositionSuggestions.filter((s) => !s.applied).length} {t('ops_reposition_pending')}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
-                  {repositionSuggestions.map((s) => (
-                    <div
-                      key={s.id}
-                      className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2 flex flex-col justify-between"
-                    >
-                      <div className="space-y-1">
-                        <div className="flex justify-between items-start">
-                          <span className="font-bold text-slate-900">{s.professionalName}</span>
-                          <span className="text-[10px] text-slate-500 font-medium px-1.5 py-0.5 rounded bg-white border border-slate-200">
-                            {s.travelMinutes}m travel
-                          </span>
-                        </div>
-                        <div className="text-[11px] text-purple-700 font-semibold">
-                          {s.fromZoneName} &rarr; {s.toZoneName}
-                        </div>
-                        <p className="text-[11px] text-slate-600 leading-snug">{s.reason}</p>
-                      </div>
+                {/* City Pills Filter with Pending Count Badges */}
+                <div className="flex flex-wrap gap-2 items-center pb-1">
+                  {(['Mumbai', 'Delhi', 'Bengaluru', 'Pune', 'Kolkata'] as City[]).map((c) => {
+                    const getCityForS = (s: typeof repositionSuggestions[0]): City => {
+                      const destZone = zones.find((z) => z.id === s.toZoneId);
+                      if (destZone) return destZone.city;
+                      const pro = professionals.find((p) => p.id === s.professionalId);
+                      return pro?.city || 'Mumbai';
+                    };
+                    const pendingCount = repositionSuggestions.filter(
+                      (s) => !s.applied && getCityForS(s) === c
+                    ).length;
+                    const isSelected = repositionCity === c;
+                    return (
                       <button
-                        disabled={s.applied}
-                        onClick={() => applyRepositionSuggestion(s.id)}
-                        className={`w-full py-1.5 rounded-lg font-semibold text-xs transition-colors mt-2 ${
-                          s.applied
-                            ? 'bg-emerald-100 text-emerald-800 cursor-default'
-                            : 'bg-purple-600 hover:bg-purple-700 text-white shadow-xs'
+                        key={c}
+                        type="button"
+                        onClick={() => setRepositionCity(c)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border ${
+                          isSelected
+                            ? 'bg-purple-600 text-white border-purple-600 shadow-xs'
+                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                         }`}
                       >
-                        {s.applied ? 'Suggestion Applied' : 'Apply Suggestion'}
+                        <span>{cityLabel(c, t)}</span>
+                        <span
+                          className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
+                            isSelected
+                              ? 'bg-white/20 text-white'
+                              : pendingCount > 0
+                              ? 'bg-amber-100 text-amber-800'
+                              : 'bg-slate-100 text-slate-500'
+                          }`}
+                        >
+                          {pendingCount}
+                        </span>
                       </button>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
+
+                {/* Suggestions List for Selected City */}
+                {(() => {
+                  const getCityForS = (s: typeof repositionSuggestions[0]): City => {
+                    const destZone = zones.find((z) => z.id === s.toZoneId);
+                    if (destZone) return destZone.city;
+                    const pro = professionals.find((p) => p.id === s.professionalId);
+                    return pro?.city || 'Mumbai';
+                  };
+                  const citySuggestions = repositionSuggestions.filter(
+                    (s) => getCityForS(s) === repositionCity
+                  );
+                  const pendingSuggestions = citySuggestions.filter((s) => !s.applied);
+                  const appliedSuggestions = citySuggestions.filter((s) => s.applied);
+
+                  return (
+                    <div className="space-y-4">
+                      {pendingSuggestions.length === 0 ? (
+                        <div className="p-8 bg-slate-50 border border-slate-200 rounded-xl text-center text-xs text-slate-500 font-medium">
+                          {t('ops_reposition_empty', { city: cityLabel(repositionCity, t) })}
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 pt-1">
+                          {pendingSuggestions.map((s) => (
+                            <div
+                              key={s.id}
+                              className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2.5 flex flex-col justify-between hover:border-purple-200 transition-colors"
+                            >
+                              <div className="space-y-1.5">
+                                <div className="flex justify-between items-start gap-1">
+                                  <div className="flex items-center gap-1.5">
+                                    <Wrench className="w-3.5 h-3.5 text-purple-600" />
+                                    <span className="font-bold text-slate-900">{s.professionalName}</span>
+                                  </div>
+                                  <span className="text-[10px] text-slate-500 font-medium px-1.5 py-0.5 rounded bg-white border border-slate-200">
+                                    {s.travelMinutes}m travel
+                                  </span>
+                                </div>
+
+                                <div className="text-[11px] text-purple-700 font-semibold flex items-center gap-1">
+                                  <span>{s.fromZoneName}</span>
+                                  <span className="text-slate-400">&rarr;</span>
+                                  <span>{s.toZoneName}</span>
+                                </div>
+
+                                <div className="flex flex-wrap gap-1.5 pt-0.5">
+                                  <span className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold text-[10px] border border-emerald-200">
+                                    {t('ops_reposition_gap', { gap: s.demandGap ?? 10 })}
+                                  </span>
+                                  <span className="px-1.5 py-0.5 rounded bg-purple-50 text-purple-700 font-medium text-[10px] border border-purple-200">
+                                    {t('ops_coverage_ratio', {
+                                      origin: s.originCoveragePct ?? 80,
+                                      dest: s.destCoveragePct ?? 40,
+                                    })}
+                                  </span>
+                                </div>
+
+                                <p className="text-[11px] text-slate-600 leading-snug">{s.reason}</p>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => applyRepositionSuggestion(s.id)}
+                                className="w-full py-1.5 px-3 rounded-lg font-semibold text-xs transition-colors bg-purple-600 hover:bg-purple-700 text-white shadow-xs"
+                              >
+                                {t('ops_reposition_apply')}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Applied Suggestions with Undo */}
+                      {appliedSuggestions.length > 0 && (
+                        <div className="pt-3 border-t border-slate-200/80 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                              {t('ops_reposition_applied')} ({appliedSuggestions.length})
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            {appliedSuggestions.map((s) => (
+                              <div
+                                key={s.id}
+                                className="p-3 bg-emerald-50/50 rounded-xl border border-emerald-200 text-xs space-y-2 flex flex-col justify-between"
+                              >
+                                <div className="space-y-1">
+                                  <div className="flex justify-between items-start">
+                                    <span className="font-bold text-slate-900">{s.professionalName}</span>
+                                    <span className="text-[10px] text-emerald-800 font-semibold px-1.5 py-0.5 rounded bg-emerald-100 border border-emerald-200">
+                                      Active in {s.toZoneName}
+                                    </span>
+                                  </div>
+                                  <div className="text-[11px] text-slate-600">
+                                    Moved from {s.fromZoneName}
+                                  </div>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => undoRepositionSuggestion(s.id)}
+                                  className="w-full py-1 rounded-lg font-semibold text-xs transition-colors bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 shadow-2xs"
+                                >
+                                  {t('ops_reposition_undo')}
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
               </div>
             </div>
           </div>

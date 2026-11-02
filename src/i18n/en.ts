@@ -884,6 +884,17 @@ export const en = {
   error_boundary_reset: 'Reset Demo',
   error_boundary_retry: 'Try Again',
   error_boundary_details: 'Technical details',
+  ops_reposition_empty: 'No repositioning needed in {city}. Demand is balanced.',
+  ops_reposition_pending: 'Pending',
+  ops_reposition_applied: 'Applied',
+  ops_reposition_apply: 'Apply Suggestion',
+  ops_reposition_undo: 'Undo',
+  ops_reposition_gap: '+{gap} requests',
+  ops_coverage_ratio: 'Coverage: {origin}% vs {dest}%',
+  ops_why_score_title: 'Why this score?',
+  ops_why_score_desc: 'Demand scores combine historical volume (40%), ambient climate stress (25%), appliance fleet age (20%), and open survey leads (15%).',
+  ops_rebalance_action: 'Rebalance: suggest moves into this zone',
+  ops_hot_regions_desc: 'Suggests repositioning idle pros to zones where demand exceeds coverage.',
 };
 
 export type TranslationKey = keyof typeof en;

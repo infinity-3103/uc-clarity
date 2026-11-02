@@ -361,6 +361,8 @@ export const LEAD_DEMAND_BOOST = 2; // +2 per open sales lead in zone & category
 
 
 // Survey Lead Scoring weights
+export const REPOSITION_MIN_GAP = 10; // Minimum demand gap required to suggest technician repositioning
+
 export const LEAD_AGE_POINTS: Record<string, number> = {
   UNDER_1: 0,
   '1_TO_3': 0,

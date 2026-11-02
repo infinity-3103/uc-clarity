@@ -191,6 +191,7 @@ export interface AppStoreState {
   toggleSalesModuleOptIn: (proId: string, optIn: boolean) => void;
   completeSalesTraining: (proId: string) => void;
   applyRepositionSuggestion: (suggestionId: string) => void;
+  undoRepositionSuggestion: (suggestionId: string) => void;
 
   // Campaign console
   sendCampaignNudges: (ruleId: string, holdoutPct?: number) => number;
@@ -257,7 +258,7 @@ export const useStore = create<AppStoreState>()(
       deletionRequests: initialSeed.deletionRequests,
       nudges: initialSeed.nudges,
       outcomes: initialSeed.outcomes,
-      repositionSuggestions: generateRepositionSuggestions(initialSeed.professionals, initialSeed.zones, 34),
+      repositionSuggestions: generateRepositionSuggestions(initialSeed.professionals, initialSeed.zones),
       eventLog: initialSeed.eventLog,
       activePushNotification: null,
       currentLanguage: 'en',
@@ -945,7 +946,23 @@ export const useStore = create<AppStoreState>()(
           ),
         }));
 
-        get().logEvent('Ops', 'REPOSITION_APPLIED', { suggestionId, proId: suggestion.professionalId });
+        get().logEvent('Ops', 'REPOSITION_APPLIED', { suggestionId, proId: suggestion.professionalId, toZoneId: suggestion.toZoneId });
+      },
+
+      undoRepositionSuggestion: (suggestionId) => {
+        const suggestion = get().repositionSuggestions.find((s) => s.id === suggestionId);
+        if (!suggestion) return;
+
+        set((state) => ({
+          professionals: state.professionals.map((p) =>
+            p.id === suggestion.professionalId ? { ...p, zoneId: suggestion.fromZoneId } : p
+          ),
+          repositionSuggestions: state.repositionSuggestions.map((s) =>
+            s.id === suggestionId ? { ...s, applied: false } : s
+          ),
+        }));
+
+        get().logEvent('Ops', 'REPOSITION_UNDONE', { suggestionId, proId: suggestion.professionalId, fromZoneId: suggestion.fromZoneId });
       },
 
       sendCampaignNudges: (ruleId, holdoutPct = 10) => {
@@ -1059,7 +1076,7 @@ export const useStore = create<AppStoreState>()(
           deletionRequests: fresh.deletionRequests,
           nudges: fresh.nudges,
           outcomes: fresh.outcomes,
-          repositionSuggestions: generateRepositionSuggestions(fresh.professionals, fresh.zones, 34),
+          repositionSuggestions: generateRepositionSuggestions(fresh.professionals, fresh.zones),
           eventLog: fresh.eventLog,
           surveyResponses: fresh.surveyResponses || [],
           salesLeads: fresh.salesLeads || [],

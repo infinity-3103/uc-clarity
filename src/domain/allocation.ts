@@ -1,5 +1,6 @@
-import { Professional, ServiceRequest, Zone, RepositionSuggestion, SalesDeployment, ApplianceType } from './types';
+import { Professional, ServiceRequest, Zone, RepositionSuggestion, SalesDeployment, ApplianceType, City } from './types';
 import { computeZoneDemand, DemandContext } from './demand';
+import { REPOSITION_MIN_GAP } from '../config/assumptions';
 
 // Guardrail G5: Weights for job assignment score S = 0.35*(1-travelTimeNorm) + 0.25*skillMatch + 0.20*ratingNorm + 0.20*slaFit
 // Conversion rate, past sales, and referral earnings are strictly excluded from allocation.
@@ -102,52 +103,107 @@ export function findBestProfessional(
 export function generateRepositionSuggestions(
   pros: Professional[],
   zones: Zone[],
-  simulatedTemperature: number = 32
+  city?: City | string,
+  applianceFilter?: ApplianceType | 'ALL',
+  demandContext?: DemandContext
 ): RepositionSuggestion[] {
-  const suggestions: RepositionSuggestion[] = [];
-  const idlePros = pros.filter((p) => p.online && (p.status === 'IDLE' || !p.status));
+  const citiesToProcess: City[] =
+    city && city !== 'ALL'
+      ? [city as City]
+      : Array.from(new Set(zones.map((z) => z.city as City)));
 
-  // Determine hot zones where forecast demand exceeds pro presence
-  zones.forEach((targetZone) => {
-    // Temperature boost for AC demand
-    const tempBoost = targetZone.city === 'Delhi' || targetZone.city === 'Mumbai' || simulatedTemperature >= 38 ? 1.4 : 1.0;
-    const recentDemands = targetZone.demandHistory.AC || [10, 12, 14];
-    const avgDemand = (recentDemands.slice(-3).reduce((a, b) => a + b, 0) / 3) * tempBoost;
+  const allSuggestions: RepositionSuggestion[] = [];
 
-    const prosInZone = pros.filter((p) => p.zoneId === targetZone.id && p.online).length;
+  citiesToProcess.forEach((targetCity) => {
+    const cityZones = zones.filter((z) => z.city === targetCity);
+    if (cityZones.length < 2) return;
 
-    if (avgDemand > prosInZone * 3 + 2) {
-      // Find eligible idle pro in adjacent zone within 25 min travel
-      for (const candidate of idlePros) {
-        if (candidate.zoneId === targetZone.id) continue;
-        const candidateZone = zones.find((z) => z.id === candidate.zoneId);
-        const adj = targetZone.adjacentZones.find((a) => a.zoneId === candidate.zoneId);
-        const travelMinutes = adj ? adj.travelMinutes : 20;
+    const cityPros = pros.filter(
+      (p) => p.city === targetCity && p.online && (p.status === 'IDLE' || !p.status)
+    );
+    if (cityPros.length === 0) return;
 
-        if (travelMinutes <= 25) {
-          // Check if candidate zone retains minimum coverage (at least 1 pro)
-          const remainingInOrigin = pros.filter((p) => p.zoneId === candidate.zoneId && p.online).length;
-          if (remainingInOrigin > 1) {
-            suggestions.push({
-              id: `repo-${candidate.id}-${targetZone.id}`,
-              professionalId: candidate.id,
-              professionalName: candidate.name,
-              fromZoneId: candidate.zoneId,
-              fromZoneName: candidateZone?.name || 'Origin',
-              toZoneId: targetZone.id,
-              toZoneName: targetZone.name,
-              travelMinutes,
-              reason: `High AC service demand expected in ${targetZone.name} due to elevated temperatures (${simulatedTemperature}°C). Origin zone maintains minimum service safety buffer.`,
-              applied: false,
-            });
-            break;
-          }
-        }
-      }
-    }
+    const categories: ApplianceType[] =
+      applianceFilter && applianceFilter !== 'ALL'
+        ? [applianceFilter]
+        : ['AC', 'FRIDGE', 'WASHER', 'GEYSER', 'PURIFIER'];
+
+    const usedProIds = new Set<string>();
+    const cityCandidates: RepositionSuggestion[] = [];
+
+    categories.forEach((appliance) => {
+      // Evaluate each potential destination zone in targetCity
+      cityZones.forEach((destZone) => {
+        const destDemand = computeZoneDemand(destZone, appliance, 90, demandContext).score;
+        if (destDemand <= 0) return;
+
+        const destProsSkilled = pros.filter(
+          (p) => p.city === targetCity && p.zoneId === destZone.id && p.skills.includes(appliance)
+        ).length;
+        const destCoverage = destProsSkilled / destDemand;
+
+        // Evaluate each potential origin zone in targetCity
+        cityZones.forEach((origZone) => {
+          if (origZone.id === destZone.id) return;
+
+          const origDemand = computeZoneDemand(origZone, appliance, 90, demandContext).score;
+          const demandGap = destDemand - origDemand;
+
+          // Meaningful demand gap check (dest - orig >= REPOSITION_MIN_GAP)
+          if (demandGap < REPOSITION_MIN_GAP) return;
+
+          const origSkilledPros = pros.filter(
+            (p) => p.city === targetCity && p.zoneId === origZone.id && p.skills.includes(appliance)
+          );
+          const origCoverage = origDemand > 0 ? origSkilledPros.length / origDemand : 1.0;
+
+          // Coverage check: destination zone coverage ratio must be strictly worse than origin zone coverage ratio
+          if (destCoverage >= origCoverage) return;
+
+          // Origin must not be starved: removing 1 partner must leave at least 1 skilled partner
+          if (origSkilledPros.length <= 1) return;
+
+          // Travel time check: must be 45 minutes or less
+          const adj = destZone.adjacentZones.find((a) => a.zoneId === origZone.id);
+          const travelMinutes = adj ? adj.travelMinutes : 30;
+          if (travelMinutes > 45) return;
+
+          // Find an idle candidate skilled for this appliance who has not been suggested yet
+          const candidate = cityPros.find(
+            (p) =>
+              p.zoneId === origZone.id &&
+              p.skills.includes(appliance) &&
+              !usedProIds.has(p.id)
+          );
+          if (!candidate) return;
+
+          usedProIds.add(candidate.id);
+          cityCandidates.push({
+            id: `repo-${candidate.id}-${destZone.id}`,
+            professionalId: candidate.id,
+            professionalName: candidate.name,
+            skill: appliance,
+            fromZoneId: origZone.id,
+            fromZoneName: origZone.name,
+            toZoneId: destZone.id,
+            toZoneName: destZone.name,
+            travelMinutes,
+            demandGap: Math.round(demandGap),
+            originCoveragePct: Math.round(origCoverage * 100),
+            destCoveragePct: Math.round(destCoverage * 100),
+            reason: `High ${appliance} demand (+${Math.round(demandGap)} requests, coverage ${Math.round(destCoverage * 100)}% vs ${Math.round(origCoverage * 100)}%)`,
+            applied: false,
+          });
+        });
+      });
+    });
+
+    // Top 5 suggestions per city sorted by demand gap descending
+    cityCandidates.sort((a, b) => (b.demandGap ?? 0) - (a.demandGap ?? 0));
+    allSuggestions.push(...cityCandidates.slice(0, 5));
   });
 
-  return suggestions;
+  return allSuggestions;
 }
 
 export interface LeaderboardEntry {

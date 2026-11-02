@@ -282,11 +282,15 @@ export interface RepositionSuggestion {
   id: string;
   professionalId: string;
   professionalName: string;
+  skill?: ApplianceType;
   fromZoneId: string;
   fromZoneName: string;
   toZoneId: string;
   toZoneName: string;
   travelMinutes: number;
+  demandGap?: number;
+  originCoveragePct?: number;
+  destCoveragePct?: number;
   reason: string;
   applied: boolean;
 }

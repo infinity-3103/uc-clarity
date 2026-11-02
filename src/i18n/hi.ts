@@ -13,7 +13,7 @@ export const hi: Record<TranslationKey, string> = {
   native_marketplace: 'UC Native',
   switch_to_service: 'सेवाएं',
   switch_to_native: 'नेटिव',
-  view_in_partner_app: 'पार्टनर ऐप में देखें',
+  new_job_assigned_chip: 'नया काम सौंपा गया',
   assigned_pro: 'सौंपे गए तकनीशियन',
   active_request: 'सक्रिय अनुरोध',
   track_status: 'स्थिति और जांच रिपोर्ट देखें',

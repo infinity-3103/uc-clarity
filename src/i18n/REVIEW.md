@@ -423,6 +423,7 @@ Total verified keys: **825**
 | `net_payable` | Shared | Net Payable | शुद्ध देय राशि | निव्वळ देय रक्कम | ನಿವ್ವಳ ಪಾವತಿಸಬೇಕಾದ ಮೊತ್ತ |
 | `net_price` | Shared | Net price: | शुद्ध देय राशि: | निव्वळ किंमत: | ನಿವ್ವಳ ಬೆಲೆ: |
 | `neutral_comparison_notice` | Shared | Impartial assessment calibrated strictly against transparent engineering benchmarks. | निष्पक्ष मूल्यांकन पारदर्शी इंजीनियरिंग मानकों के अनुसार कैलिब्रेट किया गया है। | पारदर्शक अभियांत्रिकी मानकांनुसार निष्पक्ष मूल्यांकन तयार केले आहे. | ಪಾರದರ್ಶಕ ಎಂಜಿನಿಯರಿಂಗ್ ಮಾನದಂಡಗಳ ಪ್ರಕಾರ ನಿಷ್ಪಕ್ಷಪಾತ ಮೌಲ್ಯಮಾಪನ ಮಾಡಲಾಗಿದೆ. |
+| `new_job_assigned_chip` | Shared | New job assigned | नया काम सौंपा गया | नवीन काम नियुक्त केले | ಹೊಸ ಕೆಲಸ ನಿಗದಿಪಡಿಸಲಾಗಿದೆ |
 | `new_price` | Shared | Replacement Price | रिप्लेसमेंट मूल्य | नवीन उपकरणाची किंमत | ಹೊಸ ಉಪಕರಣದ ಬೆಲೆ |
 | `next_question_btn` | Shared | Next Question | अगला प्रश्न | पुढील प्रश्न | ಮುಂದಿನ ಪ್ರಶ್ನೆ |
 | `no_active_bookings` | Shared | No active bookings found. Book a repair to view live diagnostic tracking. | कोई सक्रिय बुकिंग नहीं मिली। लाइव जांच ट्रैकिंग देखने के लिए मरम्मत बुक करें। | कोणतीही सक्रिय बुकिंग नाही. थेट तपासणी ट्रॅकिंग पाहण्यासाठी दुरुस्ती बुक करा. | ಯಾವುದೇ ಸಕ್ರಿಯ ಬುಕಿಂಗ್‌ಗಳಿಲ್ಲ. ಲೈವ್ ಟ್ರ್ಯಾಕಿಂಗ್ ನೋಡಲು ದುರಸ್ತಿ ಬುಕ್ ಮಾಡಿ. |
@@ -773,7 +774,6 @@ Total verified keys: **825**
 | `uc_direct_guaranteed` | Shared | UC Direct Guaranteed | UC डायरेक्ट गारंटी | UC डायरेक्ट हमी | UC ನೇರ ಖಾತರಿ |
 | `uc_home_services_banner` | Shared | Urban Company Home Services | अर्बन कंपनी होम सर्विसेज | अर्बन कंपनी होम सर्व्हिसेस | ಅರ್ಬನ್ ಕಂಪನಿ ಹೋಮ್ ಸರ್ವೀಸಸ್ |
 | `uc_store_title` | Shared | UC Appliance Store | यूसी उपकरण स्टोर | यूसी उपकरण स्टोअर | ಯುಸಿ ಉಪಕರಣಗಳ ಮಳಿಗೆ |
-| `view_in_partner_app` | Shared | View in partner app | पार्टनर ऐप में देखें | पार्टनर ॲपमध्ये पहा | ಪಾಲುದಾರ ಆಪ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ |
 | `visit_fee_illustrative` | Shared | Visit fee: Rs {amount} (illustrative) | विज़िट शुल्क: Rs {amount} (उदाहरणार्य) | भेट शुल्क: Rs {amount} (उदाहरणार्य) | ಭೇಟಿ ಶುಲ್ಕ: Rs {amount} (ಉದಾಹರಣೆ) |
 | `visit_fee_param` | Shared | Visit fee: Rs {amount} (illustrative) | जांच शुल्क: Rs {amount} (उदाहरणारार्थ) | भेट शुल्क: Rs {amount} (उदाहरणारार्थ) | ಭೇಟಿ ಶುಲ್ಕ: Rs {amount} (ಉದಾಹರಣೆಗಾಗಿ) |
 | `warranty` | Shared | Comprehensive Warranty | व्यापक वारंटी | सर्वसमावेशक हमी | ಸಮಗ್ರ ಖಾತರಿ |

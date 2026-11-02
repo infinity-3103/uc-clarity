@@ -444,9 +444,13 @@ export const useStore = create<AppStoreState>()(
           status: 'ASSIGNED',
         };
 
+        const assignedPro = pros.find((p) => p.id === assignedProId);
+
         set((state) => ({
           serviceRequests: [newReq, ...state.serviceRequests],
           activeRequestId: newReqId,
+          selectedProfessionalId: assignedProId,
+          simulatedCity: assignedPro?.city || customerCity,
         }));
 
         assertAllAssignmentsOpenable(get());

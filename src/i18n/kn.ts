@@ -13,7 +13,7 @@ export const kn: Record<TranslationKey, string> = {
   native_marketplace: 'UC Native',
   switch_to_service: 'ಸೇವೆಗಳು',
   switch_to_native: 'ನೇಟಿವ್',
-  view_in_partner_app: 'ಪಾಲುದಾರ ಆಪ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ',
+  new_job_assigned_chip: 'ಹೊಸ ಕೆಲಸ ನಿಗದಿಪಡಿಸಲಾಗಿದೆ',
   assigned_pro: 'ನಿಯೋಜಿಸಲಾದ ತಂತ್ರಜ್ಞ',
   active_request: 'ಸಕ್ರಿಯ ವಿನಂತಿ',
   track_status: 'ಸ್ಥಿತಿ ಮತ್ತು ತಪಾಸಣಾ ವರದಿ ನೋಡಿ',

@@ -43,6 +43,7 @@ import {
   ChevronUp,
   AlertCircle,
   HelpCircle,
+  Sparkles,
   Wind,
   Snowflake,
   WashingMachine,
@@ -428,6 +429,14 @@ export const ProfessionalApp: React.FC = () => {
               <div className="space-y-3">
                 {activeJob ? (
                   <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden space-y-4 p-4">
+                    {/* New Job Assigned Notification Chip */}
+                    {activeJob.status === 'ASSIGNED' && (
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs font-bold animate-pulse">
+                        <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>{t('new_job_assigned_chip')}</span>
+                      </div>
+                    )}
+
                     {/* Header with Appliance Icon & Status */}
                     <div className="flex items-start justify-between">
                       <div className="flex items-center gap-3">

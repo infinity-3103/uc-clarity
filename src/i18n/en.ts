@@ -11,7 +11,7 @@ export const en = {
   native_marketplace: 'UC Native',
   switch_to_service: 'Services',
   switch_to_native: 'Native',
-  view_in_partner_app: 'View in partner app',
+  new_job_assigned_chip: 'New job assigned',
   assigned_pro: 'Assigned pro',
   active_request: 'Active Request',
   track_status: 'Track Status & Diagnostic Findings',

@@ -579,22 +579,6 @@ export const CustomerApp: React.FC = () => {
                       rating: assignedPro?.rating || 4.7,
                     })}
                   </p>
-                  {assignedPro && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        selectProfessional(assignedPro.id);
-                        if (currentRole !== 'split') {
-                          setRole('professional');
-                        }
-                      }}
-                      className="px-2 py-1 bg-purple-100 hover:bg-purple-200 text-purple-900 rounded-lg text-[10px] font-bold flex items-center gap-1 cursor-pointer transition-colors"
-                      title={t('view_in_partner_app')}
-                    >
-                      <span>{t('view_in_partner_app')}</span>
-                      <ChevronRight className="w-3 h-3" />
-                    </button>
-                  )}
                 </div>
 
                 <button
@@ -879,22 +863,6 @@ export const CustomerApp: React.FC = () => {
                         <span>{assignedPro?.rating || 4.7}</span>
                       </div>
                     </div>
-
-                    {assignedPro && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          selectProfessional(assignedPro.id);
-                          if (currentRole !== 'split') {
-                            setRole('professional');
-                          }
-                        }}
-                        className="w-full py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-900 rounded-lg text-xs font-bold flex items-center justify-center gap-1 cursor-pointer transition-colors"
-                      >
-                        <span>{t('view_in_partner_app')}</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </button>
-                    )}
                   </div>
 
                   {/* Service Fee & Post-Booking Survey Discount Offer (Issue 1) */}

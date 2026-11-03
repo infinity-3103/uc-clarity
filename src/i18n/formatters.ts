@@ -46,6 +46,12 @@ export function applianceLabel(type: string | ApplianceType | undefined, t: Tran
  */
 export function faultLabel(fault: string | undefined, t: TranslateFn): string {
   if (!fault) return '';
+  if (fault.includes(',')) {
+    return fault
+      .split(',')
+      .map((f) => faultLabel(f.trim(), t))
+      .join(', ');
+  }
   const normalized = fault.toLowerCase().replace(/[^a-z0-9]/g, '_');
   const key = `fault_${normalized}`;
   return t(key, undefined, fault);
@@ -128,6 +134,12 @@ export function issueLabel(issue: string | undefined, t: TranslateFn): string {
  */
 export function optionLabel(option: string | undefined, t: TranslateFn): string {
   if (!option) return '';
+  if (option.includes(', ')) {
+    return option
+      .split(', ')
+      .map((opt) => optionLabel(opt.trim(), t))
+      .join(', ');
+  }
   const key = `opt_${option.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
   return t(key, undefined, option);
 }

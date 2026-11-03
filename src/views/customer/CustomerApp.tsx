@@ -38,6 +38,7 @@ import {
   Shield,
   ShoppingBag,
   Clock,
+  Check,
   CheckCircle2,
   Trash2,
   Download,
@@ -690,6 +691,49 @@ export const CustomerApp: React.FC = () => {
                       </div>
 
                       {/* Input based on type */}
+                      {field.type === 'multiselect' && (
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 gap-2">
+                            {field.options?.map((opt) => {
+                              const currentVal = String(bookingAnswers[field.key] || '');
+                              const selectedList = currentVal ? currentVal.split(', ').filter(Boolean) : [];
+                              const isSelected = selectedList.includes(opt);
+                              return (
+                                <button
+                                  key={opt}
+                                  type="button"
+                                  onClick={() => {
+                                    let nextList: string[];
+                                    if (isSelected) {
+                                      if (selectedList.length === 1) return; // Keep at least one selected
+                                      nextList = selectedList.filter((item) => item !== opt);
+                                    } else {
+                                      nextList = [...selectedList, opt];
+                                    }
+                                    setBookingAnswers({ ...bookingAnswers, [field.key]: nextList.join(', ') });
+                                  }}
+                                  className={`p-2.5 rounded-lg border text-xs font-medium text-left transition-all flex items-center justify-between cursor-pointer ${
+                                    isSelected
+                                      ? 'border-purple-600 bg-purple-50 text-purple-900 font-semibold ring-2 ring-purple-500/20'
+                                      : 'border-slate-200 hover:bg-slate-50 text-slate-700'
+                                  }`}
+                                >
+                                  <span>{optionLabel(opt, t)}</span>
+                                  {isSelected && <Check className="w-3.5 h-3.5 text-purple-600 stroke-[3]" />}
+                                </button>
+                              );
+                            })}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setSurveyStep(surveyStep + 1)}
+                            className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium cursor-pointer transition-colors"
+                          >
+                            {t('next_question_btn')}
+                          </button>
+                        </div>
+                      )}
+
                       {field.type === 'select' && (
                         <div className="grid grid-cols-2 gap-2">
                           {field.options?.map((opt) => (

@@ -120,6 +120,7 @@ const ALLOWLIST_EXACT = new Set([
   'ops',
   'select',
   'boolean',
+  'multiselect',
   'href',
   'download',
   'normal',

@@ -3,7 +3,7 @@ import { ApplianceType } from '../domain/types';
 export interface FormField {
   key: string;
   label: string;
-  type: 'select' | 'boolean' | 'number' | 'text';
+  type: 'select' | 'boolean' | 'number' | 'text' | 'multiselect';
   options?: string[];
   placeholder?: string;
   whyWeAsk?: string; // Sourced purpose for customer questions
@@ -210,7 +210,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       {
         key: 'symptom',
         label: 'lbl_fridge_condition',
-        type: 'select',
+        type: 'multiselect',
         options: ['not cooling', 'noise', 'ice build-up', 'leakage', 'other'],
         whyWeAsk: 'Pinpoints whether the fault lies in air distribution or the cooling circuit.',
         defaultValue: 'not cooling',
@@ -303,7 +303,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       {
         key: 'symptom',
         label: 'lbl_washer_condition',
-        type: 'select',
+        type: 'multiselect',
         options: ['not spinning', 'not draining', 'vibration', 'noise', 'error code', 'other'],
         whyWeAsk: 'Categorizes issue into drainage, drive motor, or balancing suspension.',
         defaultValue: 'not spinning',
@@ -406,7 +406,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       {
         key: 'symptom',
         label: 'lbl_geyser_condition',
-        type: 'select',
+        type: 'multiselect',
         options: ['not heating', 'leakage', 'tripping', 'noise'],
         whyWeAsk: 'Electrical tripping indicates safety earth leakage; leakage indicates tank stress.',
         defaultValue: 'not heating',
@@ -507,7 +507,7 @@ export const APPLIANCE_FORMS: Record<ApplianceType, ApplianceFormConfig> = {
       {
         key: 'symptom',
         label: 'lbl_purifier_condition',
-        type: 'select',
+        type: 'multiselect',
         options: ['low flow', 'bad taste', 'leakage', 'not starting'],
         whyWeAsk: 'Separates filter fouling from electrical power supply issues.',
         defaultValue: 'low flow',

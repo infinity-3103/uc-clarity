@@ -34,10 +34,39 @@ export function evaluateRecommendation(inputs: ScoringInputs): Recommendation {
   const expectedLife = EXPECTED_LIFE[applianceType] || 10;
   const newPrice = NEW_PRICE[applianceType] || 30000;
   const faultCatalog = FAULTS[applianceType] || {};
-  const repairCost = customRepairCost !== undefined ? customRepairCost : (faultCatalog[likelyFault] ?? 2000);
+  let repairCost: number;
+  if (customRepairCost !== undefined) {
+    repairCost = customRepairCost;
+  } else if (likelyFault && likelyFault.includes(',')) {
+    const individualFaults = likelyFault.split(',').map((f) => f.trim());
+    repairCost = individualFaults.reduce((sum, f) => {
+      let cost = faultCatalog[f];
+      if (cost === undefined) {
+        const lower = f.toLowerCase();
+        if (lower.includes('compressor')) cost = faultCatalog['Compressor'] ?? 8000;
+        else if (lower.includes('pcb')) cost = faultCatalog['PCB'] ?? 4500;
+        else if (lower.includes('gas')) cost = faultCatalog['Gas refill'] ?? 2500;
+        else if (lower.includes('fan') || lower.includes('motor')) cost = faultCatalog['Fan motor'] ?? faultCatalog['Motor'] ?? 1800;
+        else cost = faultCatalog['Other'] ?? 2000;
+      }
+      return sum + cost;
+    }, 0);
+  } else {
+    let cost = faultCatalog[likelyFault];
+    if (cost === undefined && likelyFault) {
+      const lower = likelyFault.toLowerCase();
+      if (lower.includes('compressor')) cost = faultCatalog['Compressor'];
+      else if (lower.includes('pcb')) cost = faultCatalog['PCB'];
+      else if (lower.includes('gas')) cost = faultCatalog['Gas refill'];
+      else if (lower.includes('fan')) cost = faultCatalog['Fan motor'];
+    }
+    repairCost = cost ?? faultCatalog['Other'] ?? 2000;
+  }
 
   const unavailableList = PARTS_UNAVAILABLE[applianceType] || [];
-  const partsAvailable = !unavailableList.includes(likelyFault);
+  const partsAvailable = !unavailableList.some((part) =>
+    likelyFault.toLowerCase().includes(part.toLowerCase())
+  );
 
   // Photo condition grade
   let avgGrade = 3;

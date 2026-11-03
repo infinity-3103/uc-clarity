@@ -1,11 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { isSurveyDiscountEligible, getSurveyDiscountAvailableDate, evaluateSurveyAnswerForLead } from '../domain/leads';
 import { useStore } from '../store/useStore';
 import { Customer, ServiceRequest } from '../domain/types';
 import { MarketplaceView } from '../views/marketplace/MarketplaceView';
 import { CustomerApp } from '../views/customer/CustomerApp';
+import { ProfessionalApp } from '../views/professional/ProfessionalApp';
+import { evaluateRecommendation } from '../domain/scoring';
 import { SURVEY_DISCOUNT_PCT, SURVEY_COOLDOWN_MONTHS } from '../config/assumptions';
 
 describe('Issue 1: Survey Discount Belongs to Service Fees Only', () => {
@@ -129,5 +131,61 @@ describe('Issue 1: Survey Discount Belongs to Service Fees Only', () => {
     expect(latestLead.appliance).toBe('AC');
     expect(latestLead.priority).toBe('HIGH');
     expect(latestLead.priorityScore).toBe(3 + 2 + 3); // OVER_8(3) + issues(2) + YES(3) = 8
+  });
+
+  // 5. Multi-option survey selections
+  it('supports selecting multiple observed faults in onsite inspection and combines them correctly', () => {
+    // 1. Scoring engine evaluation with multiple faults (e.g. Compressor + Gas Leakage)
+    const recMultiple = evaluateRecommendation({
+      applianceType: 'AC',
+      ageYears: 5,
+      likelyFault: 'Compressor, Gas Leakage',
+      inverter: true,
+      starRating: 5,
+    });
+    // 8000 (Compressor) + 2500 (Gas Leakage) = 10500
+    expect(recMultiple.repairCost).toBe(10500);
+
+    // 2. Unavailable parts detection with multiple faults (e.g. Compressor + PCB Circuit)
+    const recWithUnavailable = evaluateRecommendation({
+      applianceType: 'AC',
+      ageYears: 5,
+      likelyFault: 'Compressor, Circuit Board (PCB)',
+      inverter: true,
+      starRating: 5,
+    });
+    // PCB is flagged as unavailable in market supply
+    expect(recWithUnavailable.reasons.some((r) => r.includes('limited supply chain availability'))).toBe(true);
+
+    // 3. UI interaction in ProfessionalApp onsite inspection
+    const newReqId = useStore.getState().bookService({
+      customerId: 'cust-riya',
+      applianceType: 'AC',
+      brand: 'Voltas',
+      ageYears: 5,
+      customerAnswers: {},
+      scheduledSlot: '14:00 - 16:00 Today',
+    });
+
+    render(<ProfessionalApp />);
+    const startInspectBtn = screen.getByRole('button', { name: /Start Inspection/i });
+    fireEvent.click(startInspectBtn);
+
+    // Verify observed fault options are displayed
+    const gasLeakBtn = screen.getByRole('button', { name: /Gas Leakage/i });
+
+    // Select Gas Leakage as well (both Compressor and Gas Leakage selected)
+    fireEvent.click(gasLeakBtn);
+
+    // Submit inspection
+    const submitBtn = screen.getByRole('button', { name: /Submit Inspection Report/i });
+    fireEvent.click(submitBtn);
+
+    // Verify submitted request in store has combined faults
+    const activeReq = useStore.getState().serviceRequests.find((r) => r.id === newReqId)!;
+    expect(activeReq.status).toBe('COMPARISON_SHOWN');
+    expect(activeReq.proReadings?.likelyFault).toContain('Compressor');
+    expect(activeReq.proReadings?.likelyFault).toContain('Gas Leakage');
+    expect(activeReq.recommendation?.repairCost).toBe(10500);
   });
 });

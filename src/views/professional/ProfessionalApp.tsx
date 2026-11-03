@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useStore } from '../../store/useStore';
 import { useT } from '../../i18n';
 import { APPLIANCE_FORMS } from '../../config/appliances';
@@ -138,6 +138,35 @@ export const ProfessionalApp: React.FC = () => {
     compressorCurrent: 'high',
   });
 
+  // Selected faults for onsite inspection (multi-select)
+  const [selectedFaults, setSelectedFaults] = useState<string[]>([
+    activeJob?.applianceType === 'AC' ? 'Compressor' : 'Motor',
+  ]);
+
+  useEffect(() => {
+    if (activeJob) {
+      if (activeJob.proReadings?.selectedFaults && Array.isArray(activeJob.proReadings.selectedFaults)) {
+        setSelectedFaults(activeJob.proReadings.selectedFaults as string[]);
+      } else if (activeJob.proReadings?.likelyFault) {
+        const parsed = (activeJob.proReadings.likelyFault as string).split(',').map((s) => s.trim()).filter(Boolean);
+        if (parsed.length > 0) setSelectedFaults(parsed);
+      } else {
+        setSelectedFaults([activeJob.applianceType === 'AC' ? 'Compressor' : 'Motor']);
+      }
+    }
+  }, [activeJob?.id]);
+
+  const toggleFault = (fault: string) => {
+    setSelectedFaults((prev) => {
+      if (prev.includes(fault)) {
+        if (prev.length === 1) return prev; // Keep at least one fault selected
+        return prev.filter((f) => f !== fault);
+      } else {
+        return [...prev, fault];
+      }
+    });
+  };
+
   const [photos, setPhotos] = useState<Photo[]>([
     { id: 'p1', name: 'Serial Plate & Model Stamp', grade: 3 },
     { id: 'p2', name: 'Internal Motor / Coil State', grade: 2 },
@@ -158,8 +187,12 @@ export const ProfessionalApp: React.FC = () => {
 
   const handleSubmitInspection = () => {
     if (!activeJob) return;
-    const likelyFault = (inspectionReadings.likelyFault as string) || 'Compressor';
-    submitProInspection(activeJob.id, inspectionReadings, photos, likelyFault);
+    const combinedFaults = selectedFaults.length > 0 ? selectedFaults.join(', ') : 'Compressor';
+    const updatedReadings: Record<string, string | boolean | number> = {
+      ...inspectionReadings,
+      likelyFault: combinedFaults,
+    };
+    submitProInspection(activeJob.id, updatedReadings, photos, combinedFaults);
     setIsInspecting(false);
   };
 
@@ -307,21 +340,19 @@ export const ProfessionalApp: React.FC = () => {
                 </div>
 
                 <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-4 text-xs">
-                  {/* Enumerable Options as Large Icon Buttons */}
+                  {/* Enumerable Options as Large Icon Buttons (Multi-Select) */}
                   <div className="space-y-1.5">
                     <label className="font-bold text-slate-800 block text-xs">
                       1. {t('p_select_observed_fault')}:
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       {FAULT_OPTIONS.map((fault) => {
-                        const isSelected = inspectionReadings.likelyFault === fault;
+                        const isSelected = selectedFaults.includes(fault);
                         return (
                           <button
                             key={fault}
                             type="button"
-                            onClick={() =>
-                              setInspectionReadings({ ...inspectionReadings, likelyFault: fault })
-                            }
+                            onClick={() => toggleFault(fault)}
                             className={`min-h-[56px] p-3 rounded-xl border text-left flex items-center justify-between font-bold transition-all cursor-pointer ${
                               isSelected
                                 ? 'border-amber-500 bg-amber-50 text-slate-950 ring-2 ring-amber-400/30'
